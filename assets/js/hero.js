@@ -49,6 +49,8 @@
     const fig = document.createElement('figure');
     fig.className = 'hero__pin';
     fig.style.cssText = `left:${(p.x / AW) * 100}%;top:${(p.y / AH) * 100}%;--i:${i}`;
+    // the lowest pair collides with the headline on short screens
+    if (p.y > 700) fig.dataset.low = '1';
     fig.innerHTML = `<img src="assets/img/${p.img}.jpg" alt="" loading="lazy" decoding="async">`;
     pinLayer.appendChild(fig);
 
@@ -79,13 +81,13 @@
   };
 
   const spawn = () => ({
-    x: (SOURCE[0] + (Math.random() - 0.5) * 150) * S,
+    x: (SOURCE[0] + (Math.random() - 0.5) * 200) * S,
     y: (SOURCE[1] + (Math.random() - 0.5) * 26) * S,
     vx: (Math.random() - 0.5) * 0.3,
     vy: -(0.45 + Math.random() * 0.75),
-    r: (26 + Math.random() * 58) * S,
+    r: (16 + Math.random() * 40) * S,
     life: 0,
-    max: 150 + Math.random() * 130,
+    max: 110 + Math.random() * 90,
     seed: Math.random() * 6.28,
   });
 
@@ -97,7 +99,9 @@
     ctx.globalCompositeOperation = 'lighter';
 
     const ix = INTAKE[0] * S, iy = INTAKE[1] * S;
-    while (parts.length < 80) parts.push(spawn());
+    const want = W < 420 ? 30 : W < 700 ? 46 : 68;
+    while (parts.length < want) parts.push(spawn());
+    if (parts.length > want) parts.length = want;
 
     for (let i = 0; i < parts.length; i++) {
       const p = parts[i];
@@ -115,7 +119,9 @@
       p.x += p.vx; p.y += p.vy;
       p.r *= 1.0055;
 
-      const a = Math.sin(Math.PI * k) * 0.26 * (1 - Math.min(1, d / (H * 0.4)) * 0.5);
+      // dim with canvas size, and fall off sharply near the intake
+      const near = Math.min(1, d / (H * 0.22));
+      const a = Math.sin(Math.PI * k) * 0.15 * Math.min(1, S * 1.7) * (0.2 + 0.8 * near);
       if (a > 0.002) {
         const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
         g.addColorStop(0, `rgba(255,255,255,${a})`);
@@ -126,7 +132,7 @@
         ctx.arc(p.x, p.y, p.r, 0, 6.2832);
         ctx.fill();
       }
-      if (k >= 1 || d < W * 0.035) parts[i] = spawn();
+      if (k >= 1 || d < W * 0.1) parts[i] = spawn();
     }
     ctx.globalCompositeOperation = 'source-over';
   };
