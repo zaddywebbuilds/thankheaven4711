@@ -130,10 +130,13 @@
   <!-- GALLERY -->
   <section class="sec sec--gallery" id="gallery">
     <div class="wrap">
-      <p class="eyebrow">The view, over seven years</p>
-      <h2 class="h2">Same lanai. Every single evening different.</h2>
+      <p class="eyebrow">The whole place</p>
+      <h2 class="h2">Every room, and everything outside it.</h2>
+      <p class="lede">Room by room, then the water, the weather and the wildlife
+        &mdash; photographed from the same lanai over seven years.</p>
     </div>
-    <div class="reel" id="reel"></div>
+    <nav class="gal__tabs" id="galTabs" aria-label="Jump to a section"></nav>
+    <div class="gal" id="gal"></div>
   </section>
 
   <!-- BOOK -->
@@ -161,8 +164,18 @@
   </footer>
 </main>
 
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb__x"   id="lbX"    aria-label="Close">&times;</button>
+  <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+  <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">&#8250;</button>
+  <figure class="lb__stage"><div id="lbMedia"></div><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+
 <script src="assets/js/scrub-engine.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/gallery.js"></script>
 <script src="assets/js/hero.js"></script>
 </body>
 </html>

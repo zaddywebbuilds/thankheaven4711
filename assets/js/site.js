@@ -168,26 +168,3 @@ if (honu && honuSec && !matchMedia('(prefers-reduced-motion: reduce)').matches) 
   addEventListener('resize', turn, { passive: true });
   turn();
 }
-
-/* ---------- gallery reel ---------- */
-const REEL = [
-  ['sunset-burst', 'Sunset through the palms'],
-  ['rainbow-ocean', 'A rainbow over the channel'],
-  ['molokai-wide', 'Across the channel'],
-  ['sunset-molokai', 'The evening turning over'],
-  ['reef-molokai', 'Reef at low water'],
-  ['honu-close', 'A honu basking on the sand'],
-  ['moon-sailboat', 'Moonlight and a sailboat'],
-  ['beach-wide', 'The beach below'],
-  ['lanai-chairs', 'The far end of the lanai'],
-  ['rainbow-shore', 'Rain passing through'],
-  ['ocean-pano', 'Open water, all of it'],
-  ['sailboats', 'Afternoon sails'],
-];
-const reel = document.getElementById('reel');
-if (reel) {
-  reel.innerHTML = REEL.map(
-    ([f, alt]) =>
-      `<figure><img src="assets/img/${f}.jpg" alt="${alt}" loading="lazy" decoding="async"></figure>`
-  ).join('');
-}

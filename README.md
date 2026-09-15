@@ -12,15 +12,30 @@ A static site. No build step, no framework, no dependencies to install.
 - A **scroll-scrubbed cinematic opening** — eight scenes where video scrubs frame-by-frame
   against scroll position, cross-dissolving between them.
 - Conventional content sections below it: the lanai comparison, the honu, the interior,
-  a gallery reel, and the booking CTA.
+  the full classified gallery, and the booking CTA.
+
+### The gallery
+
+Every usable photo and clip from the owner's album, grouped by room and subject with
+its own label - 118 photos and 15 videos across 14 categories. Click anything for the
+lightbox; clips play in place.
+
+It is generated, not hand-written. The classification lives in `scratchpad/classify.py`
+(index -> category + label); the build resizes everything, encodes the clips and emits
+`assets/gallery.json`, which `assets/js/gallery.js` renders. To relabel or recategorise
+an item, edit the table and re-run the build.
 
 ```
 index.html              the page
 assets/css/site.css     everything below the cinematic opening
 assets/js/site.js       scene config + CONFIG block (edit this)
 assets/js/scrub-engine.js   the scroll-scrub engine (vendored, don't edit)
-assets/img/             stills, posters, favicon
-assets/video/           8s clips, desktop (1440px) + `-m` mobile (900px)
+assets/js/gallery.js    renders the classified gallery from gallery.json
+assets/js/hero.js       sphere hero: callout pins + procedural vapour
+assets/gallery.json     generated manifest: every item, its category and label
+assets/gallery/         gallery media, 1600px + 640px thumbs (webp), clips (mp4)
+assets/img/             stills, posters, hero art, favicon
+assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
 ```
 
 ## Local preview
@@ -45,9 +60,10 @@ Empty strings render nothing, so the page is safe to publish before these are fi
 
 ## Open items
 
-- **Photo consent.** Every recognisable face was deliberately excluded from the build.
-  The source album contains the owners, guests, and children on the beach; none of them
-  go on a public site without releases.
+- **Photo consent.** 20 images are held back: every one with a recognisable face
+  (owners, guests, and children on the beach) plus the AI turtle mockup. They are marked
+  `x` in the classification, so switching any of them on is a one-line change once
+  releases exist.
 - **Island naming.** Copy says "across the channel" rather than naming the island in the
   view, because that was inferred from photos, not confirmed. Confirm and make it specific —
   a named island sells better than a vague one.
