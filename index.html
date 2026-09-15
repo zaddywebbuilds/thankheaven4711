@@ -29,14 +29,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-sphere.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=13" />
+<link rel="stylesheet" href="assets/css/site.css?v=15" />
 <script>
-  /* Opt in to the scroll reveal only when it can actually be undone.
-     Without this class the page renders fully visible. */
-  if ('IntersectionObserver' in window &&
-      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('js-reveal');
-  }
+  /* Two reveal systems, and only ever one of them running:
+       - Browsers with scroll-driven animations do it in CSS, on the
+         compositor, with no JS at all.
+       - Everyone else falls back to the IntersectionObserver reveal,
+         enabled by this class.
+     With neither, the page simply renders fully visible. */
+  (function () {
+    var css = window.CSS && CSS.supports && CSS.supports('animation-timeline: view()');
+    var motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (css && motionOK) { document.documentElement.classList.add('css-depth'); return; }
+    if ('IntersectionObserver' in window && motionOK) {
+      document.documentElement.classList.add('js-reveal');
+    }
+  })();
 </script>
 </head>
 <body>
@@ -311,9 +319,9 @@
 }
 </script>
 
-<script src="assets/js/scrub-engine.js?v=13"></script>
-<script src="assets/js/site.js?v=13"></script>
-<script src="assets/js/gallery.js?v=13"></script>
-<script src="assets/js/hero.js?v=13"></script>
+<script src="assets/js/scrub-engine.js?v=15"></script>
+<script src="assets/js/site.js?v=15"></script>
+<script src="assets/js/gallery.js?v=15"></script>
+<script src="assets/js/hero.js?v=15"></script>
 </body>
 </html>

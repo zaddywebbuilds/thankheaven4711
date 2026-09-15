@@ -532,3 +532,80 @@ html{scroll-behavior:smooth;}
   .js-reveal .sec .wrap>*{opacity:1;transform:none;}
   .compare__bar i{width:var(--w);}
 }
+
+/* ============================================================
+   Scroll-driven depth
+   ------------------------------------------------------------
+   Native scroll-driven animations: no JS, no scroll listener, and
+   the work happens off the main thread, so it stays smooth on a
+   phone. Only active when the browser supports view() AND the
+   .css-depth class was set in the head — in which case the
+   IntersectionObserver reveal is not running at all, so the two
+   can never fight over the same properties.
+   ============================================================ */
+@supports (animation-timeline: view()) {
+
+  /* Blocks rise and settle as they enter. `both` supplies the
+     from-state before the range begins, which is what replaces the
+     old JS-driven opacity:0. */
+  .css-depth .sec .wrap > *,
+  .css-depth .gcat__head > *,
+  .css-depth .spec > div,
+  .css-depth .faq__q {
+    animation: swRise linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 28%;
+  }
+
+  /* Alternate rows land a beat later, so lists arrive as a wave
+     rather than a block. */
+  .css-depth .spec > div:nth-child(even) { animation-range: entry 8% cover 34%; }
+  .css-depth .faq__q:nth-child(even)     { animation-range: entry 7% cover 32%; }
+
+  /* Media gets real perspective. Declared on the transform itself
+     rather than on a parent, so it creates no containing block and
+     cannot disturb the sticky gallery nav. */
+  /* Must out-specify `.css-depth .sec .wrap > *` above, which also
+     matches this element and would otherwise give it the flat rise. */
+  .css-depth .sec .wrap > .honu-stage {
+    animation: swDepth linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+
+  /* Cards fade only — their transform belongs to the pointer tilt,
+     and animating it here would overwrite that. */
+  .css-depth .gcard {
+    animation: swFade linear both;
+    animation-timeline: view();
+    animation-range: entry 2% cover 20%;
+  }
+
+  /* The comparison bars still need to draw; without .js-reveal they
+     would otherwise just appear at full width. */
+  .css-depth .compare__bar i {
+    width: 0;
+    animation: swBar linear both;
+    animation-timeline: view();
+    animation-range: entry 18% cover 34%;
+  }
+}
+
+@keyframes swRise {
+  from { opacity: 0; transform: translate3d(0, 30px, 0) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes swDepth {
+  from { opacity: 0;
+         transform: perspective(1200px) rotateX(7deg) translate3d(0, 46px, -90px); }
+  to   { opacity: 1;
+         transform: perspective(1200px) rotateX(0deg) translate3d(0, 0, 0); }
+}
+@keyframes swFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes swBar {
+  from { width: 0; }
+  to   { width: var(--w); }
+}

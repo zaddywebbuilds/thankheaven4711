@@ -40,6 +40,26 @@ assets/img/             stills, posters, hero art, favicon
 assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
 ```
 
+## Depth / motion
+
+Three reveal paths, and exactly one runs. The head script decides:
+
+| Condition | What happens |
+|---|---|
+| `animation-timeline: view()` supported, motion allowed | `.css-depth` - scroll-driven CSS animations, no JS, off the main thread |
+| No support, motion allowed | `.js-reveal` - the IntersectionObserver fallback |
+| No JS, or reduced motion | Neither class; the page renders fully visible |
+
+They can never both run, so nothing fights over `opacity` or `transform`.
+
+Two gotchas if you edit this:
+
+- `.css-depth .sec .wrap > *` matches `.honu-stage` too, so the honu's
+  depth rule has to out-specify it (`.sec .wrap > .honu-stage`) or the
+  turtle gets the flat rise instead.
+- Never animate `transform` on `.gcard` here - that property belongs to
+  the pointer tilt. Cards animate `opacity` only.
+
 ## Performance
 
 Initial mobile load is ~1.2MB (was 3.5MB). What mattered:
