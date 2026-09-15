@@ -40,6 +40,27 @@ assets/img/             stills, posters, hero art, favicon
 assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
 ```
 
+## Performance
+
+Initial mobile load is ~1.2MB (was 3.5MB). What mattered:
+
+- The scroll engine downloads each clip as a **Blob**, so every clip is paid
+  for in full before it can scrub. Mobile encodes are now 640px/20fps/6s -
+  the set went from 6.9MB to 1.8MB - and on `saveData` or a 2g/3g connection
+  no clip is passed at all, so scenes fall back to their poster stills.
+- Gallery images ship at 200 / 400 / 800px with `srcset` + `sizes`. Phones
+  were downloading 800px files into 163px slots.
+- The eight hero circles use the 200px variant. At 800px they cost 426KB
+  for eight 45px circles; now ~32KB.
+- **Do not add `content-visibility` to `.gcat`.** It skips layout for
+  off-screen categories, which collapses the grid to one column at the
+  moment the browser resolves `srcset`, and every card then picks the 800px
+  candidate. It was tried and reverted.
+
+Media filenames do not change when re-encoded, so `MEDIA_V` in `site.js`
+versions the clip URLs; bump it whenever a clip is replaced. Same reason the
+css/js links carry `?v=`.
+
 ## Image quality
 
 Nothing is ever upscaled - every size is `min(target, source)`, so a 1024px

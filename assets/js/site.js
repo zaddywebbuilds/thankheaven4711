@@ -28,10 +28,26 @@ document.querySelectorAll('[data-cfg]').forEach((el) => {
 });
 
 /* ---------- clip picker ----------
-   The engine takes a single clip path, so choose the light mobile
-   encode up front. Narrow screens get 900px/-g 6 instead of 1440px. */
-const MOBILE = matchMedia('(max-width: 820px)').matches;
-const clip = (n) => `assets/video/${n}${MOBILE ? '-m' : ''}.mp4`;
+   The engine downloads each clip as a Blob before it can scrub, so every
+   clip is paid for in full. Choose the light mobile encode up front, and
+   on a metered or slow connection skip video altogether - the scenes fall
+   back to their poster stills, which carry the page perfectly well. */
+/* Bump when a clip is re-encoded: the filenames do not change, so without
+   this a returning visitor keeps the old, heavier file forever. */
+const MEDIA_V = '12';
+
+const conn = navigator.connection || {};
+const FRUGAL =
+  conn.saveData === true ||
+  /^(slow-2g|2g|3g)$/.test(conn.effectiveType || '');
+
+/* The engine picks clipMobile itself at load time, which survives a
+   rotation or resize better than deciding here once. */
+const clipSet = (n) =>
+  FRUGAL
+    ? {}
+    : { clip: `assets/video/${n}.mp4?v=${MEDIA_V}`,
+        clipMobile: `assets/video/${n}-m.mp4?v=${MEDIA_V}` };
 
 /* ---------- the cinematic opening ---------- */
 mountScrollWorld(document.getElementById('world'), {
@@ -44,7 +60,7 @@ mountScrollWorld(document.getElementById('world'), {
       id: 'arrival',
       label: 'Arrival',
       still: 'assets/img/poster-arrival.jpg',
-      clip: clip('arrival'),
+      ...clipSet('arrival'),
       accent: '#2FB5AB',
       eyebrow: 'Maui Sands Seaside · Unit 711',
       title: 'A $1 million view from 700 square feet.',
@@ -55,7 +71,7 @@ mountScrollWorld(document.getElementById('world'), {
       id: 'lanai',
       label: 'The Lanai',
       still: 'assets/img/poster-lanai.jpg',
-      clip: clip('lanai'),
+      ...clipSet('lanai'),
       accent: '#1B7F7A',
       eyebrow: 'Thirty-five feet',
       title: 'The lanai is the whole point.',
@@ -66,7 +82,7 @@ mountScrollWorld(document.getElementById('world'), {
       id: 'reef',
       label: 'The Reef',
       still: 'assets/img/reef-palms.jpg',
-      clip: clip('reef'),
+      ...clipSet('reef'),
       accent: '#2FB5AB',
       eyebrow: 'Straight off the lawn',
       title: 'The snorkelling needs no drive.',
@@ -97,7 +113,7 @@ mountScrollWorld(document.getElementById('world'), {
       id: 'sunset',
       label: 'Sunset',
       still: 'assets/img/sunset-palm.jpg',
-      clip: clip('sunset'),
+      ...clipSet('sunset'),
       accent: '#FF7A4D',
       eyebrow: 'Every evening',
       title: 'The sun goes down across the channel.',
@@ -117,7 +133,7 @@ mountScrollWorld(document.getElementById('world'), {
       id: 'door',
       label: 'Unit 711',
       still: 'assets/img/poster-door.jpg',
-      clip: clip('door'),
+      ...clipSet('door'),
       accent: '#F2B544',
       eyebrow: 'Come and sit',
       title: 'O thank Heaven 4 711.',

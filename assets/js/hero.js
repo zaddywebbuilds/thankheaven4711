@@ -59,7 +59,9 @@
     // the lowest pair collides with the headline on short screens
     if (p.y > 700) fig.dataset.low = '1';
     fig.innerHTML =
-      `<img src="assets/gallery/${p.img}-t.webp" alt="${p.alt}" decoding="async">`;
+      // 200px variant: these render at 45-71px, so the 800px thumb was
+      // ~50KB of waste per circle
+      `<img src="assets/gallery/${p.img}-200.webp" alt="${p.alt}" decoding="async">`;
     pinLayer.appendChild(fig);
 
     // connector, curved toward the sphere

@@ -44,7 +44,10 @@
         <figure class="gcard${it.type === 'video' ? ' is-video' : ''}"
                 data-cat="${c.id}" data-n="${n}" tabindex="0" role="button"
                 aria-label="${it.label}">
-          <img src="${BASE}${it.id}-t.webp" alt="${it.label}" loading="lazy" decoding="async">
+          <img src="${BASE}${it.id}-400.webp"
+               srcset="${BASE}${it.id}-200.webp 200w, ${BASE}${it.id}-400.webp 400w, ${BASE}${it.id}-t.webp 800w"
+               sizes="(max-width:640px) 45vw, (max-width:1100px) 31vw, 250px"
+               alt="${it.label}" loading="lazy" decoding="async">
           <figcaption>${it.label}</figcaption>
         </figure>`
         )
@@ -80,7 +83,7 @@
                     controls autoplay loop muted playsinline></video>
            </div>`
         : `<div class="lb__media" style="aspect-ratio:${ratio}">
-             <img class="lb__pre" src="${BASE}${it.id}-t.webp" alt="" aria-hidden="true">
+             <img class="lb__pre" src="${BASE}${it.id}-400.webp" alt="" aria-hidden="true">
              <img class="lb__full" src="${BASE}${it.id}.webp" alt="${it.label}" decoding="async">
            </div>`;
     const full = lbMedia.querySelector('.lb__full');
@@ -131,6 +134,44 @@
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
   });
+
+  /* ---- card tilt ----------------------------------------
+     Pointer-driven perspective on the grid. Delegated (one listener for
+     all 127 cards), written to CSS custom properties inside a rAF, and
+     only on devices with a real pointer. */
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const MAX = 6;                       // degrees; past this it reads as a gimmick
+    let pending = null;
+
+    const apply = () => {
+      const { card, x, y, w, h } = pending;
+      pending = null;
+      const px = x / w, py = y / h;
+      card.style.setProperty('--ry', ((px - 0.5) * MAX * 2).toFixed(2) + 'deg');
+      card.style.setProperty('--rx', ((0.5 - py) * MAX * 2).toFixed(2) + 'deg');
+      card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+      card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+    };
+
+    gal.addEventListener('pointermove', (e) => {
+      const card = e.target.closest('.gcard');
+      if (!card) return;
+      card.classList.add('is-tilting');
+      const r = card.getBoundingClientRect();
+      const queued = pending;
+      pending = { card, x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height };
+      if (!queued) requestAnimationFrame(apply);
+    }, { passive: true });
+
+    gal.addEventListener('pointerout', (e) => {
+      const card = e.target.closest('.gcard');
+      if (!card || card.contains(e.relatedTarget)) return;
+      card.classList.remove('is-tilting');
+      card.style.removeProperty('--rx');
+      card.style.removeProperty('--ry');
+    }, { passive: true });
+  }
 
   /* ---- swipe on touch ---- */
   let sx = 0, sy = 0, tracking = false;
