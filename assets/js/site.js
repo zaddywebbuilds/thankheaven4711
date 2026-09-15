@@ -140,12 +140,30 @@ addEventListener('scroll', syncChrome, { passive: true });
 addEventListener('resize', syncChrome, { passive: true });
 syncChrome();
 
-/* ---------- reveal on scroll ---------- */
+/* ---------- reveal on scroll ----------
+   A ratio threshold cannot work here: the gallery is ~16000px tall, so
+   0.18 of it is ~2900px and can never fit on screen - its heading sat at
+   opacity 0 forever, leaving a blank band. Fire on first contact instead,
+   pulled in slightly from the bottom edge so the reveal still reads as
+   deliberate, and stop observing once shown. */
 const reveal = new IntersectionObserver(
-  (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
-  { threshold: 0.18 }
+  (entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in-view');
+    reveal.unobserve(e.target);
+  }),
+  { threshold: 0, rootMargin: '0px 0px -12% 0px' }
 );
 document.querySelectorAll('.sec').forEach((s) => reveal.observe(s));
+
+/* Failsafe: if the observer has not fired for a section after a couple of
+   seconds (a stalled renderer, a throttled tab), show it anyway. Content
+   must never be left hidden behind an animation that did not run. */
+setTimeout(() => {
+  document.querySelectorAll('.sec:not(.in-view)').forEach((s) => {
+    if (s.getBoundingClientRect().top < innerHeight) s.classList.add('in-view');
+  });
+}, 2500);
 
 /* ---------- sticky conversion bar ----------
    Appears once the hero is behind you, hides again over the booking

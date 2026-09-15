@@ -230,7 +230,9 @@ html{scroll-behavior:smooth;}
 .compare__bar--muted i{background:var(--sand-deep);}
 .compare__bar b{font-family:var(--f-display);font-size:clamp(1rem,2vw,1.35rem);
   color:var(--ink);white-space:nowrap;}
-.in-view .compare__bar i{width:var(--w);}
+.compare__bar i{width:var(--w);}                 /* visible without JS */
+.js-reveal .compare__bar i{width:0;}
+.js-reveal .in-view .compare__bar i{width:var(--w);}
 
 .stats{list-style:none;margin:0;padding:0;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -293,7 +295,11 @@ html{scroll-behavior:smooth;}
 
 /* ---------- gallery reel ---------- */
 .sec--gallery{background:var(--ocean-900);color:var(--sand);
+  /* the sticky tab bar follows straight after the heading, so this
+     opener needs less air above it than a normal section */
+  padding-top:clamp(40px,4.4vw,72px);
   padding-bottom:clamp(36px,4vw,64px);}
+.sec--gallery .lede{margin-bottom:0;}
 .sec--gallery .h2{color:var(--sand);}
 .sec--gallery .eyebrow{color:var(--teal);}
 /* section nav */
@@ -482,13 +488,16 @@ html{scroll-behavior:smooth;}
 .foot__legal{margin:18px 0 0;font-size:.74rem;color:rgba(244,234,218,.44);}
 .foot__legal:empty{display:none;}
 
-/* ---------- reveal ---------- */
-.sec .wrap>*{opacity:0;transform:translateY(20px);
+/* ---------- reveal ----------
+   Only ever hides content when JS has confirmed it can reveal it again
+   (.js-reveal is set in the head). Without that class everything is
+   visible, so a script failure can never blank the page. */
+.js-reveal .sec .wrap>*{opacity:0;transform:translateY(20px);
   transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);}
-.sec.in-view .wrap>*{opacity:1;transform:none;}
-.sec.in-view .wrap>*:nth-child(2){transition-delay:.07s;}
-.sec.in-view .wrap>*:nth-child(3){transition-delay:.14s;}
-.sec.in-view .wrap>*:nth-child(4){transition-delay:.2s;}
+.js-reveal .sec.in-view .wrap>*{opacity:1;transform:none;}
+.js-reveal .sec.in-view .wrap>*:nth-child(2){transition-delay:.07s;}
+.js-reveal .sec.in-view .wrap>*:nth-child(3){transition-delay:.14s;}
+.js-reveal .sec.in-view .wrap>*:nth-child(4){transition-delay:.2s;}
 
 /* ---------- responsive ---------- */
 @media (max-width:880px){
@@ -501,6 +510,6 @@ html{scroll-behavior:smooth;}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
-  .sec .wrap>*,.card{opacity:1;transform:none;}
+  .js-reveal .sec .wrap>*{opacity:1;transform:none;}
   .compare__bar i{width:var(--w);}
 }

@@ -29,7 +29,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-sphere.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=9" />
+<link rel="stylesheet" href="assets/css/site.css?v=11" />
+<script>
+  /* Opt in to the scroll reveal only when it can actually be undone.
+     Without this class the page renders fully visible. */
+  if ('IntersectionObserver' in window &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('js-reveal');
+  }
+</script>
 </head>
 <body>
 <div id="top"></div>
@@ -303,9 +311,9 @@
 }
 </script>
 
-<script src="assets/js/scrub-engine.js?v=9"></script>
-<script src="assets/js/site.js?v=9"></script>
-<script src="assets/js/gallery.js?v=9"></script>
-<script src="assets/js/hero.js?v=9"></script>
+<script src="assets/js/scrub-engine.js?v=11"></script>
+<script src="assets/js/site.js?v=11"></script>
+<script src="assets/js/gallery.js?v=11"></script>
+<script src="assets/js/hero.js?v=11"></script>
 </body>
 </html>
