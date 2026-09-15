@@ -19,6 +19,22 @@
 <body>
 <div id="top"></div>
 
+<!-- ============ SPHERE HERO ============
+     Removes itself if assets/img/hero-sphere.jpg is absent, so the page
+     falls back cleanly to the cinematic opening below. -->
+<header class="hero">
+  <!-- blurred wings, so a portrait render fills a landscape screen -->
+  <div class="hero__wings" aria-hidden="true"></div>
+  <!-- frame matches the art's aspect ratio; everything inside is in image space -->
+  <div class="hero__frame">
+    <img class="hero__plate" src="assets/img/hero-sphere.jpg" alt="" decoding="async" />
+    <canvas class="hero__vapour" aria-hidden="true"></canvas>
+    <svg class="hero__lines" aria-hidden="true" viewBox="0 0 736 1308" preserveAspectRatio="none"></svg>
+    <div class="hero__pins" aria-hidden="true"></div>
+  </div>
+  <div class="hero__cue"><span>Scroll</span><i></i></div>
+</header>
+
 <!-- ============ CINEMATIC SCROLL WORLD ============ -->
 <div id="world"></div>
 
@@ -147,5 +163,6 @@
 
 <script src="assets/js/scrub-engine.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/hero.js"></script>
 </body>
 </html>

@@ -1,0 +1,161 @@
+/* ============================================================
+   Sphere hero — callout pins + procedural vapour
+   ------------------------------------------------------------
+   The art is a single raster with its original (AI-garbled)
+   labels blurred out. Everything on top is real DOM: pins are
+   <img> on SVG connector lines, and the vapour is a canvas
+   particle system that rises off the plate and is drawn up into
+   the sphere intake.
+
+   All coordinates below are in the art's own pixel space
+   (736 x 1308). .hero__frame is locked to that aspect ratio, so
+   they stay correct at every screen size.
+
+   If assets/img/hero-sphere.jpg is missing the hero removes
+   itself and the page falls back to the cinematic opening.
+   ============================================================ */
+
+(() => {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  const AW = 736, AH = 1308;                 // art dimensions
+  const SPHERE = [370, 527];                 // sphere centre
+  const INTAKE = [368, 676];                 // nozzle under the sphere
+  const SOURCE = [368, 845];                 // the glowing plate ring
+
+  const frame = hero.querySelector('.hero__frame');
+  const plate = hero.querySelector('.hero__plate');
+  const svg = hero.querySelector('.hero__lines');
+  const pinLayer = hero.querySelector('.hero__pins');
+  const canvas = hero.querySelector('.hero__vapour');
+
+  /* Pins sit in the defocused band where the original labels were,
+     so they cover what is left of them. `to` lands on the sphere. */
+  const PINS = [
+    { x: 124, y: 405, to: [243, 452], img: 'reef-palms' },
+    { x: 82,  y: 536, to: [212, 520], img: 'sunset-burst' },
+    { x: 104, y: 680, to: [232, 604], img: 'honu-close' },
+    { x: 196, y: 786, to: [300, 668], img: 'rainbow-ocean' },
+    { x: 612, y: 405, to: [497, 452], img: 'molokai-wide' },
+    { x: 654, y: 536, to: [528, 520], img: 'beach-wide' },
+    { x: 632, y: 680, to: [508, 604], img: 'lanai-chairs' },
+    { x: 540, y: 786, to: [440, 668], img: 'ocean-pano' },
+  ];
+
+  const NS = 'http://www.w3.org/2000/svg';
+
+  PINS.forEach((p, i) => {
+    const fig = document.createElement('figure');
+    fig.className = 'hero__pin';
+    fig.style.cssText = `left:${(p.x / AW) * 100}%;top:${(p.y / AH) * 100}%;--i:${i}`;
+    fig.innerHTML = `<img src="assets/img/${p.img}.jpg" alt="" loading="lazy" decoding="async">`;
+    pinLayer.appendChild(fig);
+
+    // connector, curved toward the sphere
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('class', 'hero__line');
+    const mx = (p.x + p.to[0]) / 2;
+    path.setAttribute('d', `M${p.x} ${p.y} C ${mx} ${p.y}, ${mx} ${p.to[1]}, ${p.to[0]} ${p.to[1]}`);
+    path.style.setProperty('--i', i);
+    svg.appendChild(path);
+  });
+
+  /* ---- vapour ---- */
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let W = 0, H = 0, S = 1, parts = [], visible = true, raf = 0;
+
+  const resize = () => {
+    const r = frame.getBoundingClientRect();
+    if (!r.width) return;
+    const DPR = Math.min(devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    S = W / AW;                                  // art px -> css px
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  };
+
+  const spawn = () => ({
+    x: (SOURCE[0] + (Math.random() - 0.5) * 150) * S,
+    y: (SOURCE[1] + (Math.random() - 0.5) * 26) * S,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: -(0.45 + Math.random() * 0.75),
+    r: (26 + Math.random() * 58) * S,
+    life: 0,
+    max: 150 + Math.random() * 130,
+    seed: Math.random() * 6.28,
+  });
+
+  const step = (t) => {
+    raf = requestAnimationFrame(step);
+    if (!visible || !W) return;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+
+    const ix = INTAKE[0] * S, iy = INTAKE[1] * S;
+    while (parts.length < 80) parts.push(spawn());
+
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i];
+      p.life++;
+      const k = Math.min(1, p.life / p.max);
+
+      // rise first, then get pulled into the intake
+      const dx = ix - p.x, dy = iy - p.y;
+      const d = Math.hypot(dx, dy) || 1;
+      const pull = 0.06 * k * k;
+
+      p.vx += (dx / d) * pull + Math.sin(t * 0.0009 + p.seed) * 0.04;
+      p.vy += (dy / d) * pull * 1.3;
+      p.vx *= 0.974; p.vy *= 0.974;
+      p.x += p.vx; p.y += p.vy;
+      p.r *= 1.0055;
+
+      const a = Math.sin(Math.PI * k) * 0.26 * (1 - Math.min(1, d / (H * 0.4)) * 0.5);
+      if (a > 0.002) {
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        g.addColorStop(0, `rgba(255,255,255,${a})`);
+        g.addColorStop(0.55, `rgba(228,242,248,${a * 0.4})`);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fill();
+      }
+      if (k >= 1 || d < W * 0.035) parts[i] = spawn();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  };
+
+  const parallax = (e) => {
+    const r = hero.getBoundingClientRect();
+    hero.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+    hero.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+  };
+
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.01 })
+    .observe(hero);
+
+  const start = () => {
+    hero.classList.add('is-ready');
+    resize();
+    addEventListener('resize', resize, { passive: true });
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (matchMedia('(hover: hover)').matches) {
+        hero.addEventListener('pointermove', parallax, { passive: true });
+      }
+      raf = requestAnimationFrame(step);
+    }
+  };
+
+  if (plate.complete) {
+    plate.naturalWidth ? start() : hero.remove();
+  } else {
+    plate.addEventListener('load', start, { once: true });
+    plate.addEventListener('error', () => hero.remove(), { once: true });
+  }
+})();
