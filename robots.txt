@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zaddywebbuilds.github.io/thankheaven4711/sitemap.xml

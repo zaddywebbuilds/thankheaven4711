@@ -34,19 +34,19 @@
    "id": "entry",
    "title": "Entry & Hallway",
    "blurb": "The way in, and the light that comes down it.",
-   "count": 9
+   "count": 8
   },
   {
    "id": "view",
    "title": "The View",
    "blurb": "180 degrees of open water and the island across the channel.",
-   "count": 16
+   "count": 14
   },
   {
    "id": "sunset",
    "title": "Sunsets",
    "blurb": "Seven years of them, from the same rail.",
-   "count": 19
+   "count": 17
   },
   {
    "id": "rainbow",
@@ -64,7 +64,7 @@
    "id": "beach",
    "title": "The Beach & Reef",
    "blurb": "It starts where the lawn ends.",
-   "count": 21
+   "count": 20
   },
   {
    "id": "honu",
@@ -90,14 +90,6 @@
    "id": "local-001",
    "cat": "local",
    "label": "Front Street, a few minutes down the coast",
-   "type": "photo",
-   "w": 1024,
-   "h": 682
-  },
-  {
-   "id": "view-002",
-   "cat": "view",
-   "label": "Sailboats crossing the channel",
    "type": "photo",
    "w": 1024,
    "h": 682
@@ -271,14 +263,6 @@
    "h": 682
   },
   {
-   "id": "view-025",
-   "cat": "view",
-   "label": "The channel, wide open",
-   "type": "photo",
-   "w": 1024,
-   "h": 682
-  },
-  {
    "id": "beach-026",
    "cat": "beach",
    "label": "Low water over the reef",
@@ -311,25 +295,9 @@
    "h": 682
   },
   {
-   "id": "sunset-030",
-   "cat": "sunset",
-   "label": "Cloud and fire",
-   "type": "photo",
-   "w": 1024,
-   "h": 682
-  },
-  {
    "id": "local-032",
    "cat": "local",
    "label": "Shops along the coast road",
-   "type": "photo",
-   "w": 1024,
-   "h": 682
-  },
-  {
-   "id": "sunset-033",
-   "cat": "sunset",
-   "label": "Evening over the water",
    "type": "photo",
    "w": 1024,
    "h": 682
@@ -637,14 +605,6 @@
    "type": "photo",
    "w": 1200,
    "h": 1600
-  },
-  {
-   "id": "entry-083",
-   "cat": "entry",
-   "label": "Entry, looking through",
-   "type": "photo",
-   "w": 768,
-   "h": 1024
   },
   {
    "id": "entry-084",
@@ -1077,14 +1037,6 @@
    "type": "video",
    "w": 640,
    "h": 360
-  },
-  {
-   "id": "beach-v125",
-   "cat": "beach",
-   "label": "Palms over the reef",
-   "type": "video",
-   "w": 640,
-   "h": 1140
   },
   {
    "id": "building-v179",

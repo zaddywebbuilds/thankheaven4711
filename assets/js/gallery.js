@@ -25,6 +25,11 @@
   const byCat = (id) => data.items.filter((i) => i.cat === id);
   const live = data.categories.filter((c) => c.count > 0);
 
+  // keep any hard-coded totals in the copy honest
+  document.querySelectorAll('[data-gallery-count]').forEach((el) => {
+    el.textContent = String(data.items.length);
+  });
+
   /* ---- section nav ---- */
   tabs.innerHTML = live
     .map((c) => `<a class="gal__tab" href="#cat-${c.id}">${c.title}<b>${c.count}</b></a>`)

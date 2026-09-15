@@ -111,7 +111,7 @@ mountScrollWorld(document.getElementById('world'), {
       eyebrow: 'Seven hundred square feet',
       title: 'Small, and pointed entirely at the water.',
       body: 'A full kitchen, a real bedroom, and a living room that opens onto the lanai so the two become one room.',
-      tags: ['Full kitchen', 'One bedroom', 'A/C'],
+      tags: ['Full kitchen', 'One bedroom', 'Ceiling fans'],
     },
     {
       id: 'door',
@@ -167,4 +167,21 @@ if (honu && honuSec && !matchMedia('(prefers-reduced-motion: reduce)').matches) 
   }, { passive: true });
   addEventListener('resize', turn, { passive: true });
   turn();
+}
+
+/* ---------- sticky conversion bar ----------
+   Appears once the hero is behind you, hides again over the booking
+   section so it never covers the button it is pointing at. */
+const bar = document.getElementById('ctaBar');
+const book = document.getElementById('book');
+if (bar && book) {
+  bar.hidden = false;
+  const syncBar = () => {
+    const past = scrollY > innerHeight * 0.85;
+    const atBook = book.getBoundingClientRect().top < innerHeight * 0.9;
+    bar.classList.toggle('is-on', past && !atBook);
+  };
+  addEventListener('scroll', syncBar, { passive: true });
+  addEventListener('resize', syncBar, { passive: true });
+  syncBar();
 }

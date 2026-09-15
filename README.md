@@ -11,13 +11,15 @@ A static site. No build step, no framework, no dependencies to install.
 
 - A **scroll-scrubbed cinematic opening** — eight scenes where video scrubs frame-by-frame
   against scroll position, cross-dissolving between them.
-- Conventional content sections below it: the lanai comparison, the honu, the interior,
-  the full classified gallery, and the booking CTA.
+- Conventional content sections below it: the lanai comparison, the honu, the spec
+  list, the full classified gallery, an FAQ, and the booking CTA.
+- A sticky conversion bar that appears past the hero and hides again over the
+  booking section, so it never covers the button it points at.
 
 ### The gallery
 
 Every usable photo and clip from the owner's album, grouped by room and subject with
-its own label - 118 photos and 15 videos across 14 categories. Click anything for the
+its own label - 113 photos and 14 videos across 14 categories. Click anything for the
 lightbox; clips play in place.
 
 It is generated, not hand-written. The classification lives in `scratchpad-classify.py`
@@ -37,6 +39,21 @@ assets/gallery/         gallery media, 1600px + 640px thumbs (webp), clips (mp4)
 assets/img/             stills, posters, hero art, favicon
 assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
 ```
+
+## SEO
+
+- One `h1`, then `h2` per section and `h3` per gallery category.
+- `LodgingBusiness` + `VacationRental` + `FAQPage` JSON-LD in `index.html`. The address
+  carries region and country only - **fill in the street address** once confirmed.
+- Canonical, Open Graph and Twitter card all point at the Pages URL. Change these
+  together the day a custom domain is attached, or they will point at the wrong host.
+- `robots.txt` allows everything and names the sitemap. It must stay that way - a
+  previous project shipped a robots.txt that silently blocked every crawler.
+- `og-cover.jpg` is 1200x630, generated from the lanai shot.
+- The hero image is preloaded with `fetchpriority=high`, since it is the LCP element.
+
+Every factual claim on the page is visible in the photos. Nothing about sleeping
+capacity, parking, wifi, A/C or rates is asserted, because none of it is confirmed.
 
 ## Local preview
 
