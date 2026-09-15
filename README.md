@@ -20,7 +20,7 @@ Every usable photo and clip from the owner's album, grouped by room and subject 
 its own label - 118 photos and 15 videos across 14 categories. Click anything for the
 lightbox; clips play in place.
 
-It is generated, not hand-written. The classification lives in `scratchpad/classify.py`
+It is generated, not hand-written. The classification lives in `scratchpad-classify.py`
 (index -> category + label); the build resizes everything, encodes the clips and emits
 `assets/gallery.json`, which `assets/js/gallery.js` renders. To relabel or recategorise
 an item, edit the table and re-run the build.
