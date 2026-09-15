@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-sphere.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=8" />
+<link rel="stylesheet" href="assets/css/site.css?v=9" />
 </head>
 <body>
 <div id="top"></div>
@@ -100,26 +100,17 @@
   <!-- HONU -->
   <section class="sec sec--honu" id="honu">
     <div class="wrap wrap--split">
-      <div class="honu-stage">
-        <svg class="honu" viewBox="0 0 200 180" role="img" aria-label="Honu, the Hawaiian green sea turtle">
-          <g class="honu__body">
-            <ellipse class="honu__flip" cx="42"  cy="56"  rx="26" ry="15" transform="rotate(-38 42 56)"/>
-            <ellipse class="honu__flip" cx="158" cy="56"  rx="26" ry="15" transform="rotate(38 158 56)"/>
-            <ellipse class="honu__flip" cx="50"  cy="134" rx="20" ry="11" transform="rotate(34 50 134)"/>
-            <ellipse class="honu__flip" cx="150" cy="134" rx="20" ry="11" transform="rotate(-34 150 134)"/>
-            <ellipse class="honu__head" cx="100" cy="24" rx="14" ry="16"/>
-            <ellipse class="honu__shell" cx="100" cy="95" rx="52" ry="60"/>
-            <g class="honu__plates">
-              <path d="M100 42 L128 66 L118 104 L82 104 L72 66 Z"/>
-              <path d="M100 42 L72 66 L48 60 Q58 40 78 33 Z"/>
-              <path d="M100 42 L128 66 L152 60 Q142 40 122 33 Z"/>
-              <path d="M72 66 L82 104 L54 118 Q44 92 48 60 Z"/>
-              <path d="M128 66 L118 104 L146 118 Q156 92 152 60 Z"/>
-              <path d="M82 104 L118 104 L112 142 Q100 150 88 142 Z"/>
-            </g>
-          </g>
-        </svg>
-      </div>
+      <figure class="honu-stage">
+        <!-- The album has no turtle footage, so the two real honu stills
+             drift and cross-fade instead of a fabricated clip. -->
+        <img class="honu-shot honu-shot--a" src="assets/gallery/honu-040.webp"
+             alt="A Hawaiian green sea turtle resting on the sand, head toward the camera"
+             loading="lazy" decoding="async" />
+        <img class="honu-shot honu-shot--b" src="assets/gallery/honu-039.webp"
+             alt="A honu at the waterline with surf breaking behind it"
+             loading="lazy" decoding="async" />
+        <figcaption>Photographed on the sand below the building</figcaption>
+      </figure>
       <div>
         <p class="eyebrow">Neighbours</p>
         <h2 class="h2">The honu come ashore.</h2>
@@ -312,9 +303,9 @@
 }
 </script>
 
-<script src="assets/js/scrub-engine.js?v=8"></script>
-<script src="assets/js/site.js?v=8"></script>
-<script src="assets/js/gallery.js?v=8"></script>
-<script src="assets/js/hero.js?v=8"></script>
+<script src="assets/js/scrub-engine.js?v=9"></script>
+<script src="assets/js/site.js?v=9"></script>
+<script src="assets/js/gallery.js?v=9"></script>
+<script src="assets/js/hero.js?v=9"></script>
 </body>
 </html>

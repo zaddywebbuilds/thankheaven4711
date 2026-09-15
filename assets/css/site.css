@@ -191,9 +191,24 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
   padding-bottom:1px;transition:opacity .25s;}
 .link:hover{opacity:.7;}
 
+/* ---------- small refinements ---------- */
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+
+::selection{background:var(--teal);color:#04151a;}
+
+/* One visible focus style everywhere; the browser default disappears
+   against the dark sections. */
+:where(a,button,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;}
+
 /* ---------- type ---------- */
 .eyebrow{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--teal-deep);font-weight:600;margin:0 0 18px;}
+  color:var(--teal-deep);font-weight:600;margin:0 0 18px;
+  display:flex;align-items:center;gap:12px;}
+/* a short rule leading the label, so every section opener has a mark */
+.eyebrow::before{content:"";flex:0 0 auto;width:26px;height:1px;
+  background:currentColor;opacity:.55;}
 .h2{font-family:var(--f-display);font-weight:400;line-height:1.04;
   font-size:clamp(2.1rem,5.6vw,4.1rem);letter-spacing:-.02em;margin:0 0 24px;
   color:var(--ink);text-wrap:balance;}
@@ -222,7 +237,7 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
   gap:clamp(18px,3vw,36px);border-top:1px solid var(--sand-deep);padding-top:36px;}
 .stats li{display:flex;flex-direction:column;gap:6px;}
 .stats span{font-family:var(--f-display);font-size:clamp(2rem,4.4vw,3rem);
-  line-height:1;color:var(--teal-deep);}
+  line-height:1;color:var(--teal-deep);font-variant-numeric:tabular-nums;}
 .stats em{font-style:normal;font-size:.82rem;letter-spacing:.11em;
   text-transform:uppercase;color:var(--ink-soft);}
 
@@ -231,14 +246,33 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
 .sec--honu .h2{color:var(--sand);}
 .sec--honu .lede,.sec--honu .note{color:rgba(244,234,218,.72);}
 .sec--honu .eyebrow{color:var(--teal);}
-.honu-stage{perspective:1000px;display:grid;place-items:center;}
-.honu{width:min(100%,380px);height:auto;overflow:visible;
-  transform-style:preserve-3d;will-change:transform;
-  filter:drop-shadow(0 30px 60px rgba(0,0,0,.55));}
-.honu__shell{fill:var(--teal-deep);}
-.honu__head,.honu__flip{fill:var(--teal-deep);opacity:.92;}
-.honu__plates path{fill:none;stroke:rgba(244,234,218,.5);stroke-width:2.2;
-  stroke-linejoin:round;}
+/* The album has no turtle footage, so the two real stills drift and
+   cross-fade. Reads as motion without inventing a clip. */
+.honu-stage{position:relative;margin:0;border-radius:18px;overflow:hidden;
+  aspect-ratio:4/3;isolation:isolate;
+  box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(244,234,218,.08);}
+.honu-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  will-change:opacity,transform;backface-visibility:hidden;}
+.honu-shot--a{animation:honuFadeA 20s ease-in-out infinite,
+                        honuDrift 20s ease-in-out infinite;}
+.honu-shot--b{opacity:0;animation:honuFadeB 20s ease-in-out infinite,
+                        honuDrift 20s ease-in-out infinite reverse;}
+@keyframes honuFadeA{0%,42%{opacity:1}52%,92%{opacity:0}100%{opacity:1}}
+@keyframes honuFadeB{0%,42%{opacity:0}52%,92%{opacity:1}100%{opacity:0}}
+@keyframes honuDrift{
+  0%{transform:scale(1.05) translate3d(0,0,0);}
+  50%{transform:scale(1.13) translate3d(-1.6%,-1.2%,0);}
+  100%{transform:scale(1.05) translate3d(0,0,0);}
+}
+.honu-stage figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:42px 16px 14px;font-size:.76rem;letter-spacing:.03em;
+  color:rgba(255,255,255,.88);
+  background:linear-gradient(transparent,rgba(4,11,16,.82));}
+
+@media (prefers-reduced-motion:reduce){
+  .honu-shot{animation:none!important;}
+  .honu-shot--b{display:none;}
+}
 
 /* ---------- inside: the spec list ----------
    Replaced a three-photo grid that duplicated images now in the gallery. */
@@ -424,6 +458,7 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
 
 /* ---------- book ---------- */
 .sec--book{background:var(--sand);text-align:center;}
+.sec--book .eyebrow{justify-content:center;}
 .sec--book .lede{margin-inline:auto;}
 .cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px;}
 /* inline-flex drops whitespace-only text nodes, so a label built from
@@ -458,7 +493,6 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
 /* ---------- responsive ---------- */
 @media (max-width:880px){
   .wrap--split{grid-template-columns:1fr;}
-  .honu{width:min(72%,280px);}
   .grid--inside{grid-template-columns:1fr;}
   .card--tall{grid-row:auto;}
   .card--tall img{aspect-ratio:4/3;}

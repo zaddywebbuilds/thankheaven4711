@@ -147,28 +147,6 @@ const reveal = new IntersectionObserver(
 );
 document.querySelectorAll('.sec').forEach((s) => reveal.observe(s));
 
-/* ---------- the honu turns as you pass it ---------- */
-const honu = document.querySelector('.honu');
-const honuSec = document.getElementById('honu');
-if (honu && honuSec && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  let ticking = false;
-  const turn = () => {
-    ticking = false;
-    const r = honuSec.getBoundingClientRect();
-    const vh = innerHeight || 1;
-    // -1 (below the fold) .. 0 (centred) .. 1 (above)
-    const p = Math.max(-1, Math.min(1, (vh / 2 - (r.top + r.height / 2)) / (vh / 2 + r.height / 2)));
-    honu.style.transform =
-      `rotateX(${(18 - p * 26).toFixed(2)}deg) rotateY(${(p * 34).toFixed(2)}deg) ` +
-      `rotateZ(${(p * -6).toFixed(2)}deg) translateZ(${(Math.abs(p) * -30).toFixed(1)}px)`;
-  };
-  addEventListener('scroll', () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(turn); }
-  }, { passive: true });
-  addEventListener('resize', turn, { passive: true });
-  turn();
-}
-
 /* ---------- sticky conversion bar ----------
    Appears once the hero is behind you, hides again over the booking
    section so it never covers the button it is pointing at. */

@@ -102,6 +102,10 @@ Empty strings render nothing, so the page is safe to publish before these are fi
 - **Landscape photography.** The source album is 141 portrait vs 82 landscape. A website
   wants wide. Priority reshoots: the full 35-foot lanai, the view morning and sunset,
   and the living room with daylight — all held sideways.
+- **There is no honu footage.** The album's 123 clips reduce to 14 distinct ones
+  (checked twice, on a first-second frame and again on a mid-duration frame) and none
+  contain a turtle. The honu section uses the two real stills, drifting and cross-fading.
+  A real clip would be a straight upgrade if she ever shoots one.
 - **The rainbow scene is still-only.** The one rainbow clip is shot portrait and loses the
   rainbow when cropped to a landscape stage. A landscape reshoot would earn it a clip.
 - **AI mockup is not used.** The turtle-on-the-wall image the owner generated is a
