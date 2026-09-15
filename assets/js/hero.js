@@ -30,18 +30,25 @@
   const pinLayer = hero.querySelector('.hero__pins');
   const canvas = hero.querySelector('.hero__vapour');
 
-  /* Pins sit in the defocused band where the original labels were,
-     so they cover what is left of them. `to` lands on the sphere. */
+  /* Pins sit in the defocused band where the original labels were, so they
+     cover what is left of them. `to` lands on the sphere.
+
+     One image per category, so the eight circles preview eight different
+     things rather than eight variations on open water. They read straight
+     from the gallery thumbs, so nothing is duplicated on disk and they stay
+     in step with the gallery. Positions 4 and 8 are the pair hidden on short
+     screens, so the least essential subjects sit there. */
   const PINS = [
-    { x: 124, y: 405, to: [243, 452], img: 'reef-palms' },
-    { x: 82,  y: 536, to: [212, 520], img: 'sunset-burst' },
-    { x: 104, y: 680, to: [232, 604], img: 'honu-close' },
-    { x: 196, y: 786, to: [300, 668], img: 'rainbow-ocean' },
-    { x: 612, y: 405, to: [497, 452], img: 'molokai-wide' },
-    { x: 654, y: 536, to: [528, 520], img: 'beach-wide' },
-    { x: 632, y: 680, to: [508, 604], img: 'lanai-chairs' },
-    { x: 540, y: 786, to: [440, 668], img: 'ocean-pano' },
+    { x: 124, y: 405, to: [243, 452], img: 'lanai-013',   alt: 'The 35-foot lanai' },
+    { x: 82,  y: 536, to: [212, 520], img: 'living-072',  alt: 'The living room' },
+    { x: 104, y: 680, to: [232, 604], img: 'bedroom-005', alt: 'The bedroom' },
+    { x: 196, y: 786, to: [300, 668], img: 'kitchen-118', alt: 'The kitchen' },
+    { x: 612, y: 405, to: [497, 452], img: 'view-018',    alt: 'The view across the channel' },
+    { x: 654, y: 536, to: [528, 520], img: 'sunset-067',  alt: 'Sunset through the palms' },
+    { x: 632, y: 680, to: [508, 604], img: 'honu-039',    alt: 'A honu on the sand' },
+    { x: 540, y: 786, to: [440, 668], img: 'beach-024',   alt: 'The reef off the lawn' },
   ];
+
 
   const NS = 'http://www.w3.org/2000/svg';
 
@@ -51,7 +58,8 @@
     fig.style.cssText = `left:${(p.x / AW) * 100}%;top:${(p.y / AH) * 100}%;--i:${i}`;
     // the lowest pair collides with the headline on short screens
     if (p.y > 700) fig.dataset.low = '1';
-    fig.innerHTML = `<img src="assets/img/${p.img}.jpg" alt="" loading="lazy" decoding="async">`;
+    fig.innerHTML =
+      `<img src="assets/gallery/${p.img}-t.webp" alt="${p.alt}" decoding="async">`;
     pinLayer.appendChild(fig);
 
     // connector, curved toward the sphere

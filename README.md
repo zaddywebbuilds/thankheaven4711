@@ -35,10 +35,25 @@ assets/js/scrub-engine.js   the scroll-scrub engine (vendored, don't edit)
 assets/js/gallery.js    renders the classified gallery from gallery.json
 assets/js/hero.js       sphere hero: callout pins + procedural vapour
 assets/gallery.json     generated manifest: every item, its category and label
-assets/gallery/         gallery media, 1600px + 640px thumbs (webp), clips (mp4)
+assets/gallery/         gallery media, up to 2048px + 800px thumbs (webp), clips (mp4)
 assets/img/             stills, posters, hero art, favicon
 assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
 ```
+
+## Image quality
+
+Nothing is ever upscaled - every size is `min(target, source)`, so a 1024px
+original ships at 1024px rather than being stretched. Gallery images go to
+2048px at q86 and thumbs to 800px at q80; 56 of the 113 photos have sources
+larger than the old 1600px cap and now use it.
+
+Two blur sources were fixed: the scene posters were 1600x900 generated from
+1440x810 video (an 11% upscale), and the lightbox used to letterbox small
+images up to the viewport. The lightbox now sizes from the manifest's own
+dimensions and never renders past an image's natural size.
+
+55 of the photos have sources at or below 1200px - those came in compressed
+and cannot be improved without re-shoots.
 
 ## SEO
 

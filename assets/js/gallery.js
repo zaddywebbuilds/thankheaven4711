@@ -69,15 +69,31 @@
 
   const show = () => {
     const it = list[at];
+    // Reserve the box from the manifest's own dimensions so nothing jumps,
+    // and paint the already-cached thumb underneath so there is never a
+    // blank frame while the full-size file arrives.
+    const ratio = it.w && it.h ? `${it.w}/${it.h}` : '3/2';
     lbMedia.innerHTML =
       it.type === 'video'
-        ? `<video src="${BASE}${it.id}.mp4" poster="${BASE}${it.id}-t.webp"
-                  controls autoplay loop muted playsinline></video>`
-        : `<img src="${BASE}${it.id}.webp" alt="${it.label}">`;
-    lbCap.textContent = `${it.label}  ·  ${at + 1} / ${list.length}`;
+        ? `<div class="lb__media" style="aspect-ratio:${ratio}">
+             <video src="${BASE}${it.id}.mp4" poster="${BASE}${it.id}-t.webp"
+                    controls autoplay loop muted playsinline></video>
+           </div>`
+        : `<div class="lb__media" style="aspect-ratio:${ratio}">
+             <img class="lb__pre" src="${BASE}${it.id}-t.webp" alt="" aria-hidden="true">
+             <img class="lb__full" src="${BASE}${it.id}.webp" alt="${it.label}" decoding="async">
+           </div>`;
+    const full = lbMedia.querySelector('.lb__full');
+    const pre = lbMedia.querySelector('.lb__pre');
+    if (full && pre) {
+      const done = () => pre.classList.add('is-off');
+      full.complete ? done() : full.addEventListener('load', done, { once: true });
+    }
+    lbCap.innerHTML =
+      `<b>${it.label}</b><span>${at + 1} / ${list.length}</span>`;
   };
 
-  const open = (cat, n) => {
+  const openAt = (cat, n) => {
     list = byCat(cat); at = n; lastFocus = document.activeElement;
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -96,12 +112,12 @@
 
   gal.addEventListener('click', (e) => {
     const card = e.target.closest('.gcard');
-    if (card) open(card.dataset.cat, +card.dataset.n);
+    if (card) openAt(card.dataset.cat, +card.dataset.n);
   });
   gal.addEventListener('keydown', (e) => {
     const card = e.target.closest('.gcard');
     if (card && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault(); open(card.dataset.cat, +card.dataset.n);
+      e.preventDefault(); openAt(card.dataset.cat, +card.dataset.n);
     }
   });
 
@@ -115,6 +131,21 @@
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'ArrowRight') step(1);
   });
+
+  /* ---- swipe on touch ---- */
+  let sx = 0, sy = 0, tracking = false;
+  lb.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; tracking = true;
+  }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.6) step(dx < 0 ? 1 : -1);
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.6) close();
+  }, { passive: true });
 
   /* ---- highlight the section you are in ---- */
   const links = [...tabs.querySelectorAll('.gal__tab')];

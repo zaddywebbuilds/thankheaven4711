@@ -311,27 +311,63 @@ body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .
 
 /* lightbox */
 .lb{position:fixed;inset:0;z-index:200;display:grid;place-items:center;
-  background:rgba(4,10,14,.94);backdrop-filter:blur(6px);padding:clamp(12px,4vw,48px);}
+  background:rgba(4,10,14,.95);backdrop-filter:blur(8px);
+  padding:calc(env(safe-area-inset-top,0px) + clamp(56px,7vh,72px))
+          calc(env(safe-area-inset-right,0px) + clamp(10px,4vw,48px))
+          calc(env(safe-area-inset-bottom,0px) + clamp(56px,8vh,72px))
+          calc(env(safe-area-inset-left,0px) + clamp(10px,4vw,48px));
+  overscroll-behavior:contain;touch-action:pan-y;}
 .lb[hidden]{display:none;}
-.lb__stage{margin:0;max-width:min(1400px,100%);max-height:100%;
-  display:flex;flex-direction:column;gap:14px;align-items:center;}
-.lb__stage img,.lb__stage video{max-width:100%;max-height:78vh;
-  border-radius:8px;object-fit:contain;background:#000;}
-.lb__stage figcaption{color:rgba(244,234,218,.8);font-size:.86rem;text-align:center;}
-.lb__x,.lb__nav{position:absolute;z-index:2;background:rgba(244,234,218,.1);
-  color:var(--sand);border:1px solid rgba(244,234,218,.22);cursor:pointer;
-  border-radius:50%;display:grid;place-items:center;transition:background .25s;}
-.lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.24);}
-.lb__x{top:18px;right:18px;width:42px;height:42px;font-size:1.5rem;line-height:1;}
-.lb__nav{top:50%;translate:0 -50%;width:48px;height:48px;font-size:1.9rem;line-height:1;}
-.lb__nav--prev{left:14px;} .lb__nav--next{right:14px;}
-@media (max-width:640px){
-  .gcat__grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));}
-  .gcard figcaption{opacity:1;transform:none;font-size:.7rem;}
-  /* keep the lightbox controls at a comfortable thumb size */
-  .lb__nav{width:44px;height:44px;font-size:1.6rem;}
-  .lb__x{width:44px;height:44px;top:12px;right:12px;}
-  .lb__stage img,.lb__stage video{max-height:70vh;}
+.lb__stage{margin:0;width:100%;height:100%;min-height:0;
+  display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;}
+
+/* The box is sized from the manifest before anything loads, so the
+   dialog never jumps as images arrive. */
+.lb__media{position:relative;min-height:0;max-width:100%;max-height:100%;
+  display:flex;align-items:center;justify-content:center;border-radius:8px;
+  overflow:hidden;background:#040a0e;}
+.lb__media img,.lb__media video{display:block;width:100%;height:100%;
+  object-fit:contain;background:#040a0e;}
+/* The blur placeholder sits UNDER the real photo and fades out once it
+   loads. Fading the photo IN instead would mean a JS or CSS failure
+   leaves a blank frame; this way the picture is always visible. */
+.lb__pre{position:absolute;inset:0;filter:blur(14px);transform:scale(1.06);
+  transition:opacity .4s ease;}
+.lb__pre.is-off{opacity:0;}
+.lb__full{position:relative;}
+
+.lb__stage figcaption{flex:0 0 auto;display:flex;align-items:baseline;gap:10px;
+  flex-wrap:wrap;justify-content:center;text-align:center;
+  color:rgba(244,234,218,.82);font-size:.86rem;}
+.lb__stage figcaption b{font-weight:500;}
+.lb__stage figcaption span{color:rgba(244,234,218,.5);font-size:.78rem;
+  font-variant-numeric:tabular-nums;}
+
+.lb__x,.lb__nav{position:absolute;z-index:2;background:rgba(244,234,218,.12);
+  color:var(--sand);border:1px solid rgba(244,234,218,.24);cursor:pointer;
+  border-radius:50%;display:grid;place-items:center;line-height:1;
+  transition:background .25s,transform .25s;-webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);}
+.lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.26);}
+.lb__x:active,.lb__nav:active{transform:scale(.93);}
+.lb__x{top:calc(env(safe-area-inset-top,0px) + 12px);
+  right:calc(env(safe-area-inset-right,0px) + 12px);
+  width:46px;height:46px;font-size:1.6rem;}
+.lb__nav{top:50%;translate:0 -50%;width:48px;height:48px;font-size:1.9rem;}
+.lb__nav--prev{left:calc(env(safe-area-inset-left,0px) + 10px);}
+.lb__nav--next{right:calc(env(safe-area-inset-right,0px) + 10px);}
+
+@media (max-width:700px){
+  /* Side arrows would sit on top of the picture on a phone, so drop them
+     to the bottom bar; swipe is the primary gesture there anyway. */
+  .lb__nav{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);
+    translate:none;width:44px;height:44px;font-size:1.5rem;}
+  .lb__nav--prev{left:calc(env(safe-area-inset-left,0px) + 16px);}
+  .lb__nav--next{right:calc(env(safe-area-inset-right,0px) + 16px);}
+  .lb__stage figcaption{max-width:58%;}
+}
+@media (hover:none){
+  .lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.12);}
 }
 
 /* ---------- mobile polish ---------- */
