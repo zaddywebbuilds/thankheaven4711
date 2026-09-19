@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Oceanfront Maui Condo with a 35-Foot Private Lanai | Unit 711</title>
-<meta name="description" content="A one-bedroom oceanfront condo on Maui with a 35-foot private lanai, 180 degrees of open water, and reef snorkelling off the lawn. See every room." />
+<title>Oceanfront Maui Condo Facing Molokai and Lanai | Unit 711</title>
+<meta name="description" content="An oceanfront one-bedroom on Maui's west shore. Thirty-five feet of private lanai, open water to Molokai and Lanai, and the reef where the lawn ends." />
 <link rel="canonical" href="https://zaddywebbuilds.github.io/thankheaven4711/" />
 <meta name="robots" content="index,follow,max-image-preview:large" />
 
 <meta property="og:site_name" content="O Thank Heaven 4 711" />
-<meta property="og:title" content="Oceanfront Maui Condo with a 35-Foot Private Lanai" />
-<meta property="og:description" content="Most oceanfront condos give you twelve feet. This one runs thirty-five, with no resort next door to fill the view or the quiet." />
+<meta property="og:title" content="Wake to the water. Oceanfront Maui, unit 711." />
+<meta property="og:description" content="Thirty-five feet of private lanai facing Molokai and Lanai, with no resort next door to fill the view or the quiet." />
 <meta property="og:image" content="https://zaddywebbuilds.github.io/thankheaven4711/assets/img/og-cover.jpg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -19,24 +19,21 @@
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="en_US" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Oceanfront Maui Condo with a 35-Foot Private Lanai" />
-<meta name="twitter:description" content="A one-bedroom at Maui Sands Seaside. 180 degrees of open water, and the reef starts where the lawn ends." />
+<meta name="twitter:title" content="Wake to the water. Oceanfront Maui, unit 711." />
+<meta name="twitter:description" content="A one-bedroom at Maui Sands Seaside. Open water to Molokai and Lanai, and the reef starts where the lawn ends." />
 <meta name="twitter:image" content="https://zaddywebbuilds.github.io/thankheaven4711/assets/img/og-cover.jpg" />
 
 <meta name="theme-color" content="#06131A" />
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preload" as="image" href="assets/img/hero-sphere.jpg" fetchpriority="high" />
+<link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=15" />
+<link rel="stylesheet" href="assets/css/site.css?v=22" />
 <script>
-  /* Two reveal systems, and only ever one of them running:
-       - Browsers with scroll-driven animations do it in CSS, on the
-         compositor, with no JS at all.
-       - Everyone else falls back to the IntersectionObserver reveal,
-         enabled by this class.
-     With neither, the page simply renders fully visible. */
+  /* Two reveal systems, and only ever one running. Without either class
+     the page renders fully visible, so nothing can hide behind a
+     stalled animation. */
   (function () {
     var css = window.CSS && CSS.supports && CSS.supports('animation-timeline: view()');
     var motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -48,43 +45,68 @@
 </script>
 </head>
 <body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top">O thank Heaven <span>4</span> 711</a>
+  <nav class="nav__links" aria-label="Sections">
+    <a href="#morning">Morning</a>
+    <a href="#lanai">The Lanai</a>
+    <a href="#water">The Water</a>
+    <a href="#evening">Evening</a>
+    <a href="#inside">Inside</a>
+    <a href="#gallery">Photos</a>
+  </nav>
+  <a class="btn btn--primary nav__cta" href="#book">Check availability</a>
+  <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="nav"
+          aria-label="Menu"><span></span><span></span></button>
+</header>
+
 <div id="top"></div>
 
-<!-- ============ SPHERE HERO ============
-     Removes itself if assets/img/hero-sphere.jpg is absent, so the page
-     falls back cleanly to the cinematic opening below. -->
-<header class="hero">
-  <!-- blurred wings, so a portrait render fills a landscape screen -->
-  <div class="hero__wings" aria-hidden="true"></div>
-  <!-- frame matches the art's aspect ratio; everything inside is in image space -->
-  <div class="hero__frame">
-    <img class="hero__plate" src="assets/img/hero-sphere.jpg" alt="" decoding="async" />
-    <canvas class="hero__vapour" aria-hidden="true"></canvas>
-    <svg class="hero__lines" aria-hidden="true" viewBox="0 0 736 1308" preserveAspectRatio="none"></svg>
-    <div class="hero__pins" aria-hidden="true"></div>
-  </div>
-
-  <div class="hero__copy">
-    <p class="hero__kicker">Maui Sands Seaside &middot; Unit 711</p>
-    <h1 class="hero__h1">Oceanfront Maui, with thirty-five feet of lanai.</h1>
-    <p class="hero__sub">A one-bedroom on the water&rsquo;s edge. 180&deg; of open channel,
-      the reef where the lawn ends, and no resort next door.</p>
-    <div class="hero__cta">
+<!-- ============ VIDEO HERO ============ -->
+<section class="vhero">
+  <video class="vhero__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
+         muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+  <div class="vhero__veil" aria-hidden="true"></div>
+  <div class="vhero__copy">
+    <p class="vhero__kicker">Maui Sands Seaside &middot; Unit 711</p>
+    <h1 class="vhero__h1">Wake to the sound of the water.</h1>
+    <p class="vhero__sub">An oceanfront one-bedroom on Maui&rsquo;s west shore, with
+      thirty-five feet of private lanai facing Molokai and Lanai.</p>
+    <div class="vhero__cta">
       <a class="btn btn--primary" href="#book">Check availability</a>
       <a class="btn btn--ghost" href="#gallery">See all <span data-gallery-count>127</span> photos</a>
     </div>
   </div>
+  <a class="vhero__cue" href="#morning" aria-label="Scroll to content"><span>Scroll</span><i></i></a>
+</section>
 
-  <div class="hero__cue"><span>Scroll</span><i></i></div>
-</header>
+<main class="site" id="main">
 
-<!-- ============ CINEMATIC SCROLL WORLD ============ -->
-<div id="world"></div>
+  <!-- ============ MORNING ============ -->
+  <section class="sec sec--morning" id="morning">
+    <div class="wrap wrap--split">
+      <div>
+        <p class="eyebrow">The morning</p>
+        <h2 class="h2">Tea in the kitchen, and the whole channel in front of you.</h2>
+        <p class="lede">You wake to the sound of the waves and the resident lovebirds.
+          You put the kettle on, and the window gives you the whole panorama &mdash;
+          turquoise going to marine blue, and the islands of Molokai and Lanai sitting
+          out on the horizon.</p>
+        <p class="note">Then you carry the cup out onto the lanai, and the trade winds
+          arrive with the smell of salt on them.</p>
+      </div>
+      <figure class="shot">
+        <img src="assets/gallery/view-018.webp" alt="Open water from unit 711, looking across the channel to the islands" loading="lazy" decoding="async" />
+        <figcaption>The view from the rail, most mornings</figcaption>
+      </figure>
+    </div>
+  </section>
 
-<!-- ============ SITE CONTENT ============ -->
-<main class="site" id="site">
-
-  <!-- THE LANAI -->
+  <!-- ============ THE LANAI ============ -->
   <section class="sec sec--lanai" id="lanai">
     <div class="wrap">
       <p class="eyebrow">The reason people rebook</p>
@@ -110,12 +132,17 @@
         <li><span>1</span><em>bedroom</em></li>
         <li><span>0</span><em>resorts next door</em></li>
       </ul>
+
+      <figure class="band">
+        <img src="assets/gallery/lanai-013.webp" alt="The lanai running the full length of the unit, planters along the rail" loading="lazy" decoding="async" />
+        <figcaption>The lanai runs the full length of the unit</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- HONU -->
-  <section class="sec sec--honu" id="honu">
-    <div class="wrap wrap--split">
+  <!-- ============ THE WATER ============ -->
+  <section class="sec sec--water" id="water">
+    <div class="wrap wrap--split wrap--flip">
       <figure class="honu-stage">
         <!-- The album has no turtle footage, so the two real honu stills
              drift and cross-fade instead of a fabricated clip. -->
@@ -128,18 +155,39 @@
         <figcaption>Photographed on the sand below the building</figcaption>
       </figure>
       <div>
-        <p class="eyebrow">Neighbours</p>
-        <h2 class="h2">The honu come ashore.</h2>
-        <p class="lede">Hawaiian green sea turtles haul out on the sand below the building
-          to bask. They are wild and federally protected &mdash; the rule is simple, watch
-          from ten feet back and let them be.</p>
-        <p class="note">The reef begins where the lawn ends, so the snorkelling starts
-          without a drive, a boat, or a booking.</p>
+        <p class="eyebrow">The water</p>
+        <h2 class="h2">The reef starts where the lawn ends.</h2>
+        <p class="lede">No road to cross and no drive. Snorkelling is a decision you make
+          ten minutes beforehand, and the honu are around the reef most days.</p>
+        <p class="note">Hawaiian green sea turtles haul out on the sand below the building
+          to bask. They are wild and federally protected &mdash; watch from about ten feet
+          back and let them be.</p>
       </div>
     </div>
   </section>
 
-  <!-- INSIDE -->
+  <!-- ============ EVENING ============ -->
+  <section class="sec sec--evening" id="evening">
+    <div class="wrap">
+      <p class="eyebrow">The evening</p>
+      <h2 class="h2">Then the sun goes down across the channel.</h2>
+      <p class="lede">No resort tower in the way, and nobody asking you to move along.
+        Seven years of sunsets, all from the same rail &mdash; and after dark the moon
+        puts a path straight out across the water.</p>
+      <div class="duo">
+        <figure class="shot">
+          <img src="assets/gallery/sunset-067.webp" alt="The sun breaking through the palms at the end of the day" loading="lazy" decoding="async" />
+          <figcaption>Sunset through the palms</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/gallery/moon-092.webp" alt="Moonlight laying a path across the water" loading="lazy" decoding="async" />
+          <figcaption>The moon on the water</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSIDE ============ -->
   <section class="sec sec--inside" id="inside">
     <div class="wrap">
       <p class="eyebrow">Inside</p>
@@ -160,12 +208,12 @@
         <div><dt>Throughout</dt><dd>Ceiling fans, and the trade wind that comes
           straight off the water.</dd></div>
       </dl>
-      <p class="note"><a class="link" href="#gallery">See all <span data-gallery-count>127</span> photos and clips,
-        room by room &rarr;</a></p>
+      <p class="note"><a class="link" href="#gallery">See all
+        <span data-gallery-count>127</span> photos and clips, room by room &rarr;</a></p>
     </div>
   </section>
 
-  <!-- GALLERY -->
+  <!-- ============ GALLERY ============ -->
   <section class="sec sec--gallery" id="gallery">
     <div class="wrap">
       <p class="eyebrow">The whole place</p>
@@ -177,7 +225,7 @@
     <div class="gal" id="gal"></div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ============ FAQ ============ -->
   <section class="sec sec--faq" id="faq">
     <div class="wrap">
       <p class="eyebrow">Before you ask</p>
@@ -209,7 +257,7 @@
         </details>
         <details class="faq__q">
           <summary>What is the view actually of?</summary>
-          <p>Open channel with the island across it, sailboats and outrigger canoes
+          <p>Open channel with Molokai and Lanai across it, sailboats and outrigger canoes
             through the day, and the sun going down over the water every evening. In
             winter the humpbacks pass through this channel.</p>
         </details>
@@ -223,7 +271,7 @@
     </div>
   </section>
 
-  <!-- BOOK -->
+  <!-- ============ BOOK ============ -->
   <section class="sec sec--book" id="book">
     <div class="wrap wrap--narrow">
       <p class="eyebrow">Availability</p>
@@ -250,12 +298,11 @@
 
 <!-- LIGHTBOX -->
 <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
-  <button class="lb__x"   id="lbX"    aria-label="Close">&times;</button>
-  <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">&#8249;</button>
-  <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">&#8250;</button>
-  <figure class="lb__stage"><div id="lbMedia"></div><figcaption id="lbCap"></figcaption></figure>
+<button class="lb__x"   id="lbX"    aria-label="Close">&times;</button>
+<button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous">&#8249;</button>
+<button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next">&#8250;</button>
+<figure class="lb__stage"><div id="lbMedia"></div><figcaption id="lbCap"></figcaption></figure>
 </div>
-
 
 <!-- sticky conversion bar, revealed once past the hero -->
 <div class="cta-bar" id="ctaBar" hidden>
@@ -271,7 +318,7 @@
       "@type": ["LodgingBusiness", "VacationRental"],
       "@id": "https://zaddywebbuilds.github.io/thankheaven4711/#lodging",
       "name": "O Thank Heaven 4 711",
-      "description": "A one-bedroom oceanfront condo at Maui Sands Seaside with a 35-foot private lanai, 180 degrees of open water, and reef snorkelling directly off the lawn.",
+      "description": "A one-bedroom oceanfront condo at Maui Sands Seaside with a 35-foot private lanai, open water to Molokai and Lanai, and reef snorkelling directly off the lawn.",
       "url": "https://zaddywebbuilds.github.io/thankheaven4711/",
       "image": [
         "https://zaddywebbuilds.github.io/thankheaven4711/assets/img/og-cover.jpg",
@@ -312,16 +359,14 @@
         { "@type": "Question", "name": "Is it big enough for us?",
           "acceptedAnswer": { "@type": "Answer", "text": "It is a one-bedroom of about 700 square feet, plus the 35-foot lanai, which is the space most guests use the most." } },
         { "@type": "Question", "name": "What is the view actually of?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Open channel with the island across it, sailboats and outrigger canoes through the day, sunset over the water every evening, and humpback whales passing through in winter." } }
+          "acceptedAnswer": { "@type": "Answer", "text": "Open channel with Molokai and Lanai across it, sailboats and outrigger canoes through the day, sunset over the water every evening, and humpback whales passing through in winter." } }
       ]
     }
   ]
 }
 </script>
 
-<script src="assets/js/scrub-engine.js?v=15"></script>
-<script src="assets/js/site.js?v=15"></script>
-<script src="assets/js/gallery.js?v=15"></script>
-<script src="assets/js/hero.js?v=15"></script>
+<script src="assets/js/site.js?v=22"></script>
+<script src="assets/js/gallery.js?v=22"></script>
 </body>
 </html>

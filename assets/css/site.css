@@ -1,255 +1,212 @@
 /* ============================================================
-   O Thank Heaven 4 711 - site styles
-   The scroll-world engine injects its own CSS for the cinematic
-   opening; everything here styles the content that follows it.
+   O Thank Heaven 4 711
    ============================================================ */
 
 :root{
   --ocean-900:#06131A;
   --ocean-800:#0B2028;
   --sand:#F4EADA;
-  --sand-deep:#E4D4BC;
-  --ink:#10222A;
-  --ink-soft:#4A6069;
+  --sand-deep:#E7D9C2;
+  --ink:#0E1F26;
+  /* Body copy was #4A6069 — technically AA at 5.56:1, but grey on cream
+     reads washed out. This lands near 9:1 and is what "grayed-out text"
+     was about. */
+  --ink-soft:#2F4650;
+  --ink-mute:#4A5F69;      /* metadata; still AA, and the STR line lives here */
   --teal:#2FB5AB;
-  --teal-deep:#1B7F7A;
-  --coral:#FF7A4D;
+  --teal-deep:#14625E;       /* darkened: eyebrows are 11.8px, so need 4.5 */
   --gold:#F2B544;
-
-  --sw-bg:#06131A;
-  --sw-ink:#F4EADA;
-  --sw-ink-soft:rgba(244,234,218,.72);
-  --sw-accent:#2FB5AB;
 
   --f-display:"Fraunces",Georgia,"Times New Roman",serif;
   --f-sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
   --gut:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --nav-h:64px;
 }
-
-/* The engine defines its palette on .sw-root, which outranks :root.
-   These need one extra level of specificity to actually win. */
-body .sw-root{
-  --sw-bg:#06131A;
-  --sw-ink:#F4EADA;
-  --sw-ink-soft:rgba(244,234,218,.74);
-  --sw-accent:#2FB5AB;
-  --sw-font-display:"Fraunces",Georgia,serif;
-  --sw-font-body:"Inter",system-ui,sans-serif;
-}
-/* Both of these hardcode white-on-ink, which inverts under a dark theme. */
-body .sw-btn--primary,
-body .sw-topcta{color:#06131A;background:var(--sw-ink);}
-body .sw-copy__title{font-weight:400;letter-spacing:-.02em;}
 
 *,*::before,*::after{box-sizing:border-box;}
+
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 12px);}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
 
 body{margin:0;font-family:var(--f-sans);color:var(--ink);background:var(--ocean-900);
   -webkit-font-smoothing:antialiased;}
 
 img{max-width:100%;display:block;}
 
-/* The engine's fixed chrome must not float over the written content. */
-body.past-world .sw-topbar,
-body.past-world .sw-route,
-body.past-world .sw-hint,
-body.past-world .sw-scrollbar{opacity:0;pointer-events:none;transition:opacity .4s ease;}
+::selection{background:var(--teal);color:#04151a;}
 
-/* ---------- sphere hero ----------
-   Sits above the engine's fixed stage, which starts at z-index 10. */
-.hero{position:relative;z-index:48;height:100svh;min-height:520px;overflow:hidden;
-  background:var(--ocean-900);isolation:isolate;--px:0;--py:0;
-  display:grid;place-items:center;}
-.hero__wings{position:absolute;inset:0;
-  background:url("../img/hero-sphere.jpg") center/cover no-repeat;
-  filter:blur(46px) brightness(.42) saturate(.8);transform:scale(1.18);}
-/* inline-size (not size) so the container query still resolves when the
-   frame is height:auto on phones. */
-.hero__frame{position:relative;height:100%;aspect-ratio:736/1308;max-width:100%;
-  container-type:inline-size;
-  transform:translate3d(calc(var(--px)*-13px),calc(var(--py)*-13px),0);
-  transition:transform .5s cubic-bezier(.22,1,.36,1);}
-.hero__plate{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
-.hero__vapour,.hero__lines,.hero__pins{position:absolute;inset:0;pointer-events:none;}
-.hero__vapour{z-index:2;mix-blend-mode:screen;}
-.hero__lines{z-index:3;width:100%;height:100%;}
-.hero__line{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.4;
-  vector-effect:non-scaling-stroke;stroke-dasharray:4 5;
-  opacity:0;transition:opacity 1s ease;
-  transition-delay:calc(var(--i)*90ms + .35s);}
-.hero.is-ready .hero__line{opacity:1;}
-.hero__pins{z-index:4;}
+:where(a,button,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;}
 
-/* Sized against the art frame, not the viewport, so the callouts keep
-   their proportion to the sphere at every screen size. */
-.hero__pin{position:absolute;margin:0;width:clamp(40px,8vw,76px);aspect-ratio:1;
-  translate:-50% -50%;border-radius:50%;overflow:hidden;
-  border:1px solid rgba(255,255,255,.34);
-  box-shadow:0 10px 34px rgba(0,0,0,.42),inset 0 0 0 3px rgba(255,255,255,.08);
-  backdrop-filter:blur(2px);
-  opacity:0;transform:scale(.82);
-  transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
-  transition-delay:calc(var(--i)*90ms + .25s);}
-.hero.is-ready .hero__pin{opacity:1;transform:scale(1);
-  animation:pinFloat 7s ease-in-out infinite;
-  animation-delay:calc(var(--i)*-1.1s);}
-.hero__pin img{width:100%;height:100%;object-fit:cover;}
+.skip{position:absolute;left:-9999px;top:0;z-index:300;padding:12px 18px;
+  background:var(--ink);color:var(--sand);text-decoration:none;border-radius:0 0 8px 0;}
+.skip:focus{left:0;}
 
-@keyframes pinFloat{
-  0%,100%{translate:-50% -50%;}
-  50%{translate:-50% calc(-50% - 11px);}
+/* ---------- navigation ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;min-height:var(--nav-h);
+  display:flex;align-items:center;gap:clamp(12px,3vw,34px);
+  padding:0 var(--gut);
+  transition:background .35s ease,backdrop-filter .35s ease,box-shadow .35s ease;}
+.nav.is-stuck{background:color-mix(in srgb,var(--ocean-900) 92%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  box-shadow:0 1px 0 rgba(244,234,218,.12);}
+.nav__brand{font-family:var(--f-display);font-size:1.02rem;color:#fff;
+  text-decoration:none;white-space:nowrap;margin-right:auto;
+  text-shadow:0 1px 10px rgba(4,11,16,.6);}
+.nav__brand span{color:var(--gold);}
+.nav__links{display:flex;gap:clamp(10px,1.8vw,26px);}
+.nav__links a{position:relative;color:rgba(255,255,255,.84);text-decoration:none;
+  font-size:.86rem;padding:8px 2px;white-space:nowrap;
+  text-shadow:0 1px 10px rgba(4,11,16,.6);transition:color .25s;}
+.nav__links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s var(--ease);}
+.nav__links a:hover{color:#fff;}
+.nav__links a:hover::after,.nav__links a.is-on::after{transform:scaleX(1);}
+.nav__links a.is-on{color:#fff;}
+.nav__cta{padding:10px 18px;font-size:.82rem;}
+.nav__toggle{display:none;width:44px;height:44px;border:0;background:none;cursor:pointer;
+  flex-direction:column;justify-content:center;gap:5px;align-items:center;}
+.nav__toggle span{display:block;width:21px;height:1.5px;background:#fff;
+  transition:transform .3s var(--ease),opacity .3s;}
+.nav.is-open .nav__toggle span:first-child{transform:translateY(3.25px) rotate(45deg);}
+.nav.is-open .nav__toggle span:last-child{transform:translateY(-3.25px) rotate(-45deg);}
+
+@media (max-width:900px){
+  .nav__cta{display:none;}
+  .nav__toggle{display:flex;}
+  .nav__links{position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;
+    padding:6px var(--gut) 18px;
+    background:color-mix(in srgb,var(--ocean-900) 97%,transparent);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid rgba(244,234,218,.12);
+    clip-path:inset(0 0 100% 0);opacity:0;pointer-events:none;
+    transition:clip-path .38s var(--ease),opacity .3s ease;}
+  .nav.is-open .nav__links{clip-path:inset(0 0 0 0);opacity:1;pointer-events:auto;}
+  .nav__links a{padding:14px 0;font-size:1rem;
+    border-bottom:1px solid rgba(244,234,218,.08);}
+  .nav__links a::after{display:none;}
 }
 
-/* hero copy — the page's only h1, and the first conversion point */
-.hero__copy{position:absolute;left:0;right:0;bottom:0;z-index:6;
-  padding:clamp(80px,14vh,190px) var(--gut) clamp(26px,4vh,54px);
-  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
-  background:linear-gradient(transparent,rgba(4,11,16,.62) 42%,rgba(4,11,16,.92));}
-/* The scrim is transparent at its top edge, and the art behind it is
-   bright there (plinth + vapour), so the copy carries its own shadow. */
-.hero__kicker,.hero__h1,.hero__sub{text-shadow:0 1px 14px rgba(4,11,16,.78),
-  0 0 3px rgba(4,11,16,.5);}
-.hero__kicker{margin:0;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
-  color:#5FE0D4;font-weight:600;}
-.hero__h1{margin:0;font-family:var(--f-display);font-weight:400;
-  font-size:clamp(1.9rem,4.6vw,3.7rem);line-height:1.03;letter-spacing:-.02em;
-  color:#fff;text-wrap:balance;max-width:20ch;}
-.hero__sub{margin:0;max-width:46ch;font-size:clamp(.95rem,1.5vw,1.1rem);
-  line-height:1.55;color:rgba(255,255,255,.82);}
-.hero__cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
-.hero__cta .btn{border-color:rgba(255,255,255,.5);color:#fff;}
-.hero__cta .btn--primary{background:var(--teal);border-color:var(--teal);color:#04151a;}
-.hero__cta .btn--primary:hover{background:#3ccfc3;border-color:#3ccfc3;}
-.hero__cta .btn--ghost:hover{background:rgba(255,255,255,.14);}
-
-.hero__cue{position:absolute;right:clamp(14px,3vw,30px);bottom:22px;z-index:7;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
+/* ---------- video hero ---------- */
+.vhero{position:relative;min-height:100svh;display:flex;align-items:flex-end;
+  overflow:hidden;background:var(--ocean-900);isolation:isolate;}
+.vhero__video,.vhero>img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;}
+/* the poster carries it until the clip is genuinely ready */
+.vhero__video{opacity:0;transition:opacity .9s ease;}
+.vhero__video.is-on{opacity:1;}
+.vhero__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(rgba(4,11,16,.42) 0%,rgba(4,11,16,.12) 26%,rgba(4,11,16,.62) 72%,rgba(4,11,16,.9) 100%);}
+.vhero__copy{position:relative;z-index:2;width:100%;
+  padding:0 var(--gut) clamp(58px,10vh,120px);
+  display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
+.vhero__kicker,.vhero__h1,.vhero__sub{text-shadow:0 2px 18px rgba(4,11,16,.7);}
+.vhero__kicker{margin:0;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+  color:#6FE6DA;font-weight:600;}
+.vhero__h1{margin:0;font-family:var(--f-display);font-weight:400;color:#fff;
+  font-size:clamp(2.3rem,6.4vw,5rem);line-height:1.01;letter-spacing:-.025em;
+  max-width:16ch;text-wrap:balance;}
+.vhero__sub{margin:0;max-width:46ch;color:rgba(255,255,255,.9);
+  font-size:clamp(1rem,1.7vw,1.24rem);line-height:1.55;}
+.vhero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;}
+.vhero__cta .btn{border-color:rgba(255,255,255,.55);color:#fff;}
+.vhero__cta .btn--primary{background:var(--teal);border-color:var(--teal);color:#04151a;}
+.vhero__cta .btn--primary:hover{background:#3ccfc3;border-color:#3ccfc3;}
+.vhero__cta .btn--ghost:hover{background:rgba(255,255,255,.16);}
+.vhero__cue{position:absolute;right:clamp(16px,3vw,34px);bottom:26px;z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;
   font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(255,255,255,.6);pointer-events:none;}
-.hero__cue i{display:block;width:1px;height:30px;
-  background:linear-gradient(rgba(255,255,255,.6),transparent);}
-@media (max-width:620px){ .hero__cue{display:none;} }
+  color:rgba(255,255,255,.66);}
+.vhero__cue i{display:block;width:1px;height:34px;
+  background:linear-gradient(rgba(255,255,255,.7),transparent);}
+@media (max-width:620px){ .vhero__cue{display:none;} }
 
-/* ---- hero on phones ----
-   With height:100% + aspect-ratio the frame computes wider than the
-   screen (457px on a 375px phone) and max-width does not clamp it, so
-   the right-hand pins fall off the edge. Fit the width instead and let
-   the height follow, anchored to the top with the copy over the base. */
-@media (max-width:760px){
-  .hero{place-items:start center;}
-  .hero__frame{width:100%;height:auto;}
-  .hero__copy{padding-top:clamp(56px,9vh,110px);}
-  .hero__h1{max-width:none;}
-}
-/* Short screens: the art is 0.563 wide-to-tall, almost exactly a phone's
-   ratio, so it fills the viewport and the copy has to overlay it. Keep the
-   copy compact enough that its scrim starts below the sphere. */
-@media (max-height:680px){
-  /* The 4th and 8th pins are the low pair; they land on the headline
-     once the copy rises. Driven by position, not a JS-set attribute. */
-  .hero__pin:nth-child(4),.hero__pin:nth-child(8),
-  .hero__pin[data-low="1"]{display:none;}
-  .hero__line:nth-child(4),.hero__line:nth-child(8){display:none;}
-  /* lift the art so the remaining pins clear the kicker; only ceiling
-     is lost off the top, and the scrim covers the gap at the base */
-  .hero__frame{margin-top:-7vh;}
-  .hero__copy{padding-top:26px;padding-bottom:20px;gap:7px;}
-  .hero__h1{font-size:clamp(1.45rem,6.2vw,2rem);}
-  .hero__sub{font-size:.86rem;line-height:1.45;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-  .hero__kicker{font-size:.62rem;}
-  .hero__cta .btn{padding:12px 16px;font-size:.85rem;}
-}
-/* Landscape phones: a tall portrait render would eat the whole screen. */
-@media (max-width:900px) and (max-height:460px){
-  .hero{height:auto;min-height:0;padding-bottom:16px;}
-  .hero__frame{max-width:min(100%,300px);}
-  .hero__copy{position:static;background:none;padding-inline:var(--gut);}
-}
-
-@supports (width:1cqw){
-  .hero__pin{width:14cqw;}
-}
-
-@media (prefers-reduced-motion:reduce){
-  .hero.is-ready .hero__pin{animation:none;}
-  .hero__plate{transform:scale(1.02);}
+@media (max-width:430px){
+  .vhero__cta{width:100%;}
+  .vhero__cta .btn{flex:1 1 100%;}
 }
 
 /* ---------- layout ---------- */
-.site{position:relative;z-index:45;background:var(--sand);}
+.site{position:relative;z-index:2;background:var(--sand);}
 .wrap{max-width:1180px;margin-inline:auto;padding-inline:var(--gut);}
 .wrap--narrow{max-width:760px;}
-.wrap--split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
-  gap:clamp(32px,6vw,88px);align-items:center;}
-/* Tightened: the old clamp(72px,11vw,160px) put ~320px of dead air between
-   every pair of sections on a wide screen. */
-.sec{padding-block:clamp(52px,6.4vw,104px);position:relative;}
-/* Consecutive sections sharing a background read as one band, so drop the
-   doubled padding where they meet. */
-.sec--lanai+.sec--honu,.sec--honu+.sec--inside{padding-top:clamp(48px,5.6vw,92px);}
-.link{color:var(--teal-deep);text-decoration:none;border-bottom:1px solid currentColor;
-  padding-bottom:1px;transition:opacity .25s;}
-.link:hover{opacity:.7;}
-
-/* ---------- small refinements ---------- */
-html{scroll-behavior:smooth;}
-@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
-
-::selection{background:var(--teal);color:#04151a;}
-
-/* One visible focus style everywhere; the browser default disappears
-   against the dark sections. */
-:where(a,button,summary,[tabindex]):focus-visible{
-  outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;}
+.wrap--split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(30px,5vw,76px);align-items:center;}
+.wrap--flip>*:first-child{order:-1;}
+.sec{padding-block:clamp(56px,7vw,112px);position:relative;}
 
 /* ---------- type ---------- */
 .eyebrow{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;
   color:var(--teal-deep);font-weight:600;margin:0 0 18px;
   display:flex;align-items:center;gap:12px;}
-/* a short rule leading the label, so every section opener has a mark */
 .eyebrow::before{content:"";flex:0 0 auto;width:26px;height:1px;
-  background:currentColor;opacity:.55;}
-.h2{font-family:var(--f-display);font-weight:400;line-height:1.04;
-  font-size:clamp(2.1rem,5.6vw,4.1rem);letter-spacing:-.02em;margin:0 0 24px;
-  color:var(--ink);text-wrap:balance;}
-.lede{font-size:clamp(1.05rem,1.9vw,1.3rem);line-height:1.62;max-width:60ch;
-  color:var(--ink-soft);margin:0 0 20px;}
-.note{font-size:1rem;line-height:1.6;color:var(--ink-soft);max-width:54ch;margin:0;}
+  background:currentColor;opacity:.6;}
+.h2{font-family:var(--f-display);font-weight:400;line-height:1.05;
+  font-size:clamp(2rem,4.8vw,3.5rem);letter-spacing:-.022em;margin:0 0 22px;
+  color:var(--ink);text-wrap:balance;max-width:18ch;}
+.lede{font-size:clamp(1.04rem,1.55vw,1.24rem);line-height:1.62;max-width:58ch;
+  color:var(--ink-soft);margin:0 0 18px;}
+.note{font-size:1rem;line-height:1.62;color:var(--ink-soft);max-width:54ch;margin:0;}
+.link{color:var(--teal-deep);text-decoration:none;font-weight:500;
+  border-bottom:1px solid currentColor;padding-bottom:1px;transition:opacity .25s;}
+.link:hover{opacity:.7;}
+
+/* ---------- figures ---------- */
+.shot,.band{margin:0;position:relative;border-radius:16px;overflow:hidden;
+  background:var(--ocean-800);
+  box-shadow:0 24px 60px rgba(14,31,38,.22);}
+.shot img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+.band{margin-top:clamp(30px,5vw,56px);}
+.band img{width:100%;aspect-ratio:21/9;object-fit:cover;}
+.shot figcaption,.band figcaption{position:absolute;inset:auto 0 0 0;
+  padding:38px 16px 13px;font-size:.78rem;color:#fff;
+  background:linear-gradient(transparent,rgba(6,19,26,.86));}
+.duo{display:grid;gap:clamp(14px,2vw,22px);margin-top:clamp(28px,4vw,48px);
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+
+/* ---------- morning / evening ---------- */
+.sec--morning{background:var(--sand);}
+.sec--lanai{background:var(--sand);}
+.sec--evening{background:var(--ocean-900);}
+.sec--evening .h2{color:var(--sand);}
+.sec--evening .lede{color:rgba(244,234,218,.84);}
+.sec--evening .eyebrow{color:var(--teal);}
 
 /* ---------- lanai comparison ---------- */
-.sec--lanai{background:var(--sand);}
-.compare{margin:clamp(36px,6vw,64px) 0;display:grid;gap:20px;max-width:760px;}
+.compare{margin:clamp(32px,5vw,56px) 0;display:grid;gap:20px;max-width:760px;}
 .compare__row{display:grid;grid-template-columns:minmax(120px,210px) 1fr;
   gap:clamp(12px,2vw,26px);align-items:center;}
-.compare__label{font-size:.86rem;letter-spacing:.04em;color:var(--ink-soft);}
+.compare__label{font-size:.88rem;letter-spacing:.02em;color:var(--ink-soft);}
 .compare__row--ours .compare__label{color:var(--ink);font-weight:600;}
 .compare__bar{position:relative;display:flex;align-items:center;gap:14px;}
-.compare__bar i{display:block;height:clamp(16px,2.4vw,26px);width:0;border-radius:99px;
+.compare__bar i{display:block;height:clamp(16px,2.4vw,26px);border-radius:99px;
   background:linear-gradient(90deg,var(--teal-deep),var(--teal));
-  transition:width 1.1s cubic-bezier(.22,1,.36,1);}
+  width:var(--w);                                  /* visible without JS */
+  transition:width 1.1s var(--ease);}
 .compare__bar--muted i{background:var(--sand-deep);}
 .compare__bar b{font-family:var(--f-display);font-size:clamp(1rem,2vw,1.35rem);
   color:var(--ink);white-space:nowrap;}
-.compare__bar i{width:var(--w);}                 /* visible without JS */
 .js-reveal .compare__bar i{width:0;}
 .js-reveal .in-view .compare__bar i{width:var(--w);}
 
-.stats{list-style:none;margin:0;padding:0;display:grid;
+.stats{list-style:none;margin:0;padding:36px 0 0;display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:clamp(18px,3vw,36px);border-top:1px solid var(--sand-deep);padding-top:36px;}
+  gap:clamp(18px,3vw,36px);border-top:1px solid var(--sand-deep);}
 .stats li{display:flex;flex-direction:column;gap:6px;}
 .stats span{font-family:var(--f-display);font-size:clamp(2rem,4.4vw,3rem);
   line-height:1;color:var(--teal-deep);font-variant-numeric:tabular-nums;}
 .stats em{font-style:normal;font-size:.82rem;letter-spacing:.11em;
   text-transform:uppercase;color:var(--ink-soft);}
 
-/* ---------- honu ---------- */
-.sec--honu{background:var(--ocean-900);color:var(--sand);overflow:hidden;}
-.sec--honu .h2{color:var(--sand);}
-.sec--honu .lede,.sec--honu .note{color:rgba(244,234,218,.72);}
-.sec--honu .eyebrow{color:var(--teal);}
-/* The album has no turtle footage, so the two real stills drift and
-   cross-fade. Reads as motion without inventing a clip. */
+/* ---------- the water / honu ---------- */
+.sec--water{background:var(--ocean-900);color:var(--sand);overflow:hidden;}
+.sec--water .h2{color:var(--sand);}
+.sec--water .lede,.sec--water .note{color:rgba(244,234,218,.84);}
+.sec--water .eyebrow{color:var(--teal);}
+
 .honu-stage{position:relative;margin:0;border-radius:18px;overflow:hidden;
   aspect-ratio:4/3;isolation:isolate;
   box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(244,234,218,.08);}
@@ -267,19 +224,16 @@ html{scroll-behavior:smooth;}
   100%{transform:scale(1.05) translate3d(0,0,0);}
 }
 .honu-stage figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:42px 16px 14px;font-size:.76rem;letter-spacing:.03em;
-  color:rgba(255,255,255,.88);
+  padding:42px 16px 14px;font-size:.76rem;color:rgba(255,255,255,.9);
   background:linear-gradient(transparent,rgba(4,11,16,.82));}
-
 @media (prefers-reduced-motion:reduce){
   .honu-shot{animation:none!important;}
   .honu-shot--b{display:none;}
 }
 
-/* ---------- inside: the spec list ----------
-   Replaced a three-photo grid that duplicated images now in the gallery. */
+/* ---------- inside: spec list ---------- */
 .sec--inside{background:var(--sand);}
-.spec{margin:clamp(30px,4vw,48px) 0 26px;display:grid;gap:0;
+.spec{margin:clamp(28px,4vw,46px) 0 24px;display:grid;gap:0;
   grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
   border-top:1px solid var(--sand-deep);}
 .spec>div{display:grid;grid-template-columns:minmax(96px,132px) 1fr;
@@ -287,63 +241,54 @@ html{scroll-behavior:smooth;}
   border-bottom:1px solid var(--sand-deep);}
 .spec dt{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--teal-deep);font-weight:600;padding-top:3px;}
-.spec dd{margin:0;color:var(--ink-soft);line-height:1.55;}
-@media (min-width:880px){
-  /* keep the two columns from sharing one border seam */
-  .spec>div:nth-child(odd){padding-right:clamp(16px,3vw,44px);}
-}
+.spec dd{margin:0;color:var(--ink-soft);line-height:1.58;}
+@media (min-width:880px){ .spec>div:nth-child(odd){padding-right:clamp(16px,3vw,44px);} }
 
-/* ---------- gallery reel ---------- */
+/* ---------- gallery ---------- */
 .sec--gallery{background:var(--ocean-900);color:var(--sand);
-  /* the sticky tab bar follows straight after the heading, so this
-     opener needs less air above it than a normal section */
-  padding-top:clamp(40px,4.4vw,72px);
-  padding-bottom:clamp(36px,4vw,64px);}
-.sec--gallery .lede{margin-bottom:0;}
+  padding-top:clamp(44px,5vw,80px);padding-bottom:clamp(36px,4vw,64px);}
 .sec--gallery .h2{color:var(--sand);}
+.sec--gallery .lede{color:rgba(244,234,218,.84);margin-bottom:0;}
 .sec--gallery .eyebrow{color:var(--teal);}
-/* section nav */
-.gal__tabs{position:sticky;top:0;z-index:6;display:flex;gap:8px;overflow-x:auto;
-  padding:14px var(--gut);margin-top:clamp(22px,4vw,40px);
-  background:color-mix(in srgb,var(--ocean-900) 88%,transparent);
-  backdrop-filter:blur(10px);scrollbar-width:none;
-  border-block:1px solid rgba(244,234,218,.1);}
+
+.gal__tabs{position:sticky;top:var(--nav-h);z-index:6;display:flex;gap:8px;
+  overflow-x:auto;padding:14px var(--gut);margin-top:clamp(22px,4vw,40px);
+  background:color-mix(in srgb,var(--ocean-900) 90%,transparent);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  scrollbar-width:none;border-block:1px solid rgba(244,234,218,.1);}
 .gal__tabs::-webkit-scrollbar{display:none;}
 .gal__tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;
-  padding:9px 15px;border-radius:99px;text-decoration:none;font-size:.82rem;
-  color:rgba(244,234,218,.72);border:1px solid rgba(244,234,218,.16);
+  padding:12px 16px;min-height:44px;border-radius:99px;text-decoration:none;
+  font-size:.82rem;color:rgba(244,234,218,.82);
+  border:1px solid rgba(244,234,218,.18);
   transition:color .25s,border-color .25s,background .25s;}
-.gal__tab b{font-weight:500;font-size:.72rem;opacity:.6;}
-.gal__tab:hover{color:var(--sand);border-color:rgba(244,234,218,.4);}
+.gal__tab b{font-weight:500;font-size:.72rem;opacity:.65;}
+.gal__tab:hover{color:var(--sand);border-color:rgba(244,234,218,.45);}
 .gal__tab.is-on{color:var(--ocean-900);background:var(--teal);border-color:var(--teal);}
 .gal__tab.is-on b{opacity:.75;}
 
-/* grouped grids */
 .gal{padding-inline:var(--gut);}
-.gcat{padding-block:clamp(30px,3.6vw,54px);scroll-margin-top:64px;}
+.gcat{padding-block:clamp(30px,3.6vw,54px);scroll-margin-top:calc(var(--nav-h) + 70px);}
 /* No content-visibility here: skipping layout collapsed the grid to one
    column at the moment the browser resolved srcset, so every card picked
-   the 800px candidate for a 163px slot. Correct image selection is worth
-   more than the skipped layout. */
+   the 800px candidate for a 163px slot. */
 .gcat+.gcat{border-top:1px solid rgba(244,234,218,.1);}
 .gcat__head{max-width:62ch;margin-bottom:clamp(20px,3vw,34px);}
 .gcat__head h3{font-family:var(--f-display);font-weight:400;
   font-size:clamp(1.5rem,3.4vw,2.4rem);margin:0 0 8px;color:var(--sand);}
-.gcat__head p{margin:0;color:rgba(244,234,218,.66);font-size:1rem;line-height:1.55;}
+.gcat__head p{margin:0;color:rgba(244,234,218,.8);font-size:1rem;line-height:1.55;}
 .gcat__count{display:inline-block;margin-top:12px;font-size:.72rem;
   letter-spacing:.16em;text-transform:uppercase;color:var(--teal);}
 .gcat__grid{display:grid;gap:clamp(10px,1.4vw,18px);
-  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
-  perspective:1100px;}
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));perspective:1100px;}
 
 .gcard{margin:0;position:relative;border-radius:11px;overflow:hidden;cursor:pointer;
   background:var(--ocean-800);aspect-ratio:4/3;
   transform-style:preserve-3d;--rx:0deg;--ry:0deg;--lift:0px;
   transform:rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0,var(--lift),0);
-  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease;
-  will-change:transform;}
-.gcard:focus-visible{outline:none;box-shadow:0 0 0 2px var(--teal),0 18px 44px rgba(0,0,0,.5);}
-/* a light that moves with the tilt, so the card reads as a surface */
+  transition:transform .5s var(--ease),box-shadow .5s ease;will-change:transform;}
+.gcard:focus-visible{outline:none;
+  box-shadow:0 0 0 2px var(--teal),0 18px 44px rgba(0,0,0,.5);}
 .gcard::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   opacity:0;transition:opacity .4s ease;
   background:radial-gradient(60% 55% at var(--mx,50%) var(--my,0%),
@@ -364,13 +309,13 @@ html{scroll-behavior:smooth;}
 .gcard:hover figcaption,.gcard:focus-visible figcaption{opacity:1;transform:none;}
 .gcard.is-video::after{content:"";position:absolute;top:10px;right:10px;
   width:28px;height:28px;border-radius:50%;background:rgba(6,19,26,.6);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);}
-.gcard.is-video::before{content:"";position:absolute;top:19px;right:19px;z-index:1;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);opacity:1;}
+.gcard.is-video::before{content:"";position:absolute;top:19px;right:19px;z-index:2;
   border:solid transparent;border-width:5px 0 5px 8px;border-left-color:#fff;}
 
-/* lightbox */
+/* ---------- lightbox ---------- */
 .lb{position:fixed;inset:0;z-index:200;display:grid;place-items:center;
-  background:rgba(4,10,14,.95);backdrop-filter:blur(8px);
+  background:rgba(4,10,14,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   padding:calc(env(safe-area-inset-top,0px) + clamp(56px,7vh,72px))
           calc(env(safe-area-inset-right,0px) + clamp(10px,4vw,48px))
           calc(env(safe-area-inset-bottom,0px) + clamp(56px,8vh,72px))
@@ -379,34 +324,28 @@ html{scroll-behavior:smooth;}
 .lb[hidden]{display:none;}
 .lb__stage{margin:0;width:100%;height:100%;min-height:0;
   display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;}
-
-/* The box is sized from the manifest before anything loads, so the
-   dialog never jumps as images arrive. */
 .lb__media{position:relative;min-height:0;max-width:100%;max-height:100%;
   display:flex;align-items:center;justify-content:center;border-radius:8px;
   overflow:hidden;background:#040a0e;}
 .lb__media img,.lb__media video{display:block;width:100%;height:100%;
   object-fit:contain;background:#040a0e;}
-/* The blur placeholder sits UNDER the real photo and fades out once it
-   loads. Fading the photo IN instead would mean a JS or CSS failure
-   leaves a blank frame; this way the picture is always visible. */
+/* blur placeholder sits UNDER the photo and fades out, so a failure
+   shows the picture rather than a blank frame */
 .lb__pre{position:absolute;inset:0;filter:blur(14px);transform:scale(1.06);
   transition:opacity .4s ease;}
 .lb__pre.is-off{opacity:0;}
 .lb__full{position:relative;}
-
 .lb__stage figcaption{flex:0 0 auto;display:flex;align-items:baseline;gap:10px;
   flex-wrap:wrap;justify-content:center;text-align:center;
-  color:rgba(244,234,218,.82);font-size:.86rem;}
+  color:rgba(244,234,218,.88);font-size:.86rem;}
 .lb__stage figcaption b{font-weight:500;}
-.lb__stage figcaption span{color:rgba(244,234,218,.5);font-size:.78rem;
+.lb__stage figcaption span{color:rgba(244,234,218,.62);font-size:.78rem;
   font-variant-numeric:tabular-nums;}
-
 .lb__x,.lb__nav{position:absolute;z-index:2;background:rgba(244,234,218,.12);
   color:var(--sand);border:1px solid rgba(244,234,218,.24);cursor:pointer;
   border-radius:50%;display:grid;place-items:center;line-height:1;
-  transition:background .25s,transform .25s;-webkit-backdrop-filter:blur(8px);
-  backdrop-filter:blur(8px);}
+  transition:background .25s,transform .25s;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
 .lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.26);}
 .lb__x:active,.lb__nav:active{transform:scale(.93);}
 .lb__x{top:calc(env(safe-area-inset-top,0px) + 12px);
@@ -415,45 +354,20 @@ html{scroll-behavior:smooth;}
 .lb__nav{top:50%;translate:0 -50%;width:48px;height:48px;font-size:1.9rem;}
 .lb__nav--prev{left:calc(env(safe-area-inset-left,0px) + 10px);}
 .lb__nav--next{right:calc(env(safe-area-inset-right,0px) + 10px);}
-
 @media (max-width:700px){
-  /* Side arrows would sit on top of the picture on a phone, so drop them
-     to the bottom bar; swipe is the primary gesture there anyway. */
   .lb__nav{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);
     translate:none;width:44px;height:44px;font-size:1.5rem;}
   .lb__nav--prev{left:calc(env(safe-area-inset-left,0px) + 16px);}
   .lb__nav--next{right:calc(env(safe-area-inset-right,0px) + 16px);}
   .lb__stage figcaption{max-width:58%;}
 }
-@media (hover:none){
-  .lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.12);}
-}
-
-/* ---------- mobile polish ---------- */
-@media (max-width:760px){
-  /* The engine's vertical route rail sits over the content on a phone
-     and its dots are 28px, below a usable tap size. The top nav covers
-     the same ground. */
-  .sw-route{display:none!important;}
-  /* 36px was under the 44px minimum */
-  .gal__tab{padding:12px 16px;min-height:44px;}
-  .faq__q summary{padding-block:18px;}
-}
-@media (max-width:430px){
-  /* full-width CTAs read better than two cramped pills */
-  .hero__cta{width:100%;}
-  .hero__cta .btn{flex:1 1 100%;padding:15px 18px;}
-  .cta-row .btn{flex:1 1 100%;}
-}
-
-/* Safari still needs the prefix for every blurred surface. */
-.gal__tabs,.cta-bar,.lb,.hero__pin{-webkit-backdrop-filter:blur(10px);}
+@media (hover:none){ .lb__x:hover,.lb__nav:hover{background:rgba(244,234,218,.12);} }
 
 /* ---------- faq ---------- */
 .sec--faq{background:var(--sand-deep);}
-.faq{margin-top:clamp(24px,3.4vw,40px);border-top:1px solid rgba(16,34,42,.16);}
-.faq__q{border-bottom:1px solid rgba(16,34,42,.16);}
-.faq__q summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;position:relative;
+.faq{margin-top:clamp(24px,3.4vw,40px);border-top:1px solid rgba(14,31,38,.18);}
+.faq__q{border-bottom:1px solid rgba(14,31,38,.18);}
+.faq__q summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;position:relative;
   font-family:var(--f-display);font-size:clamp(1.05rem,2vw,1.35rem);color:var(--ink);}
 .faq__q summary::-webkit-details-marker{display:none;}
 .faq__q summary::after{content:"";position:absolute;right:8px;top:50%;
@@ -463,18 +377,30 @@ html{scroll-behavior:smooth;}
 .faq__q[open] summary::after{rotate:225deg;translate:0 -25%;}
 .faq__q p{margin:0 0 22px;max-width:68ch;color:var(--ink-soft);line-height:1.62;}
 
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.34em;
+  padding:16px 30px;border-radius:99px;font-size:.92rem;font-weight:600;
+  letter-spacing:.02em;text-decoration:none;color:var(--ink);
+  border:1px solid var(--ink);cursor:pointer;
+  transition:transform .25s,background .25s,color .25s,border-color .25s;}
+.btn:hover{transform:translateY(-2px);}
+.btn--primary{background:var(--ink);color:var(--sand);border-color:var(--ink);}
+.btn--primary:hover{background:var(--teal-deep);border-color:var(--teal-deep);}
+
 /* ---------- sticky conversion bar ---------- */
 .cta-bar{position:fixed;left:0;right:0;bottom:0;z-index:120;
   display:flex;align-items:center;justify-content:space-between;gap:16px;
   padding:11px clamp(14px,4vw,32px);
+  padding-bottom:calc(11px + env(safe-area-inset-bottom,0px));
   background:color-mix(in srgb,var(--ocean-900) 94%,transparent);
-  backdrop-filter:blur(12px);border-top:1px solid rgba(244,234,218,.16);
-  transform:translateY(100%);transition:transform .45s cubic-bezier(.22,1,.36,1);}
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(244,234,218,.16);
+  transform:translateY(100%);transition:transform .45s var(--ease);}
 .cta-bar.is-on{transform:none;}
 .cta-bar[hidden]{display:none;}
 .cta-bar p{margin:0;display:flex;flex-direction:column;line-height:1.3;min-width:0;}
 .cta-bar strong{color:var(--sand);font-size:.92rem;}
-.cta-bar span{color:rgba(244,234,218,.6);font-size:.74rem;
+.cta-bar span{color:rgba(244,234,218,.68);font-size:.74rem;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .cta-bar .btn{flex:0 0 auto;padding:11px 20px;font-size:.84rem;
   background:var(--teal);border-color:var(--teal);color:#04151a;}
@@ -484,105 +410,78 @@ html{scroll-behavior:smooth;}
 /* ---------- book ---------- */
 .sec--book{background:var(--sand);text-align:center;}
 .sec--book .eyebrow{justify-content:center;}
-.sec--book .lede{margin-inline:auto;}
-.cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px;}
-/* inline-flex drops whitespace-only text nodes, so a label built from
-   several nodes (e.g. "See all <span>127</span> photos") needs a gap. */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.34em;
-  padding:16px 30px;border-radius:99px;font-size:.92rem;font-weight:600;
-  letter-spacing:.03em;text-decoration:none;color:var(--ink);
-  border:1px solid var(--ink);transition:transform .25s,background .25s,color .25s;}
-.btn:hover{transform:translateY(-2px);}
-.btn--primary{background:var(--ink);color:var(--sand);border-color:var(--ink);}
-.btn--primary:hover{background:var(--teal-deep);border-color:var(--teal-deep);}
-.fineprint{margin-top:30px;font-size:.78rem;color:var(--ink-soft);}
+.sec--book .h2,.sec--book .lede{margin-inline:auto;}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px;}
+.fineprint{margin-top:30px;font-size:.78rem;color:var(--ink-mute);}
 .fineprint:empty{display:none;}
+@media (max-width:430px){ .cta-row .btn{flex:1 1 100%;} }
 
 /* ---------- footer ---------- */
 .foot{background:var(--ocean-900);color:var(--sand);
-  padding-block:clamp(48px,7vw,84px);text-align:center;}
+  padding-block:clamp(44px,6vw,80px);padding-bottom:clamp(88px,10vw,120px);
+  text-align:center;}
 .foot__brand{font-family:var(--f-display);font-size:clamp(1.4rem,3vw,2rem);margin:0 0 10px;}
 .foot__brand span{color:var(--gold);}
-.foot__meta{margin:0;font-size:.86rem;color:rgba(244,234,218,.66);}
-.foot__legal{margin:18px 0 0;font-size:.74rem;color:rgba(244,234,218,.44);}
+.foot__meta{margin:0;font-size:.86rem;color:rgba(244,234,218,.72);}
+.foot__legal{margin:18px 0 0;font-size:.74rem;color:rgba(244,234,218,.5);}
 .foot__legal:empty{display:none;}
-
-/* ---------- reveal ----------
-   Only ever hides content when JS has confirmed it can reveal it again
-   (.js-reveal is set in the head). Without that class everything is
-   visible, so a script failure can never blank the page. */
-.js-reveal .sec .wrap>*{opacity:0;transform:translateY(20px);
-  transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);}
-.js-reveal .sec.in-view .wrap>*{opacity:1;transform:none;}
-.js-reveal .sec.in-view .wrap>*:nth-child(2){transition-delay:.07s;}
-.js-reveal .sec.in-view .wrap>*:nth-child(3){transition-delay:.14s;}
-.js-reveal .sec.in-view .wrap>*:nth-child(4){transition-delay:.2s;}
 
 /* ---------- responsive ---------- */
 @media (max-width:880px){
   .wrap--split{grid-template-columns:1fr;}
-  .grid--inside{grid-template-columns:1fr;}
-  .card--tall{grid-row:auto;}
-  .card--tall img{aspect-ratio:4/3;}
+  .wrap--flip>*:first-child{order:0;}
+  .spec>div{grid-template-columns:1fr;gap:4px;}
   .compare__row{grid-template-columns:1fr;gap:8px;}
+  .h2{max-width:none;}
+}
+@media (max-width:640px){
+  .gcat__grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));}
+  .gcard figcaption{opacity:1;transform:none;font-size:.7rem;}
+  .band img{aspect-ratio:16/10;}
 }
 
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
-  .js-reveal .sec .wrap>*{opacity:1;transform:none;}
-  .compare__bar i{width:var(--w);}
-}
+/* ---------- reveal fallback (no scroll-driven animation) ---------- */
+.js-reveal .sec .wrap>*{opacity:0;transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s var(--ease);}
+.js-reveal .sec.in-view .wrap>*{opacity:1;transform:none;}
+.js-reveal .sec.in-view .wrap>*:nth-child(2){transition-delay:.07s;}
+.js-reveal .sec.in-view .wrap>*:nth-child(3){transition-delay:.14s;}
 
 /* ============================================================
-   Scroll-driven depth
-   ------------------------------------------------------------
-   Native scroll-driven animations: no JS, no scroll listener, and
-   the work happens off the main thread, so it stays smooth on a
-   phone. Only active when the browser supports view() AND the
-   .css-depth class was set in the head — in which case the
-   IntersectionObserver reveal is not running at all, so the two
-   can never fight over the same properties.
+   Scroll-driven depth — no JS, runs off the main thread.
+   Active only alongside .css-depth, in which case the
+   IntersectionObserver reveal is not running at all.
    ============================================================ */
 @supports (animation-timeline: view()) {
-
-  /* Blocks rise and settle as they enter. `both` supplies the
-     from-state before the range begins, which is what replaces the
-     old JS-driven opacity:0. */
   .css-depth .sec .wrap > *,
   .css-depth .gcat__head > *,
   .css-depth .spec > div,
-  .css-depth .faq__q {
+  .css-depth .faq__q,
+  .css-depth .duo > * {
     animation: swRise linear both;
     animation-timeline: view();
     animation-range: entry 4% cover 28%;
   }
-
-  /* Alternate rows land a beat later, so lists arrive as a wave
-     rather than a block. */
   .css-depth .spec > div:nth-child(even) { animation-range: entry 8% cover 34%; }
   .css-depth .faq__q:nth-child(even)     { animation-range: entry 7% cover 32%; }
 
-  /* Media gets real perspective. Declared on the transform itself
-     rather than on a parent, so it creates no containing block and
-     cannot disturb the sticky gallery nav. */
-  /* Must out-specify `.css-depth .sec .wrap > *` above, which also
-     matches this element and would otherwise give it the flat rise. */
-  .css-depth .sec .wrap > .honu-stage {
+  /* Must out-specify `.css-depth .sec .wrap > *`, which also matches
+     these and would otherwise give them the flat rise. */
+  .css-depth .sec .wrap > .honu-stage,
+  .css-depth .sec .wrap > .shot,
+  .css-depth .sec .wrap > .band {
     animation: swDepth linear both;
     animation-timeline: view();
     animation-range: entry 0% cover 42%;
   }
 
-  /* Cards fade only — their transform belongs to the pointer tilt,
-     and animating it here would overwrite that. */
+  /* Cards fade only — their transform belongs to the pointer tilt. */
   .css-depth .gcard {
     animation: swFade linear both;
     animation-timeline: view();
     animation-range: entry 2% cover 20%;
   }
 
-  /* The comparison bars still need to draw; without .js-reveal they
-     would otherwise just appear at full width. */
   .css-depth .compare__bar i {
     width: 0;
     animation: swBar linear both;
@@ -591,21 +490,13 @@ html{scroll-behavior:smooth;}
   }
 }
 
-@keyframes swRise {
-  from { opacity: 0; transform: translate3d(0, 30px, 0) scale(.985); }
-  to   { opacity: 1; transform: none; }
+@keyframes swRise{
+  from{opacity:0;transform:translate3d(0,30px,0) scale(.985);}
+  to{opacity:1;transform:none;}
 }
-@keyframes swDepth {
-  from { opacity: 0;
-         transform: perspective(1200px) rotateX(7deg) translate3d(0, 46px, -90px); }
-  to   { opacity: 1;
-         transform: perspective(1200px) rotateX(0deg) translate3d(0, 0, 0); }
+@keyframes swDepth{
+  from{opacity:0;transform:perspective(1200px) rotateX(7deg) translate3d(0,46px,-90px);}
+  to{opacity:1;transform:perspective(1200px) rotateX(0deg) translate3d(0,0,0);}
 }
-@keyframes swFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes swBar {
-  from { width: 0; }
-  to   { width: var(--w); }
-}
+@keyframes swFade{ from{opacity:0;} to{opacity:1;} }
+@keyframes swBar{ from{width:0;} to{width:var(--w);} }

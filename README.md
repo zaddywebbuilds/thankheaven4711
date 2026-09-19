@@ -9,12 +9,21 @@ one-bedroom* — with a 35-foot private lanai where most oceanfront condos give 
 
 A static site. No build step, no framework, no dependencies to install.
 
-- A **scroll-scrubbed cinematic opening** — eight scenes where video scrubs frame-by-frame
-  against scroll position, cross-dissolving between them.
-- Conventional content sections below it: the lanai comparison, the honu, the spec
-  list, the full classified gallery, an FAQ, and the booking CTA.
-- A sticky conversion bar that appears past the hero and hides again over the
-  booking section, so it never covers the button it points at.
+Second design. The first opened with a scroll-scrubbed cinematic sequence and an
+AI-rendered sphere; the owners rejected it - the landing page did not work for
+them, navigation was hard, and the body copy read as "grayed out". All three are
+addressed here:
+
+- **Opens with video.** A full-bleed autoplay loop, which is what they asked for.
+  The poster carries the hero on its own, so the clip is an enhancement.
+- **Real navigation.** A fixed nav with six anchors and scroll-spy, instead of
+  16,000px of hijacked scrolling before any information.
+- **Readable copy.** Body text went from 5.56:1 to 8.34:1 and eyebrows from
+  4.04:1 (an actual AA failure at 11.8px) to 6.00:1.
+
+The page follows the owner's own description of a morning there: waking to the
+water, tea in the kitchen with Molokai and Lanai on the horizon, out onto the
+lanai, the reef, then the evening.
 
 ### The gallery
 
