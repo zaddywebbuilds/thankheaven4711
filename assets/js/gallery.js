@@ -15,7 +15,9 @@
 
   let data;
   try {
-    data = await (await fetch('assets/gallery.json')).json();
+    // versioned: the manifest changes without its filename changing,
+    // so without this a returning visitor keeps the old ordering
+    data = await (await fetch('assets/gallery.json?v=24')).json();
   } catch (e) {
     gal.remove(); tabs?.remove();
     return;                                  // served from file:// or missing

@@ -31,7 +31,7 @@ document.querySelectorAll('[data-cfg]').forEach((el) => {
    enhancement: no src is set until we know the screen size and the
    connection can afford it. On a metered or slow link the poster is
    all anyone downloads. */
-const MEDIA_V = '21';
+const MEDIA_V = '24';
 const conn = navigator.connection || {};
 /* 3g is deliberately NOT in here. The mobile encode is 240KB, which 3g
    carries fine, and the video is the thing the owner asked the page to

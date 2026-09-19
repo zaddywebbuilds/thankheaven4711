@@ -167,6 +167,18 @@ img{max-width:100%;display:block;}
 .duo{display:grid;gap:clamp(14px,2vw,22px);margin-top:clamp(28px,4vw,48px);
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
 
+/* Inside: copy beside the room shot, spec list full width beneath.
+   The chosen photo is portrait, so it gets a 3:4 frame rather than the
+   4:3 the other figures use. */
+.inside__top{display:grid;gap:clamp(28px,5vw,64px);align-items:center;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);}
+.shot--tall img{aspect-ratio:3/4;}
+@media (max-width:880px){
+  .inside__top{grid-template-columns:1fr;}
+  .shot--tall{max-width:440px;}
+  .shot--tall img{aspect-ratio:4/5;}
+}
+
 /* ---------- morning / evening ---------- */
 .sec--morning{background:var(--sand);}
 .sec--lanai{background:var(--sand);}

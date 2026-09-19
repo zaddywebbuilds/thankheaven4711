@@ -247,6 +247,14 @@
    "h": 684
   },
   {
+   "id": "living-119",
+   "cat": "living",
+   "label": "The room, end to end",
+   "type": "photo",
+   "w": 1200,
+   "h": 1600
+  },
+  {
    "id": "living-023",
    "cat": "living",
    "label": "The living room opens onto the lanai",
@@ -869,14 +877,6 @@
    "type": "photo",
    "w": 768,
    "h": 1024
-  },
-  {
-   "id": "living-119",
-   "cat": "living",
-   "label": "The room, end to end",
-   "type": "photo",
-   "w": 1200,
-   "h": 1600
   },
   {
    "id": "living-120",

@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=22" />
+<link rel="stylesheet" href="assets/css/site.css?v=24" />
 <script>
   /* Two reveal systems, and only ever one running. Without either class
      the page renders fully visible, so nothing can hide behind a
@@ -190,11 +190,23 @@
   <!-- ============ INSIDE ============ -->
   <section class="sec sec--inside" id="inside">
     <div class="wrap">
-      <p class="eyebrow">Inside</p>
-      <h2 class="h2">Seven hundred square feet, all of it pointed at the water.</h2>
-      <p class="lede">The living room opens onto the lanai, so in practice they are one
-        room. Everything below is visible in the photos &mdash; nothing listed here that
-        you will not find when you arrive.</p>
+      <div class="inside__top">
+        <div>
+          <p class="eyebrow">Inside</p>
+          <h2 class="h2">Seven hundred square feet, all of it pointed at the water.</h2>
+          <p class="lede">The living room opens onto the lanai, so in practice they are one
+            room. Everything below is visible in the photos &mdash; nothing listed here that
+            you will not find when you arrive.</p>
+        </div>
+        <figure class="shot shot--tall">
+          <img src="assets/gallery/living-119.webp"
+               srcset="assets/gallery/living-119-400.webp 400w, assets/gallery/living-119-t.webp 800w, assets/gallery/living-119.webp 1536w"
+               sizes="(max-width:880px) 92vw, 440px"
+               alt="The living room looking back toward the breakfast bar and kitchen"
+               loading="lazy" decoding="async" />
+          <figcaption>The living room, end to end</figcaption>
+        </figure>
+      </div>
 
       <dl class="spec">
         <div><dt>Kitchen</dt><dd>Full size &mdash; oven and stove, fridge, microwave,
@@ -366,7 +378,7 @@
 }
 </script>
 
-<script src="assets/js/site.js?v=22"></script>
-<script src="assets/js/gallery.js?v=22"></script>
+<script src="assets/js/site.js?v=24"></script>
+<script src="assets/js/gallery.js?v=24"></script>
 </body>
 </html>
