@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=24" />
+<link rel="stylesheet" href="assets/css/site.css?v=26" />
 <script>
   /* Two reveal systems, and only ever one running. Without either class
      the page renders fully visible, so nothing can hide behind a
@@ -68,20 +68,23 @@
 
 <!-- ============ VIDEO HERO ============ -->
 <section class="vhero">
-  <video class="vhero__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
-         muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-  <div class="vhero__veil" aria-hidden="true"></div>
-  <div class="vhero__copy">
-    <p class="vhero__kicker">Maui Sands Seaside &middot; Unit 711</p>
-    <h1 class="vhero__h1">Wake to the sound of the water.</h1>
-    <p class="vhero__sub">An oceanfront one-bedroom on Maui&rsquo;s west shore, with
-      thirty-five feet of private lanai facing Molokai and Lanai.</p>
-    <div class="vhero__cta">
-      <a class="btn btn--primary" href="#book">Check availability</a>
-      <a class="btn btn--ghost" href="#gallery">See all <span data-gallery-count>127</span> photos</a>
+  <!-- The film is its own band. No copy sits on top of it. -->
+  <div class="vhero__media">
+    <video class="vhero__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
+           muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+  </div>
+  <div class="vhero__panel">
+    <div class="wrap vhero__copy">
+      <p class="vhero__kicker">Maui Sands Seaside &middot; Unit 711</p>
+      <h1 class="vhero__h1">Wake to the sound of the water.</h1>
+      <p class="vhero__sub">An oceanfront one-bedroom on Maui&rsquo;s west shore, with
+        thirty-five feet of private lanai facing Molokai and Lanai.</p>
+      <div class="vhero__cta">
+        <a class="btn btn--primary" href="#book">Check availability</a>
+        <a class="btn btn--ghost" href="#gallery">See all <span data-gallery-count>127</span> photos</a>
+      </div>
     </div>
   </div>
-  <a class="vhero__cue" href="#morning" aria-label="Scroll to content"><span>Scroll</span><i></i></a>
 </section>
 
 <main class="site" id="main">
@@ -146,12 +149,14 @@
       <figure class="honu-stage">
         <!-- The album has no turtle footage, so the two real honu stills
              drift and cross-fade instead of a fabricated clip. -->
-        <img class="honu-shot honu-shot--a" src="assets/gallery/honu-040.webp"
-             alt="A Hawaiian green sea turtle resting on the sand, head toward the camera"
-             loading="lazy" decoding="async" />
-        <img class="honu-shot honu-shot--b" src="assets/gallery/honu-039.webp"
-             alt="A honu at the waterline with surf breaking behind it"
-             loading="lazy" decoding="async" />
+        <div class="honu-stage__frame">
+          <img class="honu-shot honu-shot--a" src="assets/gallery/honu-040.webp"
+               alt="A Hawaiian green sea turtle resting on the sand, head toward the camera"
+               loading="lazy" decoding="async" />
+          <img class="honu-shot honu-shot--b" src="assets/gallery/honu-039.webp"
+               alt="A honu at the waterline with surf breaking behind it"
+               loading="lazy" decoding="async" />
+        </div>
         <figcaption>Photographed on the sand below the building</figcaption>
       </figure>
       <div>
@@ -378,7 +383,7 @@
 }
 </script>
 
-<script src="assets/js/site.js?v=24"></script>
-<script src="assets/js/gallery.js?v=24"></script>
+<script src="assets/js/site.js?v=26"></script>
+<script src="assets/js/gallery.js?v=26"></script>
 </body>
 </html>

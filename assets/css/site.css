@@ -48,12 +48,12 @@ img{max-width:100%;display:block;}
   display:flex;align-items:center;gap:clamp(12px,3vw,34px);
   padding:0 var(--gut);
   transition:background .35s ease,backdrop-filter .35s ease,box-shadow .35s ease;}
-.nav.is-stuck{background:color-mix(in srgb,var(--ocean-900) 92%,transparent);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-  box-shadow:0 1px 0 rgba(244,234,218,.12);}
+/* Always a solid bar. It used to be transparent over the hero film,
+   which put the links on moving imagery. */
+.nav{background:var(--ocean-900);box-shadow:0 1px 0 rgba(244,234,218,.12);}
+.nav__brand,.nav__links a{text-shadow:none;}
 .nav__brand{font-family:var(--f-display);font-size:1.02rem;color:#fff;
-  text-decoration:none;white-space:nowrap;margin-right:auto;
-  text-shadow:0 1px 10px rgba(4,11,16,.6);}
+  text-decoration:none;white-space:nowrap;margin-right:auto;}
 .nav__brand span{color:var(--gold);}
 .nav__links{display:flex;gap:clamp(10px,1.8vw,26px);}
 .nav__links a{position:relative;color:rgba(255,255,255,.84);text-decoration:none;
@@ -89,40 +89,29 @@ img{max-width:100%;display:block;}
   .nav__links a::after{display:none;}
 }
 
-/* ---------- video hero ---------- */
-.vhero{position:relative;min-height:100svh;display:flex;align-items:flex-end;
-  overflow:hidden;background:var(--ocean-900);isolation:isolate;}
-.vhero__video,.vhero>img{position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;z-index:0;}
-/* the poster carries it until the clip is genuinely ready */
-.vhero__video{opacity:0;transition:opacity .9s ease;}
+/* ---------- video hero ----------
+   The film occupies its own band and carries nothing. Every word sits
+   on the solid panel below it. */
+/* the bar is opaque, so give the film its own space beneath it
+   rather than letting it sit on top of the picture */
+.vhero{position:relative;background:var(--ocean-900);padding-top:var(--nav-h);}
+.vhero__media{position:relative;overflow:hidden;background:var(--ocean-900);
+  height:clamp(280px,54svh,600px);}
+.vhero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .9s ease;}
 .vhero__video.is-on{opacity:1;}
-.vhero__veil{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    linear-gradient(rgba(4,11,16,.42) 0%,rgba(4,11,16,.12) 26%,rgba(4,11,16,.62) 72%,rgba(4,11,16,.9) 100%);}
-.vhero__copy{position:relative;z-index:2;width:100%;
-  padding:0 var(--gut) clamp(58px,10vh,120px);
-  display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
-.vhero__kicker,.vhero__h1,.vhero__sub{text-shadow:0 2px 18px rgba(4,11,16,.7);}
+
+.vhero__panel{background:var(--sand);}
+.vhero__copy{display:flex;flex-direction:column;align-items:flex-start;gap:14px;
+  padding-block:clamp(32px,5vw,62px);}
 .vhero__kicker{margin:0;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
-  color:#6FE6DA;font-weight:600;}
-.vhero__h1{margin:0;font-family:var(--f-display);font-weight:400;color:#fff;
-  font-size:clamp(2.3rem,6.4vw,5rem);line-height:1.01;letter-spacing:-.025em;
-  max-width:16ch;text-wrap:balance;}
-.vhero__sub{margin:0;max-width:46ch;color:rgba(255,255,255,.9);
-  font-size:clamp(1rem,1.7vw,1.24rem);line-height:1.55;}
-.vhero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;}
-.vhero__cta .btn{border-color:rgba(255,255,255,.55);color:#fff;}
-.vhero__cta .btn--primary{background:var(--teal);border-color:var(--teal);color:#04151a;}
-.vhero__cta .btn--primary:hover{background:#3ccfc3;border-color:#3ccfc3;}
-.vhero__cta .btn--ghost:hover{background:rgba(255,255,255,.16);}
-.vhero__cue{position:absolute;right:clamp(16px,3vw,34px);bottom:26px;z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;
-  font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(255,255,255,.66);}
-.vhero__cue i{display:block;width:1px;height:34px;
-  background:linear-gradient(rgba(255,255,255,.7),transparent);}
-@media (max-width:620px){ .vhero__cue{display:none;} }
+  color:var(--teal-deep);font-weight:600;}
+.vhero__h1{margin:0;font-family:var(--f-display);font-weight:400;color:var(--ink);
+  font-size:clamp(2.2rem,5.6vw,4.2rem);line-height:1.03;letter-spacing:-.025em;
+  max-width:18ch;text-wrap:balance;}
+.vhero__sub{margin:0;max-width:52ch;color:var(--ink-soft);
+  font-size:clamp(1.02rem,1.6vw,1.24rem);line-height:1.58;}
+.vhero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
 
 @media (max-width:430px){
   .vhero__cta{width:100%;}
@@ -161,9 +150,14 @@ img{max-width:100%;display:block;}
 .shot img{width:100%;aspect-ratio:4/3;object-fit:cover;}
 .band{margin-top:clamp(30px,5vw,56px);}
 .band img{width:100%;aspect-ratio:21/9;object-fit:cover;}
-.shot figcaption,.band figcaption{position:absolute;inset:auto 0 0 0;
-  padding:38px 16px 13px;font-size:.78rem;color:#fff;
-  background:linear-gradient(transparent,rgba(6,19,26,.86));}
+/* Captions sit under the picture on their own surface. They used to be
+   white text on a gradient laid over the photo. */
+.sec{--cap-bg:var(--sand-deep);--cap-fg:var(--ink-soft);}
+.sec--water,.sec--evening,.sec--gallery{--cap-bg:var(--ocean-800);
+  --cap-fg:rgba(244,234,218,.88);}
+.shot figcaption,.band figcaption,.honu-stage figcaption{
+  position:static;padding:12px 16px;font-size:.82rem;line-height:1.4;
+  background:var(--cap-bg);color:var(--cap-fg);}
 .duo{display:grid;gap:clamp(14px,2vw,22px);margin-top:clamp(28px,4vw,48px);
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
 
@@ -220,8 +214,9 @@ img{max-width:100%;display:block;}
 .sec--water .eyebrow{color:var(--teal);}
 
 .honu-stage{position:relative;margin:0;border-radius:18px;overflow:hidden;
-  aspect-ratio:4/3;isolation:isolate;
+  isolation:isolate;display:flex;flex-direction:column;
   box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(244,234,218,.08);}
+.honu-stage__frame{position:relative;aspect-ratio:4/3;overflow:hidden;}
 .honu-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   will-change:opacity,transform;backface-visibility:hidden;}
 .honu-shot--a{animation:honuFadeA 20s ease-in-out infinite,
@@ -235,9 +230,7 @@ img{max-width:100%;display:block;}
   50%{transform:scale(1.13) translate3d(-1.6%,-1.2%,0);}
   100%{transform:scale(1.05) translate3d(0,0,0);}
 }
-.honu-stage figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:42px 16px 14px;font-size:.76rem;color:rgba(255,255,255,.9);
-  background:linear-gradient(transparent,rgba(4,11,16,.82));}
+
 @media (prefers-reduced-motion:reduce){
   .honu-shot{animation:none!important;}
   .honu-shot--b{display:none;}
@@ -295,7 +288,7 @@ img{max-width:100%;display:block;}
   grid-template-columns:repeat(auto-fill,minmax(210px,1fr));perspective:1100px;}
 
 .gcard{margin:0;position:relative;border-radius:11px;overflow:hidden;cursor:pointer;
-  background:var(--ocean-800);aspect-ratio:4/3;
+  background:var(--ocean-800);display:flex;flex-direction:column;
   transform-style:preserve-3d;--rx:0deg;--ry:0deg;--lift:0px;
   transform:rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0,var(--lift),0);
   transition:transform .5s var(--ease),box-shadow .5s ease;will-change:transform;}
@@ -313,12 +306,11 @@ img{max-width:100%;display:block;}
   .gcard{transform:none;}
   .gcard:active{transform:scale(.985);}
 }
-.gcard img{width:100%;height:100%;object-fit:cover;}
-.gcard figcaption{position:absolute;inset:auto 0 0 0;padding:30px 12px 11px;
-  font-size:.78rem;line-height:1.35;color:#fff;
-  background:linear-gradient(transparent,rgba(6,19,26,.9));
-  opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s;}
-.gcard:hover figcaption,.gcard:focus-visible figcaption{opacity:1;transform:none;}
+.gcard img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+/* always visible, on its own surface */
+.gcard figcaption{position:static;flex:1 0 auto;padding:10px 12px;
+  font-size:.76rem;line-height:1.35;color:rgba(244,234,218,.88);
+  background:var(--ocean-800);}
 .gcard.is-video::after{content:"";position:absolute;top:10px;right:10px;
   width:28px;height:28px;border-radius:50%;background:rgba(6,19,26,.6);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.45);opacity:1;}
@@ -448,7 +440,7 @@ img{max-width:100%;display:block;}
 }
 @media (max-width:640px){
   .gcat__grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));}
-  .gcard figcaption{opacity:1;transform:none;font-size:.7rem;}
+  .gcard figcaption{font-size:.7rem;}
   .band img{aspect-ratio:16/10;}
 }
 
