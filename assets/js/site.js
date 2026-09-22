@@ -31,7 +31,7 @@ document.querySelectorAll('[data-cfg]').forEach((el) => {
    enhancement: no src is set until we know the screen size and the
    connection can afford it. On a metered or slow link the poster is
    all anyone downloads. */
-const MEDIA_V = '31';
+const MEDIA_V = '41';
 const conn = navigator.connection || {};
 /* 3g is deliberately NOT in here. The mobile encode is 240KB, which 3g
    carries fine, and the video is the thing the owner asked the page to
@@ -144,3 +144,130 @@ if (bar && book) {
   addEventListener('resize', syncBar, { passive: true });
   syncBar();
 }
+
+/* ============================================================
+   Live hero cards
+   ============================================================ */
+
+/* ---- counting numerals ---- */
+(() => {
+  const nums = [...document.querySelectorAll('.count')];
+  if (!nums.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const run = (el) => {
+    const to = +el.dataset.to || 0;
+    if (reduce) { el.textContent = to; return; }
+    const dur = 1100, t0 = performance.now();
+    // if the frame loop never runs (backgrounded tab, stalled compositor)
+    // the true figure must still be what the visitor sees
+    setTimeout(() => { el.textContent = to; }, dur + 300);
+    el.textContent = '0';
+    const tick = (t) => {
+      const k = Math.min(1, (t - t0) / dur);
+      // ease-out so it settles rather than stopping dead
+      el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if (!('IntersectionObserver' in window)) { nums.forEach(run); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    run(e.target); io.unobserve(e.target);
+  }), { threshold: 0.4 });
+  nums.forEach((n) => io.observe(n));
+})();
+
+/* ---- gauge draws itself ---- */
+(() => {
+  const ring = document.getElementById('gaugeRing');
+  if (!ring) return;
+  const target = 74;                                  // 35ft vs a 12ft norm
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    ring.style.setProperty('--p', target + '%'); return;
+  }
+  const draw = () => {
+    const t0 = performance.now(), dur = 1200;
+    setTimeout(() => ring.style.setProperty('--p', target + '%'), dur + 300);
+    ring.style.setProperty('--p', '0%');
+    const tick = (t) => {
+      const k = Math.min(1, (t - t0) / dur);
+      ring.style.setProperty('--p', (target * (1 - Math.pow(1 - k, 3))).toFixed(1) + '%');
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if (!('IntersectionObserver' in window)) { draw(); return; }
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    draw(); io.disconnect();
+  }, { threshold: 0.4 });
+  io.observe(ring);
+})();
+
+/* ---- the clock actually runs on Hawaii time ----
+   Hawaii does not observe DST, so the zone is a constant UTC-10 and the
+   sunrise/sunset figures below are computed, not hard-coded. */
+(() => {
+  const elT = document.getElementById('nowTime');
+  if (!elT) return;
+  const elM = document.getElementById('nowMeridiem');
+  const elMeta = document.getElementById('nowMeta');
+  const sky = document.getElementById('nowSky');
+
+  const LAT = 20.92, LON = -156.69, TZ = -10;         // Kaanapali / Honokowai
+
+  // NOAA sunrise/sunset, returned as hours after local midnight
+  const solar = (date, rise) => {
+    const rad = Math.PI / 180;
+    const start = Date.UTC(date.getUTCFullYear(), 0, 0);
+    const day = Math.floor((date - start) / 864e5);
+    const lngHour = LON / 15;
+    const t = day + ((rise ? 6 : 18) - lngHour) / 24;
+    const M = 0.9856 * t - 3.289;
+    let L = M + 1.916 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 282.634;
+    L = (L + 360) % 360;
+    let RA = Math.atan(0.91764 * Math.tan(L * rad)) / rad;
+    RA = (RA + 360) % 360;
+    RA += (Math.floor(L / 90) * 90) - (Math.floor(RA / 90) * 90);
+    RA /= 15;
+    const sinDec = 0.39782 * Math.sin(L * rad);
+    const cosDec = Math.cos(Math.asin(sinDec));
+    const cosH = (Math.cos(90.833 * rad) - sinDec * Math.sin(LAT * rad)) /
+                 (cosDec * Math.cos(LAT * rad));
+    if (cosH > 1 || cosH < -1) return null;            // no rise/set that day
+    let H = rise ? 360 - Math.acos(cosH) / rad : Math.acos(cosH) / rad;
+    H /= 15;
+    const T = H + RA - 0.06571 * t - 6.622;
+    return ((T - lngHour + TZ) % 24 + 24) % 24;
+  };
+
+  const fmt = (h) => {
+    const hr = Math.floor(h), mn = Math.round((h - hr) * 60);
+    const hh = ((hr + (mn === 60 ? 1 : 0)) % 24), mm = mn === 60 ? 0 : mn;
+    const ap = hh >= 12 ? 'pm' : 'am';
+    return `${((hh + 11) % 12) + 1}:${String(mm).padStart(2, '0')}${ap}`;
+  };
+
+  const paint = () => {
+    const now = new Date();
+    // local Hawaii wall-clock, derived from UTC rather than the visitor's zone
+    const hi = new Date(now.getTime() + (TZ * 60 + now.getTimezoneOffset()) * 60000);
+    const h = hi.getHours(), m = hi.getMinutes();
+    elT.textContent = `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')}`;
+    elM.textContent = h >= 12 ? 'pm' : 'am';
+
+    const rise = solar(now, true), set = solar(now, false);
+    const cur = h + m / 60;
+    if (rise != null && set != null) {
+      elMeta.textContent = cur < rise ? `Sunrise ${fmt(rise)}`
+        : cur < set ? `Sunset ${fmt(set)}`
+        : `Sunrise tomorrow ${fmt(rise)}`;
+      const day = cur > rise && cur < set;
+      const dusk = Math.abs(cur - set) < 1 || Math.abs(cur - rise) < 1;
+      if (sky) sky.dataset.phase = dusk ? 'dusk' : day ? 'day' : 'night';
+    }
+  };
+  paint();
+  setInterval(paint, 20000);
+})();

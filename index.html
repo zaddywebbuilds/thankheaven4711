@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=31" />
+<link rel="stylesheet" href="assets/css/site.css?v=41" />
 <script>
   /* Two reveal systems, and only ever one running. Without either class
      the page renders fully visible, so nothing can hide behind a
@@ -71,50 +71,59 @@
 
 <!-- ============ VIDEO HERO ============ -->
 <section class="hero">
-  <div class="hero__grid">
+  <div class="bento">
 
-    <aside class="rail">
-      <div class="card card--dark rail__brand">
-        <span class="rail__mark" aria-hidden="true"></span>
-        <p>Maui Sands Seaside<br /><b>Unit 711</b></p>
+    <!-- the words live on their own card; the film carries none -->
+    <div class="card card--dark b-type">
+      <p class="b-type__kicker"><span class="rail__mark" aria-hidden="true"></span>
+        Maui Sands Seaside &middot; Unit 711</p>
+      <h1 class="b-type__h1">Wake to the sound of the water.</h1>
+      <p class="b-type__sub">An oceanfront one-bedroom on Maui&rsquo;s west shore.
+        Thirty-five feet of private lanai, open water to Molokai and Lanai, and the
+        reef where the lawn ends.</p>
+      <div class="b-type__act">
+        <a class="pill pill--accent pill--lg" href="#book">
+          <span class="pill__dot" aria-hidden="true"></span>Check availability</a>
+        <a class="pill pill--ghost pill--lg" href="#gallery">See all
+          <span data-gallery-count>127</span> photos</a>
       </div>
+    </div>
 
-      <div class="card card--dark stat">
-        <span class="stat__dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
-        <p class="stat__fig">35<em>ft</em></p>
-        <p class="stat__label">Of private lanai,<br />the length of the unit</p>
-      </div>
-
-      <div class="card card--frost gauge">
-        <p class="gauge__title">Lanai, against the norm</p>
-        <div class="gauge__ring" aria-hidden="true"><span>+23<i>ft</i></span></div>
-        <dl class="gauge__rows">
-          <div><dt>Unit 711</dt><dd><i style="--w:100%"></i>35 ft</dd></div>
-          <div class="is-muted"><dt>Typical</dt><dd><i style="--w:34%"></i>12 ft</dd></div>
-        </dl>
-      </div>
-
-      <div class="card card--dark stat stat--row">
-        <p class="stat__fig">180<em>&deg;</em></p>
-        <p class="stat__label">Open water, Molokai<br />and Lanai on the horizon</p>
-      </div>
-    </aside>
-
-    <div class="card media">
-      <video class="media__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
+    <!-- film only -->
+    <figure class="card b-film">
+      <video class="b-film__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
              muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
-      <div class="media__scrim" aria-hidden="true"></div>
-      <div class="media__copy">
-        <h1 class="media__h1">Wake to the sound of the water.</h1>
-        <div class="media__act">
-          <a class="pill pill--solid pill--lg" href="#book">
-            <span class="pill__dot" aria-hidden="true"></span>Check availability</a>
-          <a class="pill pill--ghost pill--lg" href="#gallery">See all
-            <span data-gallery-count>127</span> photos</a>
-        </div>
-      </div>
-      <p class="media__note">An oceanfront one-bedroom on Maui&rsquo;s west shore.
-        The reef starts where the lawn ends, and no resort stands beside it.</p>
+      <figcaption class="b-film__cap">
+        <span class="b-film__live" aria-hidden="true"></span>From the lanai, unit 711
+      </figcaption>
+    </figure>
+
+    <div class="card card--dark b-stat">
+      <span class="stat__dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+      <p class="stat__fig"><span class="count" data-to="35">35</span><em>ft</em></p>
+      <p class="stat__label">Of private lanai, the length of the unit</p>
+    </div>
+
+    <div class="card card--dark b-stat">
+      <p class="stat__fig"><span class="count" data-to="180">180</span><em>&deg;</em></p>
+      <p class="stat__label">Open water. Molokai and Lanai on the horizon</p>
+    </div>
+
+    <div class="card card--frost b-gauge">
+      <p class="gauge__title">Lanai, against the norm</p>
+      <div class="gauge__ring" id="gaugeRing" aria-hidden="true"><span>+23<i>ft</i></span></div>
+      <dl class="gauge__rows">
+        <div><dt>Unit 711</dt><dd><i style="--w:100%"></i>35 ft</dd></div>
+        <div class="is-muted"><dt>Typical</dt><dd><i style="--w:34%"></i>12 ft</dd></div>
+      </dl>
+    </div>
+
+    <!-- live: the clock actually ticks in Hawaii time -->
+    <div class="card card--dark b-now" id="nowCard">
+      <p class="b-now__label">Right now in Maui</p>
+      <p class="b-now__time"><span id="nowTime">--:--</span><em id="nowMeridiem"></em></p>
+      <p class="b-now__meta" id="nowMeta">&nbsp;</p>
+      <div class="b-now__sky" id="nowSky" aria-hidden="true"></div>
     </div>
 
   </div>
@@ -416,7 +425,7 @@
 }
 </script>
 
-<script src="assets/js/site.js?v=31"></script>
-<script src="assets/js/gallery.js?v=31"></script>
+<script src="assets/js/site.js?v=41"></script>
+<script src="assets/js/gallery.js?v=41"></script>
 </body>
 </html>
