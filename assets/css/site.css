@@ -116,8 +116,9 @@ img{max-width:100%;display:block;}
 .b-type{grid-column:span 5;display:flex;flex-direction:column;
   justify-content:center;gap:16px;padding:clamp(26px,2.6vw,44px);
   min-height:clamp(380px,50svh,560px);}
-.b-film{grid-column:span 7;margin:0;position:relative;overflow:hidden;
-  min-height:clamp(380px,50svh,560px);background:var(--ink);}
+.b-film{grid-column:span 7;margin:0;overflow:hidden;
+  min-height:clamp(380px,50svh,560px);background:var(--ink);
+  display:flex;flex-direction:column;}
 .b-stat{grid-column:span 3;}
 .b-gauge{grid-column:span 3;}
 .b-now{grid-column:span 3;}
@@ -135,16 +136,15 @@ img{max-width:100%;display:block;}
 .pill--accent{background:var(--accent);color:#fff;}
 .pill--accent:hover{background:#ff7d38;transform:translateY(-2px);}
 
-/* the film card - no copy on it, only a small label strip */
+/* the film card. The label is a strip of the card, not a chip floating on
+   the footage: nothing on this page sits on top of an image. */
+.b-film__media{position:relative;flex:1 1 auto;min-height:0;overflow:hidden;}
 .b-film__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity .9s ease;}
 .b-film__video.is-on{opacity:1;}
-.b-film__cap{position:absolute;left:14px;bottom:14px;z-index:2;
-  display:inline-flex;align-items:center;gap:9px;
-  padding:9px 16px 9px 13px;border-radius:999px;
-  background:rgba(20,24,27,.72);-webkit-backdrop-filter:blur(10px);
-  backdrop-filter:blur(10px);color:#fff;font-size:.76rem;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);}
+.b-film__cap{flex:0 0 auto;display:flex;align-items:center;gap:10px;
+  padding:13px 18px;background:var(--card);color:var(--on-light);
+  font-size:.82rem;font-weight:600;letter-spacing:-.005em;}
 .b-film__live{width:8px;height:8px;border-radius:50%;background:var(--accent);
   box-shadow:0 0 0 0 rgba(238,107,34,.6);animation:livePulse 2.4s ease-out infinite;}
 @keyframes livePulse{
@@ -259,11 +259,10 @@ img{max-width:100%;display:block;}
 .shot--tall img{aspect-ratio:3/4;}
 .band{margin-top:clamp(26px,4vw,48px);}
 .band img{width:100%;aspect-ratio:21/9;object-fit:cover;}
-.sec{--cap-bg:var(--card);--cap-fg:var(--on-light-soft);}
-.sec--water,.sec--evening,.sec--gallery{--cap-bg:var(--ink-2);--cap-fg:var(--on-dark-soft);}
+.sec{--cap-bg:var(--card);--cap-fg:var(--on-light);}
 .shot figcaption,.band figcaption,.honu-stage figcaption{
-  padding:13px 18px;font-size:.8rem;line-height:1.4;
-  background:var(--cap-bg);color:var(--cap-fg);}
+  padding:14px 18px;font-size:.85rem;line-height:1.4;font-weight:600;
+  letter-spacing:-.005em;background:var(--cap-bg);color:var(--cap-fg);}
 .duo{display:grid;gap:clamp(12px,1.6vw,18px);margin-top:clamp(26px,4vw,44px);
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
 @media (max-width:880px){ .band img{aspect-ratio:16/10;} }
@@ -353,14 +352,15 @@ img{max-width:100%;display:block;}
 .gcat__grid{display:grid;gap:clamp(10px,1.2vw,16px);
   grid-template-columns:repeat(auto-fill,minmax(210px,1fr));perspective:1100px;}
 .gcard{margin:0;position:relative;border-radius:var(--r-card-sm);overflow:hidden;
-  cursor:pointer;background:var(--ink-2);display:flex;flex-direction:column;
+  cursor:pointer;background:var(--card);display:flex;flex-direction:column;
   transform-style:preserve-3d;--rx:0deg;--ry:0deg;--lift:0px;
   transform:rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0,var(--lift),0);
   transition:transform .5s var(--ease),box-shadow .5s;will-change:transform;}
 .gcard:focus-visible{outline:none;box-shadow:0 0 0 2px var(--accent),0 18px 44px rgba(0,0,0,.5);}
 .gcard img{width:100%;aspect-ratio:4/3;object-fit:cover;}
-.gcard figcaption{flex:1 0 auto;padding:11px 13px;font-size:.76rem;line-height:1.35;
-  color:var(--on-dark-soft);background:var(--ink-2);}
+.gcard figcaption{flex:1 0 auto;padding:12px 14px 13px;font-size:.82rem;
+  line-height:1.35;font-weight:600;letter-spacing:-.005em;
+  color:var(--on-light);background:var(--card);}
 @media (hover:hover) and (pointer:fine){
   .gcard:hover{--lift:-5px;box-shadow:0 22px 50px rgba(0,0,0,.5);}
 }
@@ -371,7 +371,7 @@ img{max-width:100%;display:block;}
   border:solid transparent;border-width:5px 0 5px 8px;border-left-color:#fff;}
 @media (max-width:640px){
   .gcat__grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));}
-  .gcard figcaption{font-size:.7rem;}
+  .gcard figcaption{font-size:.76rem;padding:10px 11px 11px;}
 }
 
 /* ---------- lightbox ---------- */

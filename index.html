@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preload" as="image" href="assets/img/hero-poster.jpg" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/site.css?v=41" />
+<link rel="stylesheet" href="assets/css/site.css?v=42" />
 <script>
   /* Two reveal systems, and only ever one running. Without either class
      the page renders fully visible, so nothing can hide behind a
@@ -91,8 +91,10 @@
 
     <!-- film only -->
     <figure class="card b-film">
-      <video class="b-film__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
-             muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+      <div class="b-film__media">
+        <video class="b-film__video" id="heroVideo" poster="assets/img/hero-poster.jpg"
+               muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+      </div>
       <figcaption class="b-film__cap">
         <span class="b-film__live" aria-hidden="true"></span>From the lanai, unit 711
       </figcaption>
@@ -425,7 +427,7 @@
 }
 </script>
 
-<script src="assets/js/site.js?v=41"></script>
-<script src="assets/js/gallery.js?v=41"></script>
+<script src="assets/js/site.js?v=42"></script>
+<script src="assets/js/gallery.js?v=42"></script>
 </body>
 </html>
