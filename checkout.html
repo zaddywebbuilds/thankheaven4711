@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Secure Checkout — O thank Heaven 4 711</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f4f7fb;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px 64px;
+  color: #1a2530;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Header */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background: #0C3D5C;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.brand-name { font-weight: 700; font-size: 1rem; color: #0C3D5C; }
+.brand-sub  { font-size: .75rem; color: #6a8090; margin-top: 1px; }
+
+/* Summary card */
+.summary {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #e0e8f0;
+}
+.summary-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0C3D5C;
+  margin-bottom: 14px;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: .88rem;
+  color: #4a6070;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f4f8;
+}
+.summary-row:last-of-type { border-bottom: none; }
+.summary-row.total {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1a2530;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 2px solid #e0e8f0;
+  border-bottom: none;
+}
+
+/* Payment form */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid #e0e8f0;
+}
+.card-title {
+  font-weight: 700;
+  font-size: .95rem;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lock-icon { color: #0C3D5C; }
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #4a6070;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.field input {
+  width: 100%;
+  border: 1px solid #c8d8e8;
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: .95rem;
+  font-family: inherit;
+  color: #1a2530;
+  outline: none;
+  transition: border-color .15s;
+}
+.field input:focus { border-color: #0C3D5C; box-shadow: 0 0 0 3px rgba(12,61,92,.1); }
+.field input::placeholder { color: #a0b4c4; }
+
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Card number formatting hint */
+.card-icons {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.card-icon {
+  background: #f0f4f8;
+  border: 1px solid #e0e8f0;
+  border-radius: 4px;
+  padding: 3px 7px;
+  font-size: .7rem;
+  font-weight: 700;
+  color: #4a6070;
+}
+
+.btn-pay {
+  width: 100%;
+  background: #0C3D5C;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-pay:hover { background: #164F76; }
+.btn-pay:disabled { background: #8aafca; cursor: not-allowed; }
+
+.secure-note {
+  text-align: center;
+  font-size: .75rem;
+  color: #8a9fb0;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Success state */
+.success {
+  display: none;
+  background: #fff;
+  border-radius: 14px;
+  padding: 40px 24px;
+  text-align: center;
+  border: 1px solid #e0e8f0;
+}
+.success-check {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #e6f4ec;
+  color: #2a9a5a;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+.success h2 { font-size: 1.3rem; color: #0C3D5C; margin-bottom: 10px; }
+.success p  { font-size: .9rem; color: #4a6070; line-height: 1.55; margin-bottom: 6px; }
+.success .ref { font-size: .8rem; color: #8a9fb0; margin-top: 14px; }
+.btn-back {
+  display: inline-block;
+  margin-top: 22px;
+  background: #0C3D5C;
+  color: #fff;
+  text-decoration: none;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+/* Spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-icon">🌊</div>
+    <div>
+      <div class="brand-name">O thank Heaven 4 711</div>
+      <div class="brand-sub">Maui Sands Seaside · Kihei, Maui, Hawaii</div>
+    </div>
+  </div>
+
+  <!-- Booking summary -->
+  <div class="summary" id="summaryBlock">
+    <div class="summary-title">Booking Summary</div>
+    <div class="summary-row"><span>Check-in</span><span id="sCheckin">—</span></div>
+    <div class="summary-row"><span>Check-out</span><span id="sCheckout">—</span></div>
+    <div class="summary-row"><span>Guests</span><span id="sGuests">—</span></div>
+    <div class="summary-row"><span id="sNightsLabel">Nightly rate</span><span id="sSubtotal">—</span></div>
+    <div class="summary-row"><span>Cleaning fee</span><span id="sCleaning">—</span></div>
+    <div class="summary-row"><span>Taxes &amp; fees</span><span id="sTax">—</span></div>
+    <div class="summary-row total"><span>Total</span><span id="sTotal">—</span></div>
+  </div>
+
+  <!-- Payment form -->
+  <div class="card" id="payForm">
+    <div class="card-title">
+      <svg class="lock-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure Payment
+    </div>
+
+    <div class="card-icons">
+      <span class="card-icon">VISA</span>
+      <span class="card-icon">MC</span>
+      <span class="card-icon">AMEX</span>
+      <span class="card-icon">DISC</span>
+    </div>
+
+    <div class="field">
+      <label>Cardholder name</label>
+      <input type="text" id="fName" placeholder="Jane Smith" autocomplete="cc-name" />
+    </div>
+
+    <div class="field">
+      <label>Card number</label>
+      <input type="text" id="fCard" placeholder="1234  5678  9012  3456" maxlength="19" autocomplete="cc-number" inputmode="numeric" />
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>Expiry</label>
+        <input type="text" id="fExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" inputmode="numeric" />
+      </div>
+      <div class="field">
+        <label>CVV</label>
+        <input type="text" id="fCvv" placeholder="123" maxlength="4" autocomplete="cc-csc" inputmode="numeric" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email for confirmation</label>
+      <input type="email" id="fEmail" placeholder="jane@email.com" autocomplete="email" />
+    </div>
+
+    <button class="btn-pay" id="btnPay" onclick="pay()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <span id="btnLabel">Complete Booking</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+
+    <div class="secure-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      256-bit SSL encryption &bull; Your details are never stored
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="success" id="successBlock">
+    <div class="success-check">✓</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Your stay at <strong>O thank Heaven 4 711</strong> is secured.</p>
+    <p id="confDates"></p>
+    <p style="margin-top:12px;">A confirmation email is on its way to <strong id="confEmail"></strong>.<br>Check-in details will follow closer to your arrival.</p>
+    <div class="ref" id="confRef"></div>
+    <a class="btn-back" href="index.html">Back to property</a>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var p = new URLSearchParams(location.search);
+
+  function fmt(dateStr) {
+    if (!dateStr) return '—';
+    var d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  function money(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+  var checkin  = p.get('checkin')  || p.get('check_in')  || '';
+  var checkout = p.get('checkout') || p.get('check_out') || '';
+  var guests   = p.get('guests')   || '2';
+  var nights   = p.get('nights')   || '5';
+  var total    = parseFloat(p.get('total') || '2100');
+  var nightly  = parseFloat(p.get('nightly') || '350');
+  var cleaning = parseFloat(p.get('cleaning') || '175');
+  var tax      = parseFloat(p.get('tax') || (total - (nightly * parseInt(nights)) - cleaning).toFixed(2));
+
+  setText('sCheckin',    fmt(checkin));
+  setText('sCheckout',   fmt(checkout));
+  setText('sGuests',     guests + (guests === '1' ? ' guest' : ' guests'));
+  setText('sNightsLabel', nights + ' nights × ' + money(nightly));
+  setText('sSubtotal',   money(nightly * parseInt(nights)));
+  setText('sCleaning',   money(cleaning));
+  setText('sTax',        money(tax));
+  setText('sTotal',      money(total));
+
+  // Pre-fill email if passed
+  var emailParam = p.get('email');
+  if (emailParam) document.getElementById('fEmail').value = emailParam;
+
+  function setText(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+
+  // Card number formatting
+  document.getElementById('fCard').addEventListener('input', function () {
+    var v = this.value.replace(/\D/g, '').slice(0, 16);
+    this.value = v.match(/.{1,4}/g)?.join('  ') || v;
+  });
+
+  // Expiry formatting
+  document.getElementById('fExpiry').addEventListener('input', function () {
+    var v = this.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) v = v.slice(0, 2) + ' / ' + v.slice(2);
+    this.value = v;
+  });
+
+  window.pay = function () {
+    var name   = document.getElementById('fName').value.trim();
+    var card   = document.getElementById('fCard').value.replace(/\s/g, '');
+    var expiry = document.getElementById('fExpiry').value.trim();
+    var cvv    = document.getElementById('fCvv').value.trim();
+    var email  = document.getElementById('fEmail').value.trim();
+
+    if (!name || card.length < 15 || expiry.length < 4 || cvv.length < 3 || !email) {
+      alert('Please fill in all payment details.');
+      return;
+    }
+
+    // Simulate processing
+    var btn     = document.getElementById('btnPay');
+    var label   = document.getElementById('btnLabel');
+    var spinner = document.getElementById('spinner');
+    btn.disabled    = true;
+    label.textContent = 'Processing…';
+    spinner.style.display = 'block';
+
+    setTimeout(function () {
+      // Show success
+      document.getElementById('payForm').style.display     = 'none';
+      document.getElementById('summaryBlock').style.display = 'none';
+      document.getElementById('successBlock').style.display  = 'block';
+
+      document.getElementById('confDates').textContent = fmt(checkin) + ' → ' + fmt(checkout);
+      document.getElementById('confEmail').textContent = email;
+
+      var ref = 'TH711-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+      document.getElementById('confRef').textContent = 'Confirmation ref: ' + ref;
+    }, 2200);
+  };
+})();
+</script>
+</body>
+</html>

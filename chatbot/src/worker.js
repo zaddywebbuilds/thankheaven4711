@@ -202,30 +202,32 @@ async function checkAvailability({ check_in, check_out, guests }, env) {
       return { available: false, reason: 'invalid_dates' };
     }
 
-    const token = await getGoogleToken(env);
+    // Skip live calendar check if Google credentials not configured (demo mode)
+    const hasGoogle = env.GOOGLE_CALENDAR_ID && env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
 
-    // Use Google Calendar free/busy query
-    const fbResp = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        timeMin: `${check_in}T00:00:00Z`,
-        timeMax: `${check_out}T23:59:59Z`,
-        items: [{ id: env.GOOGLE_CALENDAR_ID }],
-      }),
-    });
-
-    const fbData = await fbResp.json();
-    const busy = fbData.calendars?.[env.GOOGLE_CALENDAR_ID]?.busy || [];
-
-    if (busy.length > 0) {
-      return { available: false, reason: 'booked', check_in, check_out };
+    if (hasGoogle) {
+      const token = await getGoogleToken(env);
+      const fbResp = await fetch('https://www.googleapis.com/calendar/v3/freeBusy', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          timeMin: `${check_in}T00:00:00Z`,
+          timeMax: `${check_out}T23:59:59Z`,
+          items: [{ id: env.GOOGLE_CALENDAR_ID }],
+        }),
+      });
+      const fbData = await fbResp.json();
+      const busy = fbData.calendars?.[env.GOOGLE_CALENDAR_ID]?.busy || [];
+      if (busy.length > 0) {
+        return { available: false, reason: 'booked', check_in, check_out };
+      }
     }
+    // In demo mode: dates always show as available
 
     // Pricing
-    const nightlyRate    = parseInt(env.NIGHTLY_RATE_CENTS  || '35000') / 100;
-    const cleaningFee    = parseInt(env.CLEANING_FEE_CENTS  || '17500') / 100;
-    const taxRate        = parseFloat(env.TAX_RATE          || '0.1496'); // Hawaii TAT + GET
+    const nightlyRate = parseInt(env.NIGHTLY_RATE_CENTS || '35000') / 100;
+    const cleaningFee = parseInt(env.CLEANING_FEE_CENTS || '17500') / 100;
+    const taxRate     = parseFloat(env.TAX_RATE         || '0.1496');
 
     const subtotal   = (nightlyRate * nights) + cleaningFee;
     const tax        = Math.round(subtotal * taxRate * 100) / 100;
@@ -240,6 +242,13 @@ async function checkAvailability({ check_in, check_out, guests }, env) {
 }
 
 async function saveLead({ name, email, phone, check_in, check_out, guests, status, notes }, env) {
+  // Skip Sheets write if Google credentials not configured (demo mode)
+  const hasSheets = env.GOOGLE_SHEETS_ID && env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  if (!hasSheets) {
+    console.log('Demo mode: lead not saved to Sheets —', email, check_in, check_out);
+    return { success: true, demo: true };
+  }
+
   try {
     const token = await getGoogleToken(env);
 
@@ -267,42 +276,64 @@ async function saveLead({ name, email, phone, check_in, check_out, guests, statu
 }
 
 async function createCheckout({ check_in, check_out, guests, guest_name, guest_email, total_cents }, env) {
-  try {
-    const nights = Math.round((new Date(check_out) - new Date(check_in)) / 86400000);
-    const siteUrl = env.SITE_URL || 'https://www.mauisandsseaside.com';
+  const nights    = Math.round((new Date(check_out) - new Date(check_in)) / 86400000);
+  const siteUrl   = env.SITE_URL || 'https://www.mauisandsseaside.com';
+  const nightRate = parseInt(env.NIGHTLY_RATE_CENTS || '35000') / 100;
+  const cleaning  = parseInt(env.CLEANING_FEE_CENTS || '17500') / 100;
+  const taxRate   = parseFloat(env.TAX_RATE || '0.1496');
+  const subtotal  = (nightRate * nights) + cleaning;
+  const tax       = Math.round(subtotal * taxRate * 100) / 100;
 
-    const body = new URLSearchParams({
-      mode: 'payment',
-      'line_items[0][price_data][currency]': 'usd',
-      'line_items[0][price_data][product_data][name]': `O thank Heaven 4 711 — ${nights} nights`,
-      'line_items[0][price_data][product_data][description]': `${check_in} to ${check_out}, ${guests} guest${guests > 1 ? 's' : ''}`,
-      'line_items[0][price_data][unit_amount]': String(total_cents),
-      'line_items[0][quantity]': '1',
-      customer_email: guest_email,
-      success_url: `${siteUrl}?booking=confirmed`,
-      cancel_url:  `${siteUrl}?booking=cancelled`,
-      'metadata[check_in]':    check_in,
-      'metadata[check_out]':   check_out,
-      'metadata[guests]':      String(guests),
-      'metadata[guest_name]':  guest_name || '',
-    });
+  // Use real Stripe when key is configured, otherwise mock checkout page
+  if (env.STRIPE_SECRET_KEY) {
+    try {
+      const body = new URLSearchParams({
+        mode: 'payment',
+        'line_items[0][price_data][currency]': 'usd',
+        'line_items[0][price_data][product_data][name]': `O thank Heaven 4 711 — ${nights} nights`,
+        'line_items[0][price_data][product_data][description]': `${check_in} to ${check_out}, ${guests} guest${guests > 1 ? 's' : ''}`,
+        'line_items[0][price_data][unit_amount]': String(total_cents),
+        'line_items[0][quantity]': '1',
+        customer_email: guest_email,
+        success_url: `${siteUrl}?booking=confirmed`,
+        cancel_url:  `${siteUrl}?booking=cancelled`,
+        'metadata[check_in]':   check_in,
+        'metadata[check_out]':  check_out,
+        'metadata[guests]':     String(guests),
+        'metadata[guest_name]': guest_name || '',
+      });
 
-    const resp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${btoa(env.STRIPE_SECRET_KEY + ':')}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: body.toString(),
-    });
+      const resp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${btoa(env.STRIPE_SECRET_KEY + ':')}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      });
 
-    const session = await resp.json();
-    if (session.error) throw new Error(session.error.message);
-
-    return { success: true, checkout_url: session.url };
-  } catch (err) {
-    return { success: false, error: err.message };
+      const session = await resp.json();
+      if (session.error) throw new Error(session.error.message);
+      return { success: true, checkout_url: session.url };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
   }
+
+  // Demo mode: link to the on-site mock checkout page
+  const params = new URLSearchParams({
+    checkin:  check_in,
+    checkout: check_out,
+    guests:   String(guests),
+    nights:   String(nights),
+    nightly:  String(nightRate),
+    cleaning: String(cleaning),
+    tax:      String(tax),
+    total:    String(Math.round((subtotal + tax) * 100) / 100),
+    email:    guest_email || '',
+  });
+
+  return { success: true, checkout_url: `${siteUrl}/checkout.html?${params.toString()}` };
 }
 
 // ─── Google auth (service account JWT) ───────────────────────────────────────
