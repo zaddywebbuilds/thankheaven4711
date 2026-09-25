@@ -1,0 +1,84 @@
+{
+  "name": "O thank Heaven 4 711",
+  "also_known_as": "Maui Sands Seaside, Unit 711",
+  "location": {
+    "complex": "Maui Sands",
+    "area": "Kihei, Maui, Hawaii",
+    "description": "The lawn ends at the reef. No road or parking lot between the property and the ocean."
+  },
+  "unit": {
+    "floor": 7,
+    "number": "711",
+    "size_sqft": 700,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "max_occupancy": 4
+  },
+  "features": {
+    "lanai": "35-foot private lanai facing the Maui channel toward Molokai and Lanai",
+    "view": "Open water panorama toward Molokai and Lanai",
+    "kitchen": "Full kitchen with full-size oven, refrigerator, dishwasher, coffee maker",
+    "bathroom": "Updated bathroom with walk-in shower",
+    "bedroom": "Separate bedroom",
+    "parking": "One assigned parking stall included",
+    "wifi": "High-speed WiFi included",
+    "ac": "Air conditioning"
+  },
+  "wildlife": {
+    "turtles": "Hawaiian green sea turtles (Honu) regularly haul out on the lawn and reef directly below the unit",
+    "whales": "Humpback whale season December through April, visible from the lanai",
+    "reef": "Snorkeling directly off the property reef, no driving required"
+  },
+  "policies": {
+    "check_in": "3:00 PM",
+    "check_out": "11:00 AM",
+    "minimum_stay": 5,
+    "pets": "No pets",
+    "smoking": "No smoking anywhere on property",
+    "parties": "No parties or events",
+    "max_occupancy": 4
+  },
+  "rates_note": "Current rates are provided when you check specific dates",
+  "faqs": [
+    {
+      "q": "Is parking included?",
+      "a": "Yes, one assigned parking stall is included with every stay."
+    },
+    {
+      "q": "Can we snorkel?",
+      "a": "Yes. The reef is directly accessible from the property lawn. Most guests snorkel right there without driving anywhere."
+    },
+    {
+      "q": "Will we see turtles?",
+      "a": "Very likely. Hawaiian green sea turtles haul out on the lawn and reef below the unit regularly. We cannot guarantee wildlife but guests report sightings on most days."
+    },
+    {
+      "q": "When is whale season?",
+      "a": "Humpback whales are in Maui waters from approximately December through April. The lanai faces the channel they use, so sightings from the unit are common during that period."
+    },
+    {
+      "q": "How close is it to the water?",
+      "a": "Very close. The property lawn ends at the reef. There is no road or parking lot between the unit and the ocean."
+    },
+    {
+      "q": "Is there air conditioning?",
+      "a": "Yes, the unit has air conditioning."
+    },
+    {
+      "q": "What is the minimum stay?",
+      "a": "The minimum stay is 5 nights."
+    },
+    {
+      "q": "How many guests can stay?",
+      "a": "The unit accommodates up to 4 guests."
+    },
+    {
+      "q": "What is the check-in and check-out time?",
+      "a": "Check-in is at 3:00 PM, check-out is at 11:00 AM."
+    },
+    {
+      "q": "Is there a kitchen?",
+      "a": "Yes, a full kitchen with full-size oven, refrigerator, dishwasher, and coffee maker."
+    }
+  ]
+}
