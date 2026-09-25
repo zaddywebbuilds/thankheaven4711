@@ -2,7 +2,7 @@
   'use strict';
 
   // ← Replace with your deployed worker URL after running `npm run deploy`
-  var WORKER_URL = 'https://thankheaven-chat.REPLACE_WITH_YOUR_ACCOUNT.workers.dev';
+  var WORKER_URL = 'https://thankheaven-chat.zaddywebbuilds.workers.dev';
 
   var messages = [];
   var isOpen   = false;
