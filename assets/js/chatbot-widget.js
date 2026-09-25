@@ -136,11 +136,18 @@
     var div = document.createElement('div');
     div.className = 'thc-msg thc-msg--' + role;
 
-    // Basic formatting: bold, newlines, Stripe checkout links → button
+    // Basic formatting: bold, newlines, checkout links → button
     var html = text
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/(https:\/\/checkout\.stripe\.com\/[^\s]+)/g,
+      // Markdown links containing checkout → styled button
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^)]*checkout[^)]*)\)/gi,
+        '<a href="$2" target="_blank" rel="noopener" class="thc-book">Secure your dates &rarr;</a>')
+      // Raw Stripe checkout URLs
+      .replace(/(https:\/\/checkout\.stripe\.com\/[^\s<]+)/g,
+        '<a href="$1" target="_blank" rel="noopener" class="thc-book">Secure your dates &rarr;</a>')
+      // Raw checkout.html URLs
+      .replace(/(https?:\/\/[^\s<]*checkout\.html[^\s<]*)/g,
         '<a href="$1" target="_blank" rel="noopener" class="thc-book">Secure your dates &rarr;</a>')
       .replace(/\n/g, '<br>');
 
