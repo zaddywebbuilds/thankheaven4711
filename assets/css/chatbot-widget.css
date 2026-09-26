@@ -9,40 +9,59 @@
   font-size: 15px;
 }
 
-/* Bubble button */
+/* Bubble pill button */
 .thc-bubble {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  height: 48px;
+  padding: 0 20px 0 16px;
+  border-radius: 28px;
   background: #0C3D5C;
   color: #fff;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 18px rgba(12,61,92,.4);
-  transition: transform .2s, box-shadow .2s;
+  gap: 9px;
+  box-shadow: 0 4px 20px rgba(12,61,92,.45), 0 1px 4px rgba(0,0,0,.15);
+  transition: transform .18s, box-shadow .18s, background .18s;
   position: relative;
+  white-space: nowrap;
 }
-.thc-bubble:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(12,61,92,.5); }
-.thc-bubble svg   { width: 24px; height: 24px; }
+.thc-bubble:hover {
+  background: #164F76;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(12,61,92,.5);
+}
+.thc-bubble-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: .9; }
+.thc-bubble-label {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
 
-/* Notification badge */
-.thc-badge {
+/* Pulse dot (replaces number badge) */
+.thc-pulse {
   position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 18px;
-  height: 18px;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #E07000;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 2px solid #fff;
+}
+.thc-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid #E07000;
+  animation: thcPulse 1.8s ease-out infinite;
+}
+@keyframes thcPulse {
+  0%   { transform: scale(1); opacity: .8; }
+  100% { transform: scale(2.2); opacity: 0; }
 }
 
 /* Panel */

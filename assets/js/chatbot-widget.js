@@ -14,9 +14,10 @@
     var el = document.createElement('div');
     el.id  = 'thc';
     el.innerHTML = [
-      '<button class="thc-bubble" id="thcBubble" aria-label="Chat with us">',
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
-        '<span class="thc-badge" id="thcBadge" hidden>1</span>',
+      '<button class="thc-bubble" id="thcBubble" aria-label="Booking and inquiries">',
+        '<svg class="thc-bubble-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+        '<span class="thc-bubble-label">BOOKING &amp; INQUIRIES</span>',
+        '<span class="thc-pulse" id="thcBadge" hidden></span>',
       '</button>',
 
       '<div class="thc-panel" id="thcPanel" aria-hidden="true">',
