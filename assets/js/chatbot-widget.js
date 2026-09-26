@@ -22,10 +22,10 @@
 
       '<div class="thc-panel" id="thcPanel" aria-hidden="true">',
         '<div class="thc-head">',
-          '<img class="thc-head-img" src="assets/img/chat-header.jpg" alt="Maui Sands Seaside view" />',
+          '<img class="thc-head-img" src="assets/img/chat-header.webp" alt="Maui Sands Seaside view" />',
           '<button class="thc-x" id="thcClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>',
           '<div class="thc-head-row">',
-            '<div class="thc-avatar"><img src="assets/img/chat-header.jpg" alt="" /></div>',
+            '<div class="thc-avatar"><img src="assets/img/chat-header.webp" alt="" /></div>',
             '<div>',
               '<div class="thc-title">Maui Booking Assistant</div>',
               '<div class="thc-sub">O thank Heaven 4 711 &bull; Kihei, Maui</div>',

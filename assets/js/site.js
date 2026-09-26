@@ -63,6 +63,25 @@ if (heroVideo && !FRUGAL && !matchMedia('(prefers-reduced-motion: reduce)').matc
   }
 }
 
+/* ---- whale video: lazy-autoplay with connection & visibility check ---- */
+const whaleVid = document.querySelector('.band--whale video');
+if (whaleVid && !FRUGAL && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        whaleVid.setAttribute('autoplay', '');
+        const g = whaleVid.play();
+        if (g && g.catch) g.catch(() => {});
+      } else {
+        whaleVid.pause();
+      }
+    }, { threshold: 0.1 }).observe(whaleVid);
+  } else {
+    const g = whaleVid.play();
+    if (g && g.catch) g.catch(() => {});
+  }
+}
+
 /* ---------- navigation ---------- */
 const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
