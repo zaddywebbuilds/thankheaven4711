@@ -259,6 +259,7 @@ img{max-width:100%;display:block;}
 .shot--tall img{aspect-ratio:3/4;}
 .band{margin-top:clamp(14px,2vw,24px);}
 .band img{width:100%;aspect-ratio:21/9;object-fit:cover;}
+.band--whale video{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#000;}
 .sec{--cap-bg:var(--card);--cap-fg:var(--on-light);}
 .shot figcaption,.band figcaption,.honu-stage figcaption{
   padding:14px 18px;font-size:.85rem;line-height:1.4;font-weight:600;
