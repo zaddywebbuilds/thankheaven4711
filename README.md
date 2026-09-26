@@ -1,167 +1,273 @@
-# O Thank Heaven 4 711
+# O Thank Heaven 4 711 — Project Handoff
 
-Marketing site for an oceanfront one-bedroom at **Maui Sands Seaside, Unit 711**, Maui.
+Oceanfront one-bedroom condo at **Maui Sands Seaside, Unit 711**, Kihei, Maui.
+35-foot private lanai, open water to Molokai and Lanai, reef snorkelling off the lawn.
 
-The pitch, in the owner's own words: *a $1 million view from a cozy 700-square-foot
-one-bedroom* — with a 35-foot private lanai where most oceanfront condos give you twelve.
+---
 
-## What this is
+## Live URLs
 
-A static site. No build step, no framework, no dependencies to install.
-
-Second design. The first opened with a scroll-scrubbed cinematic sequence and an
-AI-rendered sphere; the owners rejected it - the landing page did not work for
-them, navigation was hard, and the body copy read as "grayed out". All three are
-addressed here:
-
-- **Opens with video.** A full-bleed autoplay loop, which is what they asked for.
-  The poster carries the hero on its own, so the clip is an enhancement.
-- **Real navigation.** A fixed nav with six anchors and scroll-spy, instead of
-  16,000px of hijacked scrolling before any information.
-- **Readable copy.** Body text went from 5.56:1 to 8.34:1 and eyebrows from
-  4.04:1 (an actual AA failure at 11.8px) to 6.00:1.
-
-The page follows the owner's own description of a morning there: waking to the
-water, tea in the kitchen with Molokai and Lanai on the horizon, out onto the
-lanai, the reef, then the evening.
-
-### The gallery
-
-Every usable photo and clip from the owner's album, grouped by room and subject with
-its own label - 113 photos and 14 videos across 14 categories. Click anything for the
-lightbox; clips play in place.
-
-It is generated, not hand-written. The classification lives in `scratchpad-classify.py`
-(index -> category + label); the build resizes everything, encodes the clips and emits
-`assets/gallery.json`, which `assets/js/gallery.js` renders. To relabel or recategorise
-an item, edit the table and re-run the build.
-
-```
-index.html              the page
-assets/css/site.css     everything below the cinematic opening
-assets/js/site.js       scene config + CONFIG block (edit this)
-assets/js/scrub-engine.js   the scroll-scrub engine (vendored, don't edit)
-assets/js/gallery.js    renders the classified gallery from gallery.json
-assets/js/hero.js       sphere hero: callout pins + procedural vapour
-assets/gallery.json     generated manifest: every item, its category and label
-assets/gallery/         gallery media, up to 2048px + 800px thumbs (webp), clips (mp4)
-assets/img/             stills, posters, hero art, favicon
-assets/video/           8s scene clips, desktop (1440px) + `-m` mobile (900px)
-```
-
-## Depth / motion
-
-Three reveal paths, and exactly one runs. The head script decides:
-
-| Condition | What happens |
+| What | URL |
 |---|---|
-| `animation-timeline: view()` supported, motion allowed | `.css-depth` - scroll-driven CSS animations, no JS, off the main thread |
-| No support, motion allowed | `.js-reveal` - the IntersectionObserver fallback |
-| No JS, or reduced motion | Neither class; the page renders fully visible |
+| **Live site** | https://thankheaven4711maui.com |
+| **GitHub Pages fallback** | https://zaddywebbuilds.github.io/thankheaven4711 |
+| **Cloudflare Chatbot Worker** | https://thankheaven-chat.zaddywebbuilds.workers.dev |
 
-They can never both run, so nothing fights over `opacity` or `transform`.
+---
 
-Two gotchas if you edit this:
+## Accounts & Access
 
-- `.css-depth .sec .wrap > *` matches `.honu-stage` too, so the honu's
-  depth rule has to out-specify it (`.sec .wrap > .honu-stage`) or the
-  turtle gets the flat rise instead.
-- Never animate `transform` on `.gcard` here - that property belongs to
-  the pointer tilt. Cards animate `opacity` only.
+| Service | Account | Notes |
+|---|---|---|
+| GitHub | `zaddywebbuilds` | Push via `gh auth switch -u zaddywebbuilds` first |
+| Cloudflare | `zaddywebbuilds` account | Worker: `thankheaven-chat` |
+| Domain registrar | vFlyer Inc. | Domain: `thankheaven4711maui.com` |
+| OpenAI | client's key | Stored as Cloudflare secret `OPENAI_API_KEY` |
 
-## Performance
+---
 
-Initial mobile load is ~1.2MB (was 3.5MB). What mattered:
+## Repository
 
-- The scroll engine downloads each clip as a **Blob**, so every clip is paid
-  for in full before it can scrub. Mobile encodes are now 640px/20fps/6s -
-  the set went from 6.9MB to 1.8MB - and on `saveData` or a 2g/3g connection
-  no clip is passed at all, so scenes fall back to their poster stills.
-- Gallery images ship at 200 / 400 / 800px with `srcset` + `sizes`. Phones
-  were downloading 800px files into 163px slots.
-- The eight hero circles use the 200px variant. At 800px they cost 426KB
-  for eight 45px circles; now ~32KB.
-- **Do not add `content-visibility` to `.gcat`.** It skips layout for
-  off-screen categories, which collapses the grid to one column at the
-  moment the browser resolves `srcset`, and every card then picks the 800px
-  candidate. It was tried and reverted.
+```
+github.com/zaddywebbuilds/thankheaven4711
+branch: main  (auto-deploys to GitHub Pages)
+local:  C:\Users\Johno\thankheaven4711
+```
 
-Media filenames do not change when re-encoded, so `MEDIA_V` in `site.js`
-versions the clip URLs; bump it whenever a clip is replaced. Same reason the
-css/js links carry `?v=`.
+> **Do NOT move this folder into OneDrive** — git/mmap deadlocks under OneDrive sync.
 
-## Image quality
+Push workflow:
+```bash
+gh auth switch -u zaddywebbuilds
+git push origin main
+```
 
-Nothing is ever upscaled - every size is `min(target, source)`, so a 1024px
-original ships at 1024px rather than being stretched. Gallery images go to
-2048px at q86 and thumbs to 800px at q80; 56 of the 113 photos have sources
-larger than the old 1600px cap and now use it.
+GitHub Pages serves from `main` branch root. The `CNAME` file in the repo root
+tells Pages to serve on `thankheaven4711maui.com`.
 
-Two blur sources were fixed: the scene posters were 1600x900 generated from
-1440x810 video (an 11% upscale), and the lightbox used to letterbox small
-images up to the viewport. The lightbox now sizes from the manifest's own
-dimensions and never renders past an image's natural size.
+---
 
-55 of the photos have sources at or below 1200px - those came in compressed
-and cannot be improved without re-shoots.
+## File Structure
 
-## SEO
+```
+index.html                  The entire site (one page)
+CNAME                       Custom domain for GitHub Pages
+checkout.html               Mock Stripe checkout page (demo mode)
+assets/
+  css/
+    site.css                All site styles (v=45)
+    chatbot-widget.css      Chatbot panel styles (v=5)
+  js/
+    site.js                 CONFIG block + hero video + nav + whale video (v=43)
+    gallery.js              Gallery rendering + lightbox (v=42)
+    chatbot-widget.js       Chatbot widget IIFE (v=5)
+  img/
+    hero-poster.webp        Video poster 960px/q72 (52 KB)
+    chat-header.webp        Chatbot header 720px/q78 (49 KB)
+    whale-poster.jpg        Whale video poster frame
+    og-cover.jpg            1200x630 Open Graph image
+    favicon.svg             Site favicon
+  video/
+    hero-loop.mp4           Desktop hero loop (1280x720)
+    hero-loop-m.mp4         Mobile hero loop (smaller encode)
+    whale-lanai.mp4         Humpback whale from lanai, 3.8 MB (1280x720)
+  gallery/
+    *.webp                  Full-res gallery images (2048px)
+    *-400.webp              Grid thumbnails (400px)
+    *-t.webp                Lightbox preview (800px)
+    *-200.webp              Tiny thumbnails
+    *-s.webp                Section display variants (900px) — honu images
+    *.mp4                   Gallery video clips
+  gallery.json              Generated gallery manifest (127 items)
+chatbot/
+  src/worker.js             Cloudflare Worker — OpenAI + Calendar + Sheets + Stripe
+  property-knowledge.json   Property data injected into AI system prompt
+  wrangler.toml             Worker config (SITE_URL, rates, fees, tax)
+  package.json              wrangler dev dependency
+```
 
-- One `h1`, then `h2` per section and `h3` per gallery category.
-- `LodgingBusiness` + `VacationRental` + `FAQPage` JSON-LD in `index.html`. The address
-  carries region and country only - **fill in the street address** once confirmed.
-- Canonical, Open Graph and Twitter card all point at the Pages URL. Change these
-  together the day a custom domain is attached, or they will point at the wrong host.
-- `robots.txt` allows everything and names the sitemap. It must stay that way - a
-  previous project shipped a robots.txt that silently blocked every crawler.
-- `og-cover.jpg` is 1200x630, generated from the lanai shot.
-- The hero image is preloaded with `fetchpriority=high`, since it is the LCP element.
+---
 
-Every factual claim on the page is visible in the photos. Nothing about sleeping
-capacity, parking, wifi, A/C or rates is asserted, because none of it is confirmed.
+## Chatbot System
 
-## Local preview
+The chatbot is a **Cloudflare Worker** (`chatbot/src/worker.js`) that:
+1. Takes visitor messages via `POST /chat`
+2. Runs an OpenAI agentic loop (`gpt-4o-mini`, max 6 iterations, 600 tokens)
+3. Calls three tools: `check_availability`, `save_lead`, `create_checkout`
+4. Returns the AI reply
 
-The engine loads video as a Blob, so `file://` will not work — it must be served:
+### Worker Secrets (set via `wrangler secret put <NAME>`)
 
+| Secret | Status | Notes |
+|---|---|---|
+| `OPENAI_API_KEY` | ✅ Set | Client's real key — uses `gpt-4o-mini` |
+| `STRIPE_SECRET_KEY` | ❌ Not set | Demo mode active — uses `checkout.html` mock |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | ❌ Not set | Demo mode — availability always shows available |
+| `GOOGLE_PRIVATE_KEY` | ❌ Not set | Demo mode |
+| `GOOGLE_CALENDAR_ID` | ❌ Not set | Demo mode |
+| `GOOGLE_SHEETS_ID` | ❌ Not set | Leads not saved in demo mode |
+
+**Demo mode is automatic** — the worker detects missing secrets and falls back gracefully.
+When client approves, add the real secrets and they activate immediately (no redeploy needed).
+
+### Redeploy worker after any config change:
+```bash
+cd chatbot
+npx wrangler deploy
+```
+
+### Worker vars (in `wrangler.toml`, safe to commit):
+```
+SITE_URL           = https://thankheaven4711maui.com
+NIGHTLY_RATE_CENTS = 35000   ($350/night)
+CLEANING_FEE_CENTS = 17500   ($175 cleaning)
+TAX_RATE           = 0.1496  (14.96% Hawaii tax)
+```
+
+---
+
+## DNS (vFlyer Inc.)
+
+Records currently set on `thankheaven4711maui.com`:
+
+| Type | Name | Value |
+|---|---|---|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | zaddywebbuilds.github.io |
+
+GitHub Pages → Settings → Pages → Custom domain should show `thankheaven4711maui.com`.
+Once DNS propagates, tick **Enforce HTTPS** there.
+
+---
+
+## CONFIG Block (owner must fill in)
+
+Open `assets/js/site.js`, top of file:
+
+```js
+const CONFIG = {
+  bookingHref: 'mailto:CHANGE-ME@example.com?...',  // ← real booking URL or mailto
+  strLine:     '',   // ← Hawai'i STR registration number (legally required on all ads)
+  legalLine:   '',   // ← footer legal/ownership text
+};
+```
+
+Empty strings render nothing — safe to publish before these are filled.
+
+---
+
+## Performance (as of last deploy)
+
+| Asset | Before | After |
+|---|---|---|
+| hero-poster | 174 KB | 52 KB WebP |
+| chat-header | 263 KB | 49 KB WebP |
+| honu-039 (section) | 576 KB | 117 KB WebP (900px) |
+| honu-040 (section) | 229 KB | 54 KB WebP (900px) |
+| Google Fonts | render-blocking | preload+onload (non-blocking) |
+| Whale video | autoplay always | JS-gated: only on good connection + in viewport |
+| Scripts | inline end-of-body | `defer` |
+
+---
+
+## What's Done
+
+- [x] Full static marketing site — hero video bento, 6 narrative sections, gallery, FAQ, booking CTA
+- [x] Gallery: 127 items (photos + clips), classified by room/subject, lightbox with swipe
+- [x] Live Hawaii clock card in hero
+- [x] Sticky nav with scroll-spy, mobile hamburger menu
+- [x] Sticky "Check availability" conversion bar (appears after hero, hides near book section)
+- [x] AI chatbot widget — name-first, personalized, guides visitor to booking
+- [x] Chatbot: availability check (demo mode), email capture, mock checkout flow
+- [x] Mock checkout page (`checkout.html`) — looks like Stripe, accepts any card, generates fake ref
+- [x] Humpback whale video from lanai — 3.8 MB, 1280×720, lazy-autoplays on scroll
+- [x] Performance pass — WebP images, non-blocking fonts, lazy whale video, defer scripts
+- [x] Mobile: responsive at all breakpoints, chatbot lifts above sticky CTA bar
+- [x] Custom domain `thankheaven4711maui.com` — DNS set, CNAME committed, worker updated
+- [x] SEO: LodgingBusiness + VacationRental + FAQPage JSON-LD, canonical, OG, Twitter card
+
+---
+
+## What's Pending (owner actions)
+
+| Item | Who | Notes |
+|---|---|---|
+| **Enable HTTPS** on GitHub Pages | Owner | Settings → Pages → Enforce HTTPS (after DNS propagates) |
+| **Booking URL** | Owner | Replace `mailto:CHANGE-ME` in CONFIG.bookingHref |
+| **STR registration number** | Owner | Required by Hawaii for short-term rental advertising |
+| **Google service account** | Owner/dev | For real calendar availability checks |
+| **Google Sheets ID** | Owner/dev | For lead capture to spreadsheet |
+| **Stripe secret key** | Owner/dev | `sk_live_...` when ready to take real payments |
+| **Switch SITE_URL back to www** | Dev | Update wrangler.toml if they use `www.` as canonical |
+| **Photo consent/releases** | Owner | 20 images held back (faces). One-line change per image in gallery classification. |
+| **Street address** | Owner | JSON-LD has region only — add street address when confirmed |
+| **Landscape photography** | Owner | Source album is portrait-heavy; reshoots wanted for lanai wide, view, and living room |
+
+---
+
+## Local Preview
+
+No build step. Serve locally:
 ```bash
 python -m http.server 8099
+# then open http://localhost:8099
 ```
 
-## Before this goes live
+The hero video loads as a src attribute (not a Blob), so `file://` works for most things,
+but serving via HTTP is more accurate.
 
-Open `assets/js/site.js` and fill in the `CONFIG` block at the top:
+---
 
-| Key | What it needs |
-|---|---|
-| `bookingHref` | Real booking destination. Currently a placeholder mailto. |
-| `strLine` | **Hawai'i short-term-rental registration number.** Several counties require this on all advertising, a website included. Confirm the county's rule before launch. |
-| `legalLine` | Anything else for the footer. |
+## To Add Real Stripe
 
-Empty strings render nothing, so the page is safe to publish before these are filled.
+```bash
+cd chatbot
+npx wrangler secret put STRIPE_SECRET_KEY
+# paste sk_live_... when prompted
+```
 
-## Open items
+No code change needed — the worker auto-detects the key and switches from demo to real Stripe.
 
-- **Photo consent.** 20 images are held back: every one with a recognisable face
-  (owners, guests, and children on the beach) plus the AI turtle mockup. They are marked
-  `x` in the classification, so switching any of them on is a one-line change once
-  releases exist.
-- **Island naming.** Copy says "across the channel" rather than naming the island in the
-  view, because that was inferred from photos, not confirmed. Confirm and make it specific —
-  a named island sells better than a vague one.
-- **Landscape photography.** The source album is 141 portrait vs 82 landscape. A website
-  wants wide. Priority reshoots: the full 35-foot lanai, the view morning and sunset,
-  and the living room with daylight — all held sideways.
-- **There is no honu footage.** The album's 123 clips reduce to 14 distinct ones
-  (checked twice, on a first-second frame and again on a mid-duration frame) and none
-  contain a turtle. The honu section uses the two real stills, drifting and cross-fading.
-  A real clip would be a straight upgrade if she ever shoots one.
-- **The rainbow scene is still-only.** The one rainbow clip is shot portrait and loses the
-  rainbow when cropped to a landscape stage. A landscape reshoot would earn it a clip.
-- **AI mockup is not used.** The turtle-on-the-wall image the owner generated is a
-  visualization, not a photo of the property, and must not appear as one.
+## To Add Google Calendar / Sheets
 
-## Deployment
+```bash
+cd chatbot
+npx wrangler secret put GOOGLE_SERVICE_ACCOUNT_EMAIL
+npx wrangler secret put GOOGLE_PRIVATE_KEY
+npx wrangler secret put GOOGLE_CALENDAR_ID
+npx wrangler secret put GOOGLE_SHEETS_ID
+```
 
-Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.
-The whole repo is the artifact — there is nothing to build.
+The service account needs:
+- Calendar: "See free/busy information" on the property's calendar
+- Sheets: "Editor" on the leads spreadsheet
+
+---
+
+## Version Bumping
+
+When editing CSS or JS, bump the `?v=` query string in `index.html` to bust browser cache:
+
+```html
+<link rel="stylesheet" href="assets/css/site.css?v=45" />          <!-- bump if site.css changes -->
+<link rel="stylesheet" href="assets/css/chatbot-widget.css?v=5" />  <!-- bump if chatbot CSS changes -->
+<script src="assets/js/site.js?v=43" defer></script>               <!-- bump if site.js changes -->
+<script src="assets/js/gallery.js?v=42" defer></script>            <!-- bump if gallery.js changes -->
+<script src="assets/js/chatbot-widget.js?v=5" defer></script>      <!-- bump if chatbot JS changes -->
+```
+
+Also bump `MEDIA_V` in `site.js` whenever a hero video clip is re-encoded.
+
+---
+
+## Chatbot System Prompt / Property Data
+
+Edit `chatbot/property-knowledge.json` to update property details.
+The worker reads it at deploy time — redeploy (`npx wrangler deploy`) after any change.
+
+---
+
+*Last updated: 2026-09-26. Site version: main branch, commit c0c19a0.*
