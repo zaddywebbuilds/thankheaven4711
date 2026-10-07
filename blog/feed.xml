@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>O Thank Heaven 4 711 -- Maui Travel Blog</title>
+  <link>https://thankheaven4711maui.com/blog/</link>
+  <description>Maui travel guides from an oceanfront condo on the west shore.</description>
+  <language>en-us</language>
+  <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
+
+  <item>
+    <title><![CDATA[Snorkeling in Maui with Kids: Best Spots and Tips]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-snorkeling-with-kids.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-snorkeling-with-kids.html</guid>
+    <description><![CDATA[The best Maui snorkel spots for families with young children -- calm water, good visibility, and reef fish that kids actually want to see.]]></description>
+    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-068.webp" type="image/webp" />
+  </item>
+  <item>
+    <title><![CDATA[Best Food Trucks in Maui]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-food-trucks-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-food-trucks-guide.html</guid>
+    <description><![CDATA[From plate lunch to fresh fish tacos, Maui's food truck scene is one of the best ways to eat well without the resort price tag.]]></description>
+    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/kitchen-008-200.webp" type="image/webp" />
+  </item>
+  <item>
+    <title><![CDATA[Ka'anapali Beach: A Complete Visitor Guide]]></title>
+    <link>https://thankheaven4711maui.com/blog/kaanapali-beach-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/kaanapali-beach-guide.html</guid>
+    <description><![CDATA[Ka'anapali is one of the most recognized resort beaches in Hawaii. What to expect, where to park, and the best spots along its mile of sand.]]></description>
+    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-056-400.webp" type="image/webp" />
+  </item>
+  <item>
+    <title><![CDATA[Maui Helicopter Tours: What to Expect and Which to Book]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-helicopter-tours-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-helicopter-tours-guide.html</guid>
+    <description><![CDATA[A helicopter tour over Maui's sea cliffs, waterfalls, and Haleakala crater is one of the island's most dramatic experiences. Here is what to know before you book.]]></description>
+    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-068.webp" type="image/webp" />
+  </item>
+</channel>
+</rss>
