@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add blog/
+          git add blog/ scripts/
           git diff --staged --quiet && echo "Nothing to commit" || \
             git commit -m "feat: daily blog post $(date -u +%Y-%m-%d)" && \
             git push

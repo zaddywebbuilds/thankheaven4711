@@ -222,6 +222,63 @@ def update_index(topic, post_date):
     print(f"Updated index.html with card for: {topic['slug']}")
 
 
+def update_rss_feed(topics, existing_slugs):
+    """Rebuild blog/feed.xml from the most recent 20 published posts."""
+    published = [t for t in topics if t["slug"] in existing_slugs][-20:]
+    published.reverse()  # newest first
+
+    items = ""
+    for t in published:
+        post_file = BLOG_DIR / f"{t['slug']}.html"
+        # Parse datePublished from the JSON-LD block in the file
+        try:
+            text = post_file.read_text(encoding="utf-8")
+            m = re.search(r'"datePublished":\s*"(\d{4}-\d{2}-\d{2})"', text)
+            pub_date_str = m.group(1) if m else date.today().isoformat()
+        except Exception:
+            pub_date_str = date.today().isoformat()
+
+        from email.utils import format_datetime
+        from datetime import datetime
+        pub_dt = datetime.fromisoformat(pub_date_str)
+        rfc822 = format_datetime(pub_dt)
+
+        # Pull featured image src from the file
+        img_m = re.search(r'class="blog-feat-img"[^>]*src="([^"]+)"', text) if 'text' in dir() else None
+        enclosure = ""
+        if img_m:
+            img_src = img_m.group(1)
+            img_url = img_src if img_src.startswith("http") else f"{BASE_URL}{img_src}"
+            enclosure = f'<enclosure url="{img_url}" type="image/webp" />'
+
+        url = f"{BASE_URL}/blog/{t['slug']}.html"
+        items += f"""
+  <item>
+    <title><![CDATA[{t['title']}]]></title>
+    <link>{url}</link>
+    <guid isPermaLink="true">{url}</guid>
+    <description><![CDATA[{t['excerpt']}]]></description>
+    <pubDate>{rfc822}</pubDate>
+    {enclosure}
+  </item>"""
+
+    feed = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>O Thank Heaven 4 711 -- Maui Travel Blog</title>
+  <link>{BASE_URL}/blog/</link>
+  <description>Maui travel guides from an oceanfront condo on the west shore.</description>
+  <language>en-us</language>
+  <atom:link href="{BASE_URL}/blog/feed.xml" rel="self" type="application/rss+xml" />
+{items}
+</channel>
+</rss>"""
+
+    feed_path = BLOG_DIR / "feed.xml"
+    feed_path.write_text(feed, encoding="utf-8")
+    print(f"RSS feed updated: {feed_path}")
+
+
 def get_gbp_access_token(client_id, client_secret, refresh_token):
     resp = requests.post(
         "https://oauth2.googleapis.com/token",
@@ -312,6 +369,7 @@ def main():
     print(f"Written: {out_path}")
 
     update_index(topic, post_date)
+    update_rss_feed(topics, get_existing_slugs())
 
     img_web_path, _ = pick_image(topic.get("category", "default"))
     post_to_gbp(topic, post_date, img_web_path)
