@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Daily blog post generator for thankheaven4711maui.com
-Reads the next unused topic from blog/topics.json, calls the Anthropic API
+Reads the next unused topic from blog/topics.json, calls the DeepSeek API
 to generate a full SEO-optimized HTML post, writes it to blog/, and inserts
 a card at the top of blog/index.html.
 """
@@ -13,7 +13,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-import anthropic
+from openai import OpenAI
 
 REPO_ROOT = Path(__file__).parent.parent
 BLOG_DIR = REPO_ROOT / "blog"
@@ -74,7 +74,8 @@ def pick_next_topic(topics, existing_slugs):
 
 
 def generate_post_html(topic, post_date, client):
-    user_prompt = f"""Write a complete SEO-optimized blog post HTML file for the following topic:
+    user_prompt = f"""Write a complete SEO-optimized blog post HTML file for the following topic.
+Output ONLY the raw HTML starting with <!doctype html> -- no explanation, no markdown fences.
 
 Topic: {topic['title']}
 Primary keyword: {topic['keyword']}
@@ -121,13 +122,15 @@ For the 3 related post cards, choose from these existing posts:
 
 Pick the 3 most relevant to the topic. Output only the raw HTML."""
 
-    message = client.messages.create(
-        model="claude-opus-4-5",
+    response = client.chat.completions.create(
+        model="deepseek-chat",
         max_tokens=8192,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_prompt}],
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
     )
-    return message.content[0].text.strip()
+    return response.choices[0].message.content.strip()
 
 
 def update_index(topic, post_date):
@@ -157,9 +160,9 @@ def update_index(topic, post_date):
 
 
 def main():
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
-        print("ERROR: ANTHROPIC_API_KEY not set", file=sys.stderr)
+        print("ERROR: DEEPSEEK_API_KEY not set", file=sys.stderr)
         sys.exit(1)
 
     topics = load_topics()
@@ -172,7 +175,7 @@ def main():
 
     print(f"Generating post: {topic['slug']}")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
     post_date = date.today()
 
     html = generate_post_html(topic, post_date, client)
