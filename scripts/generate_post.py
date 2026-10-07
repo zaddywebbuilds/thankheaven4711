@@ -17,9 +17,66 @@ from openai import OpenAI
 
 REPO_ROOT = Path(__file__).parent.parent
 BLOG_DIR = REPO_ROOT / "blog"
+GALLERY_DIR = REPO_ROOT / "assets" / "gallery"
 TOPICS_FILE = BLOG_DIR / "topics.json"
 INDEX_FILE = BLOG_DIR / "index.html"
 BASE_URL = "https://thankheaven4711maui.com"
+
+# Maps topic category to gallery image filename prefixes (most specific first)
+CATEGORY_IMAGE_MAP = {
+    "Wildlife":      ["honu", "view", "beach"],
+    "Snorkeling":    ["beach", "honu", "view"],
+    "Beaches":       ["beach", "view", "sunset"],
+    "Sunsets":       ["sunset", "view", "lanai"],
+    "Photography":   ["sunset", "view", "rainbow"],
+    "Romance":       ["sunset", "lanai", "view"],
+    "Food":          ["kitchen", "living", "beach"],
+    "Activities":    ["beach", "view", "lanai"],
+    "Day trips":     ["view", "beach", "sunset"],
+    "Planning":      ["lanai", "view", "beach"],
+    "Accommodation": ["lanai", "view", "living"],
+    "Family":        ["beach", "view", "lanai"],
+    "Culture":       ["local", "beach", "view"],
+    "Location":      ["view", "building", "lanai"],
+    "Local tips":    ["local", "kitchen", "beach"],
+    "Wellness":      ["lanai", "sunset", "view"],
+    "Events":        ["sunset", "view", "rainbow"],
+    "Budget":        ["lanai", "view", "beach"],
+    "default":       ["view", "sunset", "beach"],
+}
+
+
+def pick_image(category: str) -> tuple[str, str]:
+    """Return (web_path, alt_text) for the best matching gallery image."""
+    import random
+    prefixes = CATEGORY_IMAGE_MAP.get(category, CATEGORY_IMAGE_MAP["default"])
+    for prefix in prefixes:
+        # Full-size only (skip -t. thumbnails)
+        candidates = [
+            p for p in GALLERY_DIR.glob(f"{prefix}-*.webp")
+            if "-t." not in p.name
+        ]
+        if candidates:
+            chosen = random.choice(candidates)
+            web_path = f"/assets/gallery/{chosen.name}"
+            alt_map = {
+                "beach": "A beach on the south Maui coast near unit 711",
+                "sunset": "Sunset over the AuAu Channel from the lanai at unit 711",
+                "view": "Ocean view from unit 711 at 4711 S Kihei Rd, Maui",
+                "lanai": "The 35-foot private west-facing lanai at unit 711",
+                "honu": "Hawaiian green sea turtle (honu) on the reef below unit 711",
+                "kitchen": "The full kitchen at unit 711, Maui Sands Seaside",
+                "living": "The living area at unit 711 with ocean view",
+                "bedroom": "The bedroom at unit 711 with direct lanai access",
+                "rainbow": "Rainbow over the ocean from unit 711, Kihei, Maui",
+                "moon": "Moonrise over the ocean from the lanai at unit 711",
+                "local": "South Kihei, Maui near unit 711",
+                "building": "Maui Sands Seaside building exterior, 4711 S Kihei Rd",
+            }
+            alt = alt_map.get(prefix, "O Thank Heaven 4 711 -- oceanfront condo in Kihei, Maui")
+            return web_path, alt
+    # Final fallback
+    return "/assets/img/og-cover.jpg", "Ocean view from unit 711 at Maui Sands Seaside"
 
 SYSTEM_PROMPT = """You are an expert SEO content writer producing blog posts for a vacation rental property website.
 The property is O Thank Heaven 4 711 -- a seventh-floor oceanfront condo at 4711 S Kihei Rd, Unit 711, Kihei, Maui, Hawaii 96753.
@@ -74,6 +131,8 @@ def pick_next_topic(topics, existing_slugs):
 
 
 def generate_post_html(topic, post_date, client):
+    img_path, img_alt = pick_image(topic.get("category", "default"))
+
     user_prompt = f"""Write a complete SEO-optimized blog post HTML file for the following topic.
 Output ONLY the raw HTML starting with <!doctype html> -- no explanation, no markdown fences.
 
@@ -84,6 +143,9 @@ Slug: {topic['slug']}
 Date: {post_date.isoformat()} (use this for datePublished, dateModified, and the <time> element)
 Canonical URL: {BASE_URL}/blog/{topic['slug']}.html
 Excerpt for related cards: {topic['excerpt']}
+Featured image src: {img_path}
+Featured image alt: {img_alt}
+(Use exactly these values for the .blog-feat-img src and alt attributes. Width 1200 height 675.)
 
 The article should be genuinely useful to someone planning a Maui vacation.
 Include specific, practical details -- not generic travel writing.
