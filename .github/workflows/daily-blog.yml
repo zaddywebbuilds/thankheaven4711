@@ -25,11 +25,15 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install openai
+        run: pip install openai requests
 
       - name: Generate blog post
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_LOCATION_NAME: ${{ secrets.GBP_LOCATION_NAME }}
         run: python scripts/generate_post.py
 
       - name: Commit and push

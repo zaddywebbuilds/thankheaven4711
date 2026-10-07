@@ -13,6 +13,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import requests
 from openai import OpenAI
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -221,6 +222,66 @@ def update_index(topic, post_date):
     print(f"Updated index.html with card for: {topic['slug']}")
 
 
+def get_gbp_access_token(client_id, client_secret, refresh_token):
+    resp = requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "refresh_token": refresh_token,
+            "grant_type": "refresh_token",
+        },
+        timeout=15,
+    )
+    resp.raise_for_status()
+    return resp.json()["access_token"]
+
+
+def post_to_gbp(topic, post_date, img_web_path):
+    """Create a GBP Local Post with image and Learn More CTA. Skips silently if secrets not set."""
+    client_id = os.environ.get("GBP_CLIENT_ID")
+    client_secret = os.environ.get("GBP_CLIENT_SECRET")
+    refresh_token = os.environ.get("GBP_REFRESH_TOKEN")
+    location_name = os.environ.get("GBP_LOCATION_NAME")
+
+    if not all([client_id, client_secret, refresh_token, location_name]):
+        print("GBP secrets not configured -- skipping GBP post.")
+        return
+
+    try:
+        access_token = get_gbp_access_token(client_id, client_secret, refresh_token)
+    except Exception as e:
+        print(f"GBP token refresh failed: {e}", file=sys.stderr)
+        return
+
+    blog_url = f"{BASE_URL}/blog/{topic['slug']}.html"
+    image_url = f"{BASE_URL}{img_web_path}"
+
+    payload = {
+        "languageCode": "en-US",
+        "summary": f"{topic['title']}\n\n{topic['excerpt']}",
+        "callToAction": {
+            "actionType": "LEARN_MORE",
+            "url": blog_url,
+        },
+        "topicType": "STANDARD",
+        "media": [{"mediaFormat": "PHOTO", "sourceUrl": image_url}],
+    }
+
+    url = f"https://mybusiness.googleapis.com/v4/{location_name}/localPosts"
+    resp = requests.post(
+        url,
+        json=payload,
+        headers={"Authorization": f"Bearer {access_token}"},
+        timeout=20,
+    )
+
+    if resp.ok:
+        print(f"GBP post created: {resp.json().get('name', 'ok')}")
+    else:
+        print(f"GBP post failed ({resp.status_code}): {resp.text}", file=sys.stderr)
+
+
 def main():
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
@@ -251,6 +312,9 @@ def main():
     print(f"Written: {out_path}")
 
     update_index(topic, post_date)
+
+    img_web_path, _ = pick_image(topic.get("category", "default"))
+    post_to_gbp(topic, post_date, img_web_path)
 
 
 if __name__ == "__main__":
