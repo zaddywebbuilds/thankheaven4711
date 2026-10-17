@@ -63,16 +63,16 @@ def pick_image(category: str) -> tuple[str, str]:
             alt_map = {
                 "beach": "A beach on the south Maui coast near unit 711",
                 "sunset": "Sunset over the AuAu Channel from the lanai at unit 711",
-                "view": "Ocean view from unit 711 at 4711 S Kihei Rd, Maui",
+                "view": "Ocean view from unit 711 at Maui Sands Seaside, Lahaina",
                 "lanai": "The 35-foot private west-facing lanai at unit 711",
                 "honu": "Hawaiian green sea turtle (honu) on the reef below unit 711",
                 "kitchen": "The full kitchen at unit 711, Maui Sands Seaside",
                 "living": "The living area at unit 711 with ocean view",
                 "bedroom": "The bedroom at unit 711 with direct lanai access",
-                "rainbow": "Rainbow over the ocean from unit 711, Kihei, Maui",
+                "rainbow": "Rainbow over the ocean from unit 711, West Maui",
                 "moon": "Moonrise over the ocean from the lanai at unit 711",
-                "local": "South Kihei, Maui near unit 711",
-                "building": "Maui Sands Seaside building exterior, 4711 S Kihei Rd",
+                "local": "Napili-Honokowai area, West Maui near unit 711",
+                "building": "Maui Sands Seaside building exterior, Lahaina, HI 96767",
             }
             alt = alt_map.get(prefix, "O Thank Heaven 4 711 -- oceanfront condo in Kihei, Maui")
             return web_path, alt
@@ -80,7 +80,7 @@ def pick_image(category: str) -> tuple[str, str]:
     return "/assets/img/og-cover.jpg", "Ocean view from unit 711 at Maui Sands Seaside"
 
 SYSTEM_PROMPT = """You are an expert SEO content writer producing blog posts for a vacation rental property website.
-The property is O Thank Heaven 4 711 -- a seventh-floor oceanfront condo at 4711 S Kihei Rd, Unit 711, Kihei, Maui, Hawaii 96753.
+The property is O Thank Heaven 4 711 -- a seventh-floor oceanfront condo at 3559 Lower Honoapiilani Rd #11, Lahaina, HI 96767 (Napili-Honokowai area, West Maui). The marketing name is Unit 711 / Maui Sands Seaside.
 Key facts: 35-foot west-facing private lanai, views of Lanai and Molokai, reef snorkeling off the lawn, humpback whales in the AuAu Channel Nov-May, Hawaiian green sea turtles on the shoreline.
 Website: thankheaven4711maui.com. Booking link: https://thankheaven4711maui.com/#book
 
