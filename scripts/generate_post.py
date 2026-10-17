@@ -339,6 +339,25 @@ def post_to_gbp(topic, post_date, img_web_path):
         print(f"GBP post failed ({resp.status_code}): {resp.text}", file=sys.stderr)
 
 
+def update_sitemap(topic, post_date):
+    """Append a new <url> entry to sitemap.xml for the given topic."""
+    sitemap_path = REPO_ROOT / "sitemap.xml"
+    content = sitemap_path.read_text(encoding="utf-8")
+    new_url = f"""  <url>
+    <loc>{BASE_URL}/blog/{topic['slug']}.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>{post_date.isoformat()}</lastmod>
+  </url>
+</urlset>"""
+    if f"/blog/{topic['slug']}.html" in content:
+        print(f"Sitemap already contains {topic['slug']} -- skipping.")
+        return
+    updated = content.replace("</urlset>", new_url)
+    sitemap_path.write_text(updated, encoding="utf-8")
+    print(f"Sitemap updated with: {topic['slug']}")
+
+
 def main():
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
@@ -370,6 +389,7 @@ def main():
 
     update_index(topic, post_date)
     update_rss_feed(topics, get_existing_slugs())
+    update_sitemap(topic, post_date)
 
     img_web_path, _ = pick_image(topic.get("category", "default"))
     post_to_gbp(topic, post_date, img_web_path)
