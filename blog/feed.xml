@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Best Beginner Hikes in Maui]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-hiking-guide-beginners.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-hiking-guide-beginners.html</guid>
+    <description><![CDATA[From the Waihee Ridge Trail to the Kapalua Coastal Trail, the Maui hikes that reward effort without requiring technical skills or fitness you don't have yet.]]></description>
+    <pubDate>Tue, 20 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-038-400.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Kamaole Beach Parks I, II, and III: Complete Guide]]></title>
     <link>https://thankheaven4711maui.com/blog/kamaole-beach-parks-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/kamaole-beach-parks-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[Ka'anapali is one of the most recognized resort beaches in Hawaii. What to expect, where to park, and the best spots along its mile of sand.]]></description>
     <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-056-400.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Maui Helicopter Tours: What to Expect and Which to Book]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-helicopter-tours-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-helicopter-tours-guide.html</guid>
-    <description><![CDATA[A helicopter tour over Maui's sea cliffs, waterfalls, and Haleakala crater is one of the island's most dramatic experiences. Here is what to know before you book.]]></description>
-    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-068.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
