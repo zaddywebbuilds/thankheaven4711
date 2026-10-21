@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Scuba Diving in Maui: Best Dive Sites and Operators]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-scuba-diving-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-scuba-diving-guide.html</guid>
+    <description><![CDATA[Maui's dive sites include everything from Molokini's back wall to the Carthaginian wreck. Where to dive and which operators run the safest operations.]]></description>
+    <pubDate>Wed, 21 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-v087-200.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Best Beginner Hikes in Maui]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-hiking-guide-beginners.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-hiking-guide-beginners.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[From plate lunch to fresh fish tacos, Maui's food truck scene is one of the best ways to eat well without the resort price tag.]]></description>
     <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/kitchen-008-200.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Ka'anapali Beach: A Complete Visitor Guide]]></title>
-    <link>https://thankheaven4711maui.com/blog/kaanapali-beach-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/kaanapali-beach-guide.html</guid>
-    <description><![CDATA[Ka'anapali is one of the most recognized resort beaches in Hawaii. What to expect, where to park, and the best spots along its mile of sand.]]></description>
-    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-056-400.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
