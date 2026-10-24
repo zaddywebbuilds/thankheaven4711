@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Solo Travel in Maui: What to Know]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-solo-travel-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-solo-travel-guide.html</guid>
+    <description><![CDATA[Maui is an excellent solo destination. The practical realities, the best experiences for solo travelers, and why a condo often beats a hotel for solo stays.]]></description>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/lanai-099.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Planning an Anniversary Trip to Maui]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-anniversary-trip-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-anniversary-trip-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[What to do in the first two hours after landing at OGG -- car rental, grocery run, traffic timing, and the fastest route to South Maui.]]></description>
     <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/lanai-v110-400.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Maui vs the Big Island: Which Hawaii Island Is Right for You?]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-vs-big-island-hawaii.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-vs-big-island-hawaii.html</guid>
-    <description><![CDATA[The two most popular neighbor islands have different strengths. The comparison that actually helps you decide.]]></description>
-    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/lanai-v074-200.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
