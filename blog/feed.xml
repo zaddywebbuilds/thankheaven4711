@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[What to Do in Maui on a Rainy Day]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-rainy-day-activities.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-rainy-day-activities.html</guid>
+    <description><![CDATA[Rain in Maui is usually brief and localized. But for the days it isn't -- the museums, markets, restaurants, and drives worth doing when the beach is out.]]></description>
+    <pubDate>Sun, 25 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-127.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Solo Travel in Maui: What to Know]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-solo-travel-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-solo-travel-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[Wailea has some of the best dinner options in South Maui. The restaurants worth booking, what to order, and which ones to skip.]]></description>
     <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/kitchen-016.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Kahului Airport (OGG): Tips for Arriving in Maui]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-airport-tips-ogg.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-airport-tips-ogg.html</guid>
-    <description><![CDATA[What to do in the first two hours after landing at OGG -- car rental, grocery run, traffic timing, and the fastest route to South Maui.]]></description>
-    <pubDate>Wed, 07 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/lanai-v110-400.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
