@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[New Year's Eve in Maui: What to Expect]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-new-years-eve-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-new-years-eve-guide.html</guid>
+    <description><![CDATA[New Year's Eve in Maui is quieter than you might expect -- the beach, a sunset sail, or a good dinner. What to plan and what to avoid.]]></description>
+    <pubDate>Tue, 27 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/sunset-070-400.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Wailea vs Kihei: Where to Stay in South Maui]]></title>
     <link>https://thankheaven4711maui.com/blog/wailea-vs-kihei-where-to-stay.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/wailea-vs-kihei-where-to-stay.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[Where to take your first surf lesson in Maui, what the beginner breaks are like, and what a first session actually involves.]]></description>
     <pubDate>Fri, 09 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-015-200.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Whale Watching in Maui in February: What to Expect]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-whale-watching-february.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-whale-watching-february.html</guid>
-    <description><![CDATA[February is peak humpback season in the AuAu Channel. What the activity looks like, where to watch from shore, and whether a boat tour is worth it.]]></description>
-    <pubDate>Thu, 08 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/honu-125.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
