@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[First-Time Visitor to Maui: 15 Things to Know Before You Go]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-travel-tips-first-time.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-travel-tips-first-time.html</guid>
+    <description><![CDATA[What experienced Maui visitors wish they had known before their first trip -- the practical stuff that changes the experience.]]></description>
+    <pubDate>Fri, 30 Oct 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/lanai-v110-200.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Maui for Spring Break: What Families Need to Know]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-spring-break-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-spring-break-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[South Maui's calm morning water makes it ideal for SUP. The best launch spots from Kihei, where to rent, and when to go.]]></description>
     <pubDate>Tue, 13 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-127.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Snorkeling at Molokini Crater: Complete Guide]]></title>
-    <link>https://thankheaven4711maui.com/blog/molokini-snorkel-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/molokini-snorkel-guide.html</guid>
-    <description><![CDATA[Molokini is the most popular snorkel destination in Maui. What the experience is actually like, which operators are worth booking, and what to bring.]]></description>
-    <pubDate>Sun, 11 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-024.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
