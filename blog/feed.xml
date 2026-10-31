@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Fishing in Maui: Charters, Species, and What to Expect]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-fishing-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-fishing-guide.html</guid>
+    <description><![CDATA[Maui's deep-sea fishing charters target ahi, mahi-mahi, and marlin in the channel. What a day on the water actually involves and which operators run tight ships.]]></description>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 -0000</pubDate>
+    
+  </item>
+  <item>
     <title><![CDATA[First-Time Visitor to Maui: 15 Things to Know Before You Go]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-travel-tips-first-time.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-travel-tips-first-time.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[Big Beach is one of Maui's most dramatic stretches of sand. What to know before you go -- shore break, parking, and the hidden Little Beach trail.]]></description>
     <pubDate>Tue, 13 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-022.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Stand-Up Paddleboarding in Maui: Best Spots and Rentals]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-stand-up-paddleboard-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-stand-up-paddleboard-guide.html</guid>
-    <description><![CDATA[South Maui's calm morning water makes it ideal for SUP. The best launch spots from Kihei, where to rent, and when to go.]]></description>
-    <pubDate>Tue, 13 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-127.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
