@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Maui Beaches Without the Crowds]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-beaches-no-crowds.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-beaches-no-crowds.html</guid>
+    <description><![CDATA[The hidden and less-visited beaches on Maui that reward the effort to find them -- from the north shore to south Makena.]]></description>
+    <pubDate>Tue, 03 Nov 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-054.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Whale Watching in Maui in March: Late Season Guide]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-whale-watching-march.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-whale-watching-march.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[Upcountry Maui is a different island from the coast -- cooler, greener, and full of farms, art studios, and viewpoints that most visitors never reach.]]></description>
     <pubDate>Thu, 15 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/view-003-200.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Haleakala Without the Sunrise: Why the Afternoon Visit Is Underrated]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-sunrise-haleakala-alternative.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-sunrise-haleakala-alternative.html</guid>
-    <description><![CDATA[The sunrise gets all the attention, but the afternoon and sunset at Haleakala are equally spectacular -- without the 3 a.m. wake-up or the sold-out reservations.]]></description>
-    <pubDate>Wed, 14 Oct 2026 00:00:00 -0000</pubDate>
-    <enclosure url="https://thankheaven4711maui.com/assets/gallery/view-094.webp" type="image/webp" />
   </item>
 </channel>
 </rss>
