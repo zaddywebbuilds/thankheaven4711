@@ -7,10 +7,6 @@
    ============================================================ */
 
 const CONFIG = {
-  // TODO(owner): booking destination. A mailto works until there is a
-  // real booking engine or listing URL.
-  bookingHref: 'mailto:CHANGE-ME@example.com?subject=Availability%20-%20Unit%20711',
-
   // TODO(owner): Hawai'i short-term-rental registration / TMK number.
   // Several counties require this to appear on ALL advertising, this
   // site included. Leave blank only if confirmed not required.
@@ -19,6 +15,58 @@ const CONFIG = {
   // TODO(owner): anything legal/ownership to sit in the footer.
   legalLine: '',
 };
+
+/* ---------- booking inquiry form ----------
+   SETUP (5 min):
+   1. Go to formspree.io and sign up with thankheaven4711Maui@gmail.com
+   2. Click "New Form" -- give it any name
+   3. Copy the form ID (the part after /f/ in the endpoint, e.g. "xrgvlbyz")
+   4. Paste it below, replacing FORM_ID_HERE
+   Once set, every inquiry lands in your Gmail inbox automatically. */
+const FORMSPREE_ID = 'FORM_ID_HERE';
+
+const inqForm = document.getElementById('inqForm');
+if (inqForm) {
+  const inCheckin  = document.getElementById('iCheckin');
+  const inCheckout = document.getElementById('iCheckout');
+  const today = new Date().toISOString().split('T')[0];
+  if (inCheckin)  inCheckin.min  = today;
+  if (inCheckin)  inCheckin.addEventListener('change', () => {
+    if (inCheckout) inCheckout.min = inCheckin.value;
+    if (inCheckout && inCheckout.value && inCheckout.value <= inCheckin.value)
+      inCheckout.value = '';
+  });
+
+  inqForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!inqForm.checkValidity()) { inqForm.reportValidity(); return; }
+    const btn   = document.getElementById('inqBtn');
+    const lbl   = document.getElementById('inqBtnLabel');
+    const err   = document.getElementById('inqErr');
+    const ok    = document.getElementById('inqOk');
+    const email = document.getElementById('iEmail').value.trim();
+
+    btn.disabled = true;
+    lbl.textContent = 'Sending…';
+    err.hidden = true;
+
+    try {
+      const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(inqForm),
+      });
+      if (!res.ok) throw new Error('server');
+      inqForm.hidden = true;
+      document.getElementById('inqOkEmail').textContent = email;
+      ok.hidden = false;
+    } catch (_) {
+      err.hidden = false;
+      btn.disabled = false;
+      lbl.textContent = 'Send inquiry';
+    }
+  });
+}
 
 document.querySelectorAll('[data-cfg]').forEach((el) => {
   const v = CONFIG[el.dataset.cfg];
