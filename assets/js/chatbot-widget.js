@@ -28,7 +28,7 @@
             '<div class="thc-avatar"><img src="assets/img/chat-header.webp" alt="" /></div>',
             '<div>',
               '<div class="thc-title">Maui Booking Assistant</div>',
-              '<div class="thc-sub">O thank Heaven 4 711 &bull; Kihei, Maui</div>',
+              '<div class="thc-sub">O thank Heaven 4 711 &bull; Lahaina, Maui</div>',
             '</div>',
           '</div>',
         '</div>',

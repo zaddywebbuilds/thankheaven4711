@@ -74,7 +74,7 @@ def pick_image(category: str) -> tuple[str, str]:
                 "local": "Napili-Honokowai area, West Maui near unit 711",
                 "building": "Maui Sands Seaside building exterior, Lahaina, HI 96767",
             }
-            alt = alt_map.get(prefix, "O Thank Heaven 4 711 -- oceanfront condo in Kihei, Maui")
+            alt = alt_map.get(prefix, "O Thank Heaven 4 711 -- oceanfront condo in Lahaina, Maui")
             return web_path, alt
     # Final fallback
     return "/assets/img/og-cover.jpg", "Ocean view from unit 711 at Maui Sands Seaside"
@@ -150,7 +150,7 @@ Featured image alt: {img_alt}
 
 The article should be genuinely useful to someone planning a Maui vacation.
 Include specific, practical details -- not generic travel writing.
-Naturally mention the property (unit 711 at 4711 S Kihei Rd, Kihei) and the lanai view where relevant, without making it feel like an advertisement.
+Naturally mention the property (unit 711 at Maui Sands Seaside, Lahaina) and the lanai view where relevant, without making it feel like an advertisement.
 The CTA block should tie the topic to the property in a natural way.
 
 For the 3 related post cards, choose from these existing posts:
