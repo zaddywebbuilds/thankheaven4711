@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Best Zip Lines in Maui]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-zip-line-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-zip-line-guide.html</guid>
+    <description><![CDATA[Maui's zip line courses run across upcountry valleys and eucalyptus forests. The operators worth booking and what each course offers.]]></description>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 -0000</pubDate>
+    <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-069.webp" type="image/webp" />
+  </item>
+  <item>
     <title><![CDATA[Ahihi-Kinau Natural Area Reserve: Snorkeling Guide]]></title>
     <link>https://thankheaven4711maui.com/blog/ahihi-kinau-snorkeling-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/ahihi-kinau-snorkeling-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[A sunset sail in the AuAu Channel with Lanai on the horizon is one of Maui's signature experiences. The operators worth booking and what each one offers.]]></description>
     <pubDate>Sat, 17 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-026.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Best Coffee Shops in Kihei, Maui]]></title>
-    <link>https://thankheaven4711maui.com/blog/kihei-coffee-shops-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/kihei-coffee-shops-guide.html</guid>
-    <description><![CDATA[The best coffee stops in Kihei from a morning ocean swim to a work session with an ocean view. Local roasters and reliable spots.]]></description>
-    <pubDate>Sat, 17 Oct 2026 00:00:00 -0000</pubDate>
-    
   </item>
 </channel>
 </rss>
