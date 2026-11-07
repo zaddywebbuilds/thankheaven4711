@@ -8,6 +8,14 @@
   <atom:link href="https://thankheaven4711maui.com/blog/feed.xml" rel="self" type="application/rss+xml" />
 
   <item>
+    <title><![CDATA[Visiting Maui in November: What to Expect]]></title>
+    <link>https://thankheaven4711maui.com/blog/maui-november-travel-guide.html</link>
+    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-november-travel-guide.html</guid>
+    <description><![CDATA[November is the start of whale season and the shoulder season between summer crowds and the December peak. What travel in November actually looks like.]]></description>
+    <pubDate>Sat, 07 Nov 2026 00:00:00 -0000</pubDate>
+    
+  </item>
+  <item>
     <title><![CDATA[Monthly Vacation Rentals in Maui: What to Know]]></title>
     <link>https://thankheaven4711maui.com/blog/maui-monthly-rental-guide.html</link>
     <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-monthly-rental-guide.html</guid>
@@ -158,14 +166,6 @@
     <description><![CDATA[The three Kamaole beach parks are the heart of South Kihei's beach scene. What each one is best for, parking, and when to go.]]></description>
     <pubDate>Mon, 19 Oct 2026 00:00:00 -0000</pubDate>
     <enclosure url="https://thankheaven4711maui.com/assets/gallery/beach-038.webp" type="image/webp" />
-  </item>
-  <item>
-    <title><![CDATA[Maui's Coral Reefs: What You Will See and How to Protect Them]]></title>
-    <link>https://thankheaven4711maui.com/blog/maui-coral-reef-guide.html</link>
-    <guid isPermaLink="true">https://thankheaven4711maui.com/blog/maui-coral-reef-guide.html</guid>
-    <description><![CDATA[Maui's reefs are home to hundreds of species but face real threats from warming water and sunscreen chemicals. What you will see and how to snorkel responsibly.]]></description>
-    <pubDate>Sun, 18 Oct 2026 00:00:00 -0000</pubDate>
-    
   </item>
 </channel>
 </rss>
